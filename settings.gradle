@@ -1,0 +1,3 @@
+include ':pet'
+include ':app'
+rootProject.name = "pet_wangcai"
