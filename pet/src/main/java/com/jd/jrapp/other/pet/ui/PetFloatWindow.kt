@@ -19,6 +19,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.jd.jrapp.other.pet.R
+import com.jd.jrapp.other.pet.ui.dialog.ShouYiDialog
 
 /**
  * Created by yuguotao at 2020/8/6,3:58 PM
@@ -36,6 +37,7 @@ class PetFloatWindow private constructor() {
     var mTvShouyi: TextView? = null
     var mTvTougu: TextView? = null
     var mTvDonghua: TextView? = null
+    var mShouYiDialog: ShouYiDialog? = null
 
     private var mContext: Context? = null
 
@@ -54,7 +56,7 @@ class PetFloatWindow private constructor() {
             Log.e("PetFloatWindow", "onClick: " + v)
             animSwitch()
             if (v == mTvShouyi) {
-                goTestActivity()
+                showShouYiDialog();
             } else if (v == mTvTougu) {
                 Toast.makeText(mContext, "投顾", Toast.LENGTH_SHORT).show()
             } else if (v == mTvDonghua) {
@@ -63,7 +65,18 @@ class PetFloatWindow private constructor() {
                         animGone()
                     }
                 }, 300)
+            }else if (v == mClickView){
+
             }
+        }
+    }
+
+    private fun showShouYiDialog(){
+        if(mShouYiDialog==null) {
+            mShouYiDialog= ShouYiDialog(mContext);
+        }
+        if(mShouYiDialog!=null){
+            mShouYiDialog?.show();
         }
     }
 
