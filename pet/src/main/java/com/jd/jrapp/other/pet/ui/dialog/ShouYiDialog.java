@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -62,6 +63,16 @@ public class ShouYiDialog extends Dialog implements View.OnClickListener {
         tv_minus.setOnClickListener(this);
         tv_confirm.setOnClickListener(this);
         tv_cancel.setOnClickListener(this);
+        et_num.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+                    et_num.setCursorVisible(true);// 再次点击显示光标
+                }
+                return false;
+            }
+        });
 
         setCanceledOnTouchOutside(true);
         setContentView(contentView);
@@ -129,6 +140,10 @@ public class ShouYiDialog extends Dialog implements View.OnClickListener {
             EarningsInfo earningsInfo = objects.get(position);
             TextView tv_name = view.findViewById(R.id.tv_name);
             TextView tv_shouyi = view.findViewById(R.id.tv_shouyi);
+            View view_line = view.findViewById(R.id.view_line);
+            if(position==objects.size()-1){
+                view_line.setVisibility(View.INVISIBLE);
+            }
             tv_name.setText(earningsInfo.getName());
             tv_shouyi.setText(earningsInfo.getSyl());
 

@@ -72,7 +72,9 @@
                 android:src="@drawable/arrows_red" />
         </LinearLayout>
     </LinearLayout>
+
     <View
+        android:id="@+id/view_line"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginTop="12dp"

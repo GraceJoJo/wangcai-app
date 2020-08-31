@@ -50,7 +50,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp">
+                android:layout_marginTop="10dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -95,14 +95,14 @@
 
             <TextView
                 style="@style/text_shouyi_bold"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
                 android:text="收益分布" />
 
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp">
+                android:layout_marginTop="10dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -149,7 +149,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp">
+                android:layout_marginTop="10dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -182,6 +182,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -200,6 +201,7 @@
                             android:gravity="center"
                             android:numeric="integer"
                             android:text="100"
+                            android:cursorVisible="false"
                             android:textColor="@color/color_333333"
                             android:textSize="12sp"
                             android:textStyle="bold" />
@@ -223,28 +225,30 @@
 
             <TextView
                 style="@style/text_shouyi_bold"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
                 android:text="好友收益榜单" />
 
             <ListView
                 android:id="@+id/lv"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:listSelector="@android:color/transparent"
+                android:divider="@null"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="15dp"
-                android:layout_height="wrap_content"></ListView>"
+                android:layout_marginBottom="15dp"></ListView>"
 
-            <TextView
-                android:id="@+id/tv_cancel"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:textColor="@color/color_333333"
-                android:textSize="16sp"
-                android:background="@color/white"
-                android:gravity="center"
-                android:text="取消"
-                />
 
-        </LinearLayout>L
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="@color/color_333333"
+            android:textSize="16sp" />
 
     </LinearLayout>
 
