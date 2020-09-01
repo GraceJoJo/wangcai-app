@@ -122,11 +122,11 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_hbjj"
                             style="@style/text_shouyi"
                             android:text="货币基金" />
 
                         <TextView
+                            android:id="@+id/tv_hbjj"
                             style="@style/text_shouyi_red"
                             android:layout_marginTop="4dp"
                             android:text="+30.00" />
@@ -169,11 +169,11 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_zqjj"
                             style="@style/text_shouyi"
                             android:text="债券基金" />
 
                         <TextView
+                            android:id="@+id/tv_zqjj"
                             style="@style/text_shouyi_red"
                             android:layout_marginTop="4dp"
                             android:text="+10.00" />

@@ -43,7 +43,7 @@ public class ShouYiDialog extends Dialog implements View.OnClickListener {
     private TextView tv_sssy, tv_ssnh, tv_hbjj, tv_gpjj, tv_zqjj;
     private int num = 100;
     private EarningsData earningsData;
-    public  ImageLoader imageLoader;
+    public ImageLoader imageLoader;
     private CountDownTimer mTimer;
     private MyAdapter myAdapter;
 
@@ -52,13 +52,18 @@ public class ShouYiDialog extends Dialog implements View.OnClickListener {
         this.mContext = context;
     }
 
-    Handler handler =new Handler(){
+    Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            if(msg.what==100){
+                setData(false);
+
+            }
 
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,8 +85,8 @@ public class ShouYiDialog extends Dialog implements View.OnClickListener {
         RelativeLayout rl_dialog = contentView.findViewById(R.id.rl_dialog);
         ListView lv = contentView.findViewById(R.id.lv);
 
-        setData();
-        myAdapter=new MyAdapter(getContext(), R.layout.item_shouyi_layout, earningsData.getRecords());
+        setData(true);
+        myAdapter = new MyAdapter(getContext(), R.layout.item_shouyi_layout, earningsData.getRecords());
         lv.setAdapter(myAdapter);
         setListViewHeightBasedOnChildren(lv);
         et_num.setCursorVisible(false);
@@ -102,9 +107,6 @@ public class ShouYiDialog extends Dialog implements View.OnClickListener {
             }
         });
 
-//        startTimer(6);
-
-
         setCanceledOnTouchOutside(true);
         setContentView(contentView);
 
@@ -113,38 +115,34 @@ public class ShouYiDialog extends Dialog implements View.OnClickListener {
         lp.width = width;
         lp.gravity = Gravity.BOTTOM;
         getWindow().setAttributes(lp);
+        startTimer();
     }
 
 
-//    public void startTimer(int second) {
-//        mTimer = new CountDownTimer((long) (second * 1000), 1000) {
-//
-//            @Override
-//            public void onTick(long millisUntilFinished) {
-//
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                setData();
-//                if (null != mTimer) {
-//                    mTimer.cancel();
-//                    mTimer = null;
-//                }
-//            }
-//        }.start();
-//    }
+    public void startTimer() {
 
-    public void setData() {
-//        int number = (int) Math.floor(new Random().nextInt(10) + 1);
-        earningsData = getJsonData("record"+".json");
-        tv_sssy.setText(earningsData.getSssy());
-        tv_ssnh.setText(earningsData.getSsnh());
-        tv_hbjj.setText(earningsData.getHbjj());
-        tv_gpjj.setText(earningsData.getGpjj());
-        tv_zqjj.setText(earningsData.getZqjj());
-//        myAdapter.setData(earningsData.getRecords());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                handler.sendEmptyMessage(100);
+            }
+        }, 10 * 1000);
+    }
 
+    public void setData(boolean isFirst) {
+        int number = (int) Math.floor(new Random().nextInt(10) + 1);
+        earningsData = getJsonData("record" + number + ".json");
+        if (myAdapter != null && tv_sssy != null) {
+            tv_sssy.setText(earningsData.getSssy());
+            tv_ssnh.setText(earningsData.getSsnh());
+            tv_hbjj.setText(earningsData.getHbjj());
+            tv_gpjj.setText(earningsData.getGpjj());
+            tv_zqjj.setText(earningsData.getZqjj());
+            if (!isFirst) {
+                myAdapter.setData(earningsData.getRecords());
+                startTimer();
+            }
+        }
     }
 
     @Override
@@ -189,7 +187,7 @@ public class ShouYiDialog extends Dialog implements View.OnClickListener {
         private List<EarningsData.RecordsBean> objects;
         private int resourceId;
 
-        public void setData(List<EarningsData.RecordsBean> objects){
+        public void setData(List<EarningsData.RecordsBean> objects) {
             this.objects = objects;
             notifyDataSetChanged();
         }
