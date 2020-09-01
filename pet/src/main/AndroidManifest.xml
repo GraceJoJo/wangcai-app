@@ -2,6 +2,7 @@
     package="com.jd.jrapp.other.pet">
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <application>
         <activity android:name=".ui.TestActivity"/>
         <receiver android:name=".appwidget.PetAppWidget">
