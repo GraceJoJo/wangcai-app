@@ -1,0 +1,98 @@
+{
+  "headImage": "http://storage.360buyimg.com/wangfujing-weapp/my_header_default.png",
+  "nickName": "雨打芭蕉",
+  "integration": 233,
+  "allowViewFlag": "N",
+  "records": [
+    {
+      "shopIcon": "http://storage.360buyimg.com/wangfujing-weapp/metal_item_default.png",
+      "storeId": 5656,
+      "shopCode": "cjchasolf",
+      "shopName": "周大福",
+      "activityAction": "receive",
+      "couponDesc": "买一赠一券",
+      "integrationDesc": "",
+      "recordTime": "2020-07-13 20:59:00"
+    },
+    {
+      "shopIcon": "http://storage.360buyimg.com/wangfujing-weapp/metro-marker.png",
+      "storeId": 5656,
+      "shopCode": "cjchasolf",
+      "shopName": "漫火锅",
+      "activityAction": "cancel",
+      "couponDesc": "满200-40券",
+      "integrationDesc": "+7",
+      "recordTime": "2020-07-13 20:59:00"
+    },
+    {
+      "shopIcon": "http://storage.360buyimg.com/wangfujing-weapp/metro-marker.png",
+      "storeId": 5656,
+      "shopCode": "cjchasolf",
+      "shopName": "周生生",
+      "activityAction": "give",
+      "couponDesc": "9折券",
+      "integrationDesc": "",
+      "recordTime": "2020-07-13 20:59:00"
+    },
+    {
+      "shopIcon": "http://storage.360buyimg.com/wangfujing-weapp/index_sdjy_icon_1.png",
+      "storeId": 5656,
+      "shopCode": "cjchasolf",
+      "shopName": "菜百打卡超级大奖",
+      "activityAction": "get",
+      "couponDesc": "超级大奖",
+      "integrationDesc": "",
+      "recordTime": "2020-07-13 20:59:00"
+    },
+    {
+      "shopIcon": "http://storage.360buyimg.com/wangfujing-weapp/index_whdk_icon_2.png",
+      "storeId": 5656,
+      "shopCode": "cjchasolf",
+      "shopName": "呷浦呷哺",
+      "activityAction": "signin",
+      "couponDesc": "",
+      "integrationDesc": "+7",
+      "recordTime": "2020-07-13 20:59:00"
+    },
+    {
+      "shopIcon": "http://storage.360buyimg.com/wangfujing-weapp/index_whdk_icon_3.png",
+      "storeId": 5656,
+      "shopCode": "cjchasolf",
+      "shopName": "全聚德烤鸭店",
+      "activityAction": "accept",
+      "couponDesc": "9折券",
+      "integrationDesc": "+7",
+      "recordTime": "2020-07-13 20:59:00"
+    },
+    {
+      "shopIcon": "http://storage.360buyimg.com/wangfujing-weapp/index_whdk_icon_4.png",
+      "storeId": 5656,
+      "shopCode": "cjchasolf",
+      "shopName": "星巴克",
+      "activityAction": "due",
+      "couponDesc": "9折券",
+      "integrationDesc": "",
+      "recordTime": "2020-07-13 20:59:00"
+    },
+    {
+      "shopIcon": "http://storage.360buyimg.com/wangfujing-weapp/index_sdjy_icon_1.png",
+      "storeId": 5656,
+      "shopCode": "cjchasolf",
+      "shopName": "全聚德烤鸭店",
+      "activityAction": "accept",
+      "couponDesc": "9折券",
+      "integrationDesc": "+7",
+      "recordTime": "2020-07-13 20:59:00"
+    },
+    {
+      "shopIcon": "http://storage.360buyimg.com/wangfujing-weapp/index_sdjy_icon_4.png",
+      "storeId": 5656,
+      "shopCode": "cjchasolf",
+      "shopName": "星巴克",
+      "activityAction": "due",
+      "couponDesc": "9折券",
+      "integrationDesc": "",
+      "recordTime": "2020-07-13 20:59:00"
+    }
+  ]
+}

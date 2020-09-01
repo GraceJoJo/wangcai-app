@@ -56,7 +56,7 @@ class PetFloatWindow private constructor() {
             Log.e("PetFloatWindow", "onClick: " + v)
             animSwitch()
             if (v == mTvShouyi) {
-                showShouYiDialog();
+                showShouYiDialog()
             } else if (v == mTvTougu) {
                 Toast.makeText(mContext, "投顾", Toast.LENGTH_SHORT).show()
             } else if (v == mTvDonghua) {
@@ -65,22 +65,27 @@ class PetFloatWindow private constructor() {
                         animGone()
                     }
                 }, 300)
-            }else if (v == mClickView){
+            } else if (v == mClickView) {
 
             }
         }
     }
 
-    private fun showShouYiDialog(){
-        if(mShouYiDialog==null) {
-            mShouYiDialog= ShouYiDialog(mContext);
+    private fun showShouYiDialog() {
+        if (mShouYiDialog == null) {
+            mShouYiDialog = ShouYiDialog(mContext)
         }
-        if(mShouYiDialog!=null){
-            mShouYiDialog?.show();
+        if (mShouYiDialog != null) {
+            if (Build.VERSION.SDK_INT >= 25) {
+                mShouYiDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+            } else {
+                mShouYiDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            }
+            mShouYiDialog?.show()
         }
     }
 
-    private fun goTestActivity(){
+    private fun goTestActivity() {
         val intent = Intent(mContext, TestActivity::class.java)
         mContext?.startActivity(intent)
     }

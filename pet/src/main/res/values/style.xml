@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <style name="MyDialogStyleBottom" parent="android:Theme.Dialog" >
+
+        <!-- 进入和退出时动画-->
+        <item name="android:windowAnimationStyle">@style/AnimBottom</item>
+        <item name="android:windowFrame">@null</item><!--边框-->
+        <item name="android:windowIsFloating">true</item><!--是否浮现在activity之上-->
+        <item name="android:windowIsTranslucent">true</item><!--半透明-->
+        <item name="android:windowNoTitle">true</item><!--无标题-->
+        <item name="android:windowBackground">@android:color/transparent</item><!--背景透明-->
+        <item name="android:backgroundDimEnabled">true</item><!--模糊-->
+
+        <!-- 点击空白区域是否消失  API Level>=11-->
+        <item name="android:windowCloseOnTouchOutside">false</item>
+    </style>
+    <style name="AnimBottom" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
+    </style>
+
+
+
     <style name="loadDialog" parent="Theme.AppCompat.Dialog">
         <item name="android:windowFrame">@null</item>
         <!--是否在悬浮Activity之上  -->
@@ -14,7 +35,7 @@
         <!--窗口背景透明-->
         <item name="android:windowBackground">@android:color/transparent</item>
         <!--&lt;!&ndash;弹窗背景是否变暗&ndash;&gt;-->
-        <!--<item name="android:backgroundDimEnabled">false</item>-->
+        <item name="android:backgroundDimEnabled">false</item>
     </style>
 
     <style name="text_shouyi_bold">

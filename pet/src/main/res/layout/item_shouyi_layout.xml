@@ -46,30 +46,30 @@
         <LinearLayout
             android:layout_width="116dp"
             android:layout_height="26dp"
-            android:background="#14EF4034"
+            android:background="@drawable/shouyi_buy_icon"
             android:layout_marginTop="4dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginLeft="9dp"
-                android:src="@drawable/icon_buy" />
+            <!--<ImageView-->
+                <!--android:layout_width="16dp"-->
+                <!--android:layout_height="16dp"-->
+                <!--android:layout_marginLeft="9dp"-->
+                <!--android:src="@drawable/icon_buy" />-->
 
-            <TextView
-                android:id="@+id/tv_buy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="跟着好友买"
-                android:textColor="@color/color_ef4034"
-                android:textSize="12sp" />
+            <!--<TextView-->
+                <!--android:id="@+id/tv_buy"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="5dp"-->
+                <!--android:text="跟着好友买"-->
+                <!--android:textColor="@color/color_ef4034"-->
+                <!--android:textSize="12sp" />-->
 
-            <ImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:src="@drawable/arrows_red" />
+            <!--<ImageView-->
+                <!--android:layout_width="12dp"-->
+                <!--android:layout_height="12dp"-->
+                <!--android:src="@drawable/arrows_red" />-->
         </LinearLayout>
     </LinearLayout>
 

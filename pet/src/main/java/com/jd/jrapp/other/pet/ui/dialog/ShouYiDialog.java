@@ -14,7 +14,9 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jd.jrapp.other.pet.R;
@@ -51,6 +53,7 @@ public class ShouYiDialog extends Dialog implements View.OnClickListener {
         ImageView tv_minus = contentView.findViewById(R.id.tv_minus);
         TextView tv_confirm = contentView.findViewById(R.id.tv_confirm);
         TextView tv_cancel = contentView.findViewById(R.id.tv_cancel);
+        RelativeLayout rl_dialog = contentView.findViewById(R.id.rl_dialog);
         ListView lv = contentView.findViewById(R.id.lv);
 
         List<EarningsInfo> earningsInfos = new ArrayList<>();
@@ -58,11 +61,14 @@ public class ShouYiDialog extends Dialog implements View.OnClickListener {
         earningsInfos.add(new EarningsInfo("争当小锦鲤", "+194.93%"));
         earningsInfos.add(new EarningsInfo("睡到自然醒", "+94.12%"));
         lv.setAdapter(new MyAdapter(getContext(), R.layout.item_shouyi_layout, earningsInfos));
+        setListViewHeightBasedOnChildren(lv);
+        et_num.setCursorVisible(false);
 
         tv_add.setOnClickListener(this);
         tv_minus.setOnClickListener(this);
         tv_confirm.setOnClickListener(this);
         tv_cancel.setOnClickListener(this);
+        rl_dialog.setOnClickListener(this);
         et_num.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
@@ -73,6 +79,8 @@ public class ShouYiDialog extends Dialog implements View.OnClickListener {
                 return false;
             }
         });
+
+
 
         setCanceledOnTouchOutside(true);
         setContentView(contentView);
@@ -104,6 +112,8 @@ public class ShouYiDialog extends Dialog implements View.OnClickListener {
         } else if (v.getId() == R.id.tv_confirm) {
 
         } else if (v.getId() == R.id.tv_cancel) {
+            dismiss();
+        }else if (v.getId() == R.id.rl_dialog) {
             dismiss();
         }
     }
@@ -150,6 +160,28 @@ public class ShouYiDialog extends Dialog implements View.OnClickListener {
             return view;
 
         }
+    }
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        //获取ListView对应的Adapter
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 0;
+        for (int i = 0, len = listAdapter.getCount(); i < len; i++) { //listAdapter.getCount()返回数据项的数目
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0); //计算子项View 的宽高
+            totalHeight += listItem.getMeasuredHeight(); //统计所有子项的总高度
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        //listView.getDividerHeight()获取子项间分隔符占用的高度
+        //params.height最后得到整个ListView完整显示需要的高度
+        listView.setLayoutParams(params);
     }
 
 }
