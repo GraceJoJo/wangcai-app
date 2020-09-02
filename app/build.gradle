@@ -4,6 +4,26 @@ android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
 
+    signingConfigs {
+        debug {
+            keyAlias 'aipet'
+            keyPassword 'aipet2020'
+            storeFile file('aipet2020.jks')
+            storePassword 'aipet2020'
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+
+        release {
+            keyAlias 'aipet'
+            keyPassword 'aipet2020'
+            storeFile file('aipet2020.jks')
+            storePassword 'aipet2020'
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+
     defaultConfig {
         applicationId "com.jd.jrapp.other.marathon2020demo"
         minSdkVersion 21
