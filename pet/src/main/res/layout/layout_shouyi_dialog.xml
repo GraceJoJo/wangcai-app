@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rl_dialog"
+    android:background="@color/transparent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:layout_alignParentBottom="true"
+        android:overScrollMode="never"
+        android:descendantFocusability="blocksDescendants"
+        android:scrollbars="none"
+        >
+
+        <LinearLayout
+            android:id="@+id/rl_cancellation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shouyi_shape"
+            android:orientation="vertical"
+            android:paddingBottom="50dp"
+            android:paddingTop="18dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="16dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/text_shouyi_bold"
+                        android:text="收益记录" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_right"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/text_shouyi"
+                            android:text="花掉今日收益"
+                            android:textColor="#999999"
+                            android:textSize="12sp" />
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/arrows_gray" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/text_shouyi"
+                            android:text="实时收益(元)" />
+
+                        <TextView
+                            android:id="@+id/tv_sssy"
+                            style="@style/text_shouyi_red"
+                            android:layout_marginTop="4dp"
+                            android:text="+50.00" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="50dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/text_shouyi"
+                            android:text="实时年化" />
+
+                        <TextView
+                            android:id="@+id/tv_ssnh"
+                            style="@style/text_shouyi_red"
+                            android:layout_marginTop="4dp"
+                            android:text="4.93%" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#e8e8e8" />
+
+                <TextView
+                    style="@style/text_shouyi_bold"
+                    android:layout_marginTop="15dp"
+                    android:text="收益分布" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/text_shouyi"
+                            android:text="货币基金" />
+
+                        <TextView
+                            android:id="@+id/tv_hbjj"
+                            style="@style/text_shouyi_red"
+                            android:layout_marginTop="4dp"
+                            android:text="+30.00" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="50dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/text_shouyi"
+                            android:text="股票基金" />
+
+                        <TextView
+                            android:id="@+id/tv_gpjj"
+                            style="@style/text_shouyi_red"
+                            android:layout_marginTop="4dp"
+                            android:text="+10.00" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#e8e8e8" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/text_shouyi"
+                            android:text="债券基金" />
+
+                        <TextView
+                            android:id="@+id/tv_zqjj"
+                            style="@style/text_shouyi_red"
+                            android:layout_marginTop="4dp"
+                            android:text="+10.00" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="50dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/text_shouyi"
+                            android:text="加减仓" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/tv_minus"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:background="@color/white"
+                                android:src="@drawable/icon_minus" />
+
+                            <EditText
+                                android:id="@+id/et_num"
+                                android:layout_width="60dp"
+                                android:layout_height="20dp"
+                                android:layout_weight="1"
+                                android:background="#FFEEEEEE"
+                                android:cursorVisible="false"
+                                android:gravity="center"
+                                android:numeric="integer"
+                                android:text="100"
+                                android:textColor="@color/color_333333"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:id="@+id/tv_add"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:background="@color/white"
+                                android:src="@drawable/icon_add" />
+
+                            <TextView
+                                android:id="@+id/tv_confirm"
+                                style="@style/text_shouyi"
+                                android:layout_marginLeft="10dp"
+                                android:text="确认" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <TextView
+                    style="@style/text_shouyi_bold"
+                    android:layout_marginTop="15dp"
+                    android:text="好友收益榜单" />
+
+                <ListView
+                    android:id="@+id/lv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:nestedScrollingEnabled="false"
+                    android:divider="@null"
+                    android:listSelector="@android:color/transparent"></ListView>"
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+    <TextView
+        android:id="@+id/tv_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="取消"
+        android:textColor="@color/color_333333"
+        android:textSize="16sp" />
+
+</RelativeLayout>

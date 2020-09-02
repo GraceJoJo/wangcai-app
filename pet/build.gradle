@@ -23,10 +23,22 @@ android {
         }
     }
 }
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+
+}
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation fileTree(dir: "libs", include: ["*.aar"])
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.google.code.gson:gson:2.8.1'
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    //阿里智能语音
+//    implementation(name: 'nlssdk', ext: 'aar')
+    implementation 'com.alibaba:fastjson:1.1.70.android'
+
 }

@@ -19,6 +19,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.jd.jrapp.other.pet.R
+import com.jd.jrapp.other.pet.ui.dialog.JDQrDialog
+import com.jd.jrapp.other.pet.ui.dialog.ShouYiDialog
 
 /**
  * Created by yuguotao at 2020/8/6,3:58 PM
@@ -36,6 +38,10 @@ class PetFloatWindow private constructor() {
     var mTvShouyi: TextView? = null
     var mTvTougu: TextView? = null
     var mTvDonghua: TextView? = null
+    var mTvSign: TextView? = null
+    var mTvPet: TextView? = null
+    var mShouYiDialog: ShouYiDialog? = null
+    var mShouPayDialog: JDQrDialog? = null
 
     private var mContext: Context? = null
 
@@ -54,20 +60,50 @@ class PetFloatWindow private constructor() {
             Log.e("PetFloatWindow", "onClick: " + v)
             animSwitch()
             if (v == mTvShouyi) {
-                goTestActivity()
+                showShouYiDialog()
             } else if (v == mTvTougu) {
-                Toast.makeText(mContext, "投顾", Toast.LENGTH_SHORT).show()
+                val intent = Intent(mContext, SpeechRecognizerActivity::class.java)
+                mContext?.startActivity(intent)
             } else if (v == mTvDonghua) {
-                mMainView?.postDelayed(object : Runnable {
-                    override fun run() {
-                        animGone()
-                    }
-                }, 300)
+                showPayDialog()
+            }else if (v == mTvSign) {
+                val intent = Intent(mContext, SpeechTranscriberWithRecorderActivity::class.java)
+                mContext?.startActivity(intent)
+            } else if (v == mClickView) {
+//                animSwitch()
             }
         }
     }
 
-    private fun goTestActivity(){
+    private fun showShouYiDialog() {
+        if (mShouYiDialog == null) {
+            mShouYiDialog = ShouYiDialog(mContext)
+        }
+        if (mShouYiDialog != null) {
+            if (Build.VERSION.SDK_INT >= 25) {
+                mShouYiDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+            } else {
+                mShouYiDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            }
+            mShouYiDialog?.show()
+        }
+    }
+
+    private fun showPayDialog() {
+        if (mShouPayDialog == null) {
+            mShouPayDialog = JDQrDialog(mContext)
+        }
+        if (mShouPayDialog != null) {
+            if (Build.VERSION.SDK_INT >= 25) {
+                mShouPayDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+            } else {
+                mShouPayDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            }
+            mShouPayDialog?.show()
+        }
+    }
+
+    private fun goTestActivity() {
         val intent = Intent(mContext, TestActivity::class.java)
         mContext?.startActivity(intent)
     }
@@ -108,17 +144,16 @@ class PetFloatWindow private constructor() {
         layoutParam.format = PixelFormat.TRANSPARENT
         layoutParam.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM
         layoutParam.width = getPxValue(100)
-        layoutParam.height = getPxValue(100)
+        layoutParam.height = getPxValue(200)
         layoutParam.gravity = Gravity.RIGHT or Gravity.BOTTOM
         layoutParam.x = 0
         layoutParam.y = 300
 
         mMainView = LayoutInflater.from(context).inflate(R.layout.layout_pet_float_window, null)
         val bg = GradientDrawable()
-        bg.setColor(Color.YELLOW)
         bg.cornerRadius = getPxValue(20).toFloat()
         mClickView = mMainView?.findViewById(R.id.view_btn)
-        mClickView?.background = bg
+        mClickView?.setBackgroundResource(R.drawable.bg_oval)
         mClickView?.setOnTouchListener { v, event ->
             val curX = event.rawX
             val curY = event.rawY
@@ -146,15 +181,30 @@ class PetFloatWindow private constructor() {
             return@setOnTouchListener mTouchEvent
         }
         mTvShouyi = mMainView?.findViewById(R.id.tv_shouyi)
-        mTvShouyi?.background = bg
         mTvTougu = mMainView?.findViewById(R.id.tv_tougu)
-        mTvTougu?.background = bg
-        mTvDonghua = mMainView?.findViewById(R.id.tv_anim)
-        mTvDonghua?.background = bg
+        mTvDonghua = mMainView?.findViewById(R.id.tv_pay)
+        mTvSign = mMainView?.findViewById(R.id.tv_sign)
+        mTvPet = mMainView?.findViewById(R.id.tv_pet)
+        mTvShouyi?.setBackgroundResource(R.drawable.bg_oval)
+        mTvTougu?.setBackgroundResource(R.drawable.bg_oval)
+        mTvDonghua?.setBackgroundResource(R.drawable.bg_oval)
+        mTvSign?.setBackgroundResource(R.drawable.bg_oval)
+        mTvPet?.setBackgroundResource(R.drawable.bg_oval)
+        mTvShouyi?.setTextSize(12f)
+        mTvTougu?.setTextSize(12f)
+        mTvSign?.setTextSize(12f)
+        mTvDonghua?.setTextSize(12f)
+        mTvPet?.setTextSize(12f)
+        mTvTougu?.setBackgroundResource(R.drawable.bg_oval)
+        mTvDonghua?.setBackgroundResource(R.drawable.bg_oval)
+        mTvSign?.setBackgroundResource(R.drawable.bg_oval)
+        mTvPet?.setBackgroundResource(R.drawable.bg_oval)
         mTvShouyi?.setOnClickListener(mOnclickListener)
         mTvTougu?.setOnClickListener(mOnclickListener)
         mTvDonghua?.setOnClickListener(mOnclickListener)
         mClickView?.setOnClickListener(mOnclickListener)
+        mTvSign?.setOnClickListener(mOnclickListener)
+        mTvPet?.setOnClickListener(mOnclickListener)
 
         windowManager.addView(mMainView, layoutParam)
     }
@@ -169,11 +219,21 @@ class PetFloatWindow private constructor() {
             setViewCircleRadiusAndAlpha(mTvShouyi, value)
             setViewCircleRadiusAndAlpha(mTvTougu, value)
             setViewCircleRadiusAndAlpha(mTvDonghua, value)
-            Log.e(javaClass.simpleName, "anim:" + value)
+            setViewCircleRadiusAndAlpha(mTvSign, value)
+            setViewCircleRadiusAndAlpha(mTvPet, value)
+//            Log.e(javaClass.simpleName, "anim:" + value)
         }
         anim.duration = 200
         anim.interpolator = AccelerateDecelerateInterpolator()
         anim.start()
+    }
+
+    private fun closeWindow() {
+        if (mIsShowing && mMainView != null && mIsOpen) {
+            val windowManager = mContext?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            windowManager.removeView(mMainView)
+            mIsShowing = false
+        }
     }
 
     private fun animGone() {
