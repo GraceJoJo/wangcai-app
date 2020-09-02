@@ -62,9 +62,13 @@ class PetFloatWindow private constructor() {
             if (v == mTvShouyi) {
                 showShouYiDialog()
             } else if (v == mTvTougu) {
-                Toast.makeText(mContext, "投顾", Toast.LENGTH_SHORT).show()
+                val intent = Intent(mContext, SpeechRecognizerActivity::class.java)
+                mContext?.startActivity(intent)
             } else if (v == mTvDonghua) {
                 showPayDialog()
+            }else if (v == mTvSign) {
+                val intent = Intent(mContext, SpeechTranscriberWithRecorderActivity::class.java)
+                mContext?.startActivity(intent)
             } else if (v == mClickView) {
 //                animSwitch()
             }
@@ -177,14 +181,23 @@ class PetFloatWindow private constructor() {
             return@setOnTouchListener mTouchEvent
         }
         mTvShouyi = mMainView?.findViewById(R.id.tv_shouyi)
-        mTvShouyi?.setBackgroundResource(R.drawable.bg_oval)
         mTvTougu = mMainView?.findViewById(R.id.tv_tougu)
-        mTvTougu?.setBackgroundResource(R.drawable.bg_oval)
         mTvDonghua = mMainView?.findViewById(R.id.tv_pay)
-        mTvDonghua?.setBackgroundResource(R.drawable.bg_oval)
         mTvSign = mMainView?.findViewById(R.id.tv_sign)
-        mTvSign?.setBackgroundResource(R.drawable.bg_oval)
         mTvPet = mMainView?.findViewById(R.id.tv_pet)
+        mTvShouyi?.setBackgroundResource(R.drawable.bg_oval)
+        mTvTougu?.setBackgroundResource(R.drawable.bg_oval)
+        mTvDonghua?.setBackgroundResource(R.drawable.bg_oval)
+        mTvSign?.setBackgroundResource(R.drawable.bg_oval)
+        mTvPet?.setBackgroundResource(R.drawable.bg_oval)
+        mTvShouyi?.setTextSize(12f)
+        mTvTougu?.setTextSize(12f)
+        mTvSign?.setTextSize(12f)
+        mTvDonghua?.setTextSize(12f)
+        mTvPet?.setTextSize(12f)
+        mTvTougu?.setBackgroundResource(R.drawable.bg_oval)
+        mTvDonghua?.setBackgroundResource(R.drawable.bg_oval)
+        mTvSign?.setBackgroundResource(R.drawable.bg_oval)
         mTvPet?.setBackgroundResource(R.drawable.bg_oval)
         mTvShouyi?.setOnClickListener(mOnclickListener)
         mTvTougu?.setOnClickListener(mOnclickListener)
