@@ -19,6 +19,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.jd.jrapp.other.pet.R
+import com.jd.jrapp.other.pet.ui.dialog.JDQrDialog
 import com.jd.jrapp.other.pet.ui.dialog.ShouYiDialog
 
 /**
@@ -37,7 +38,10 @@ class PetFloatWindow private constructor() {
     var mTvShouyi: TextView? = null
     var mTvTougu: TextView? = null
     var mTvDonghua: TextView? = null
+    var mTvSign: TextView? = null
+    var mTvPet: TextView? = null
     var mShouYiDialog: ShouYiDialog? = null
+    var mShouPayDialog: JDQrDialog? = null
 
     private var mContext: Context? = null
 
@@ -60,13 +64,9 @@ class PetFloatWindow private constructor() {
             } else if (v == mTvTougu) {
                 Toast.makeText(mContext, "投顾", Toast.LENGTH_SHORT).show()
             } else if (v == mTvDonghua) {
-                mMainView?.postDelayed(object : Runnable {
-                    override fun run() {
-                        animGone()
-                    }
-                }, 300)
+                showPayDialog()
             } else if (v == mClickView) {
-
+//                animSwitch()
             }
         }
     }
@@ -82,6 +82,20 @@ class PetFloatWindow private constructor() {
                 mShouYiDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             }
             mShouYiDialog?.show()
+        }
+    }
+
+    private fun showPayDialog() {
+        if (mShouPayDialog == null) {
+            mShouPayDialog = JDQrDialog(mContext)
+        }
+        if (mShouPayDialog != null) {
+            if (Build.VERSION.SDK_INT >= 25) {
+                mShouPayDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+            } else {
+                mShouPayDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            }
+            mShouPayDialog?.show()
         }
     }
 
@@ -126,17 +140,16 @@ class PetFloatWindow private constructor() {
         layoutParam.format = PixelFormat.TRANSPARENT
         layoutParam.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM
         layoutParam.width = getPxValue(100)
-        layoutParam.height = getPxValue(100)
+        layoutParam.height = getPxValue(200)
         layoutParam.gravity = Gravity.RIGHT or Gravity.BOTTOM
         layoutParam.x = 0
         layoutParam.y = 300
 
         mMainView = LayoutInflater.from(context).inflate(R.layout.layout_pet_float_window, null)
         val bg = GradientDrawable()
-        bg.setColor(Color.YELLOW)
         bg.cornerRadius = getPxValue(20).toFloat()
         mClickView = mMainView?.findViewById(R.id.view_btn)
-        mClickView?.background = bg
+        mClickView?.setBackgroundResource(R.drawable.bg_oval)
         mClickView?.setOnTouchListener { v, event ->
             val curX = event.rawX
             val curY = event.rawY
@@ -164,15 +177,21 @@ class PetFloatWindow private constructor() {
             return@setOnTouchListener mTouchEvent
         }
         mTvShouyi = mMainView?.findViewById(R.id.tv_shouyi)
-        mTvShouyi?.background = bg
+        mTvShouyi?.setBackgroundResource(R.drawable.bg_oval)
         mTvTougu = mMainView?.findViewById(R.id.tv_tougu)
-        mTvTougu?.background = bg
-        mTvDonghua = mMainView?.findViewById(R.id.tv_anim)
-        mTvDonghua?.background = bg
+        mTvTougu?.setBackgroundResource(R.drawable.bg_oval)
+        mTvDonghua = mMainView?.findViewById(R.id.tv_pay)
+        mTvDonghua?.setBackgroundResource(R.drawable.bg_oval)
+        mTvSign = mMainView?.findViewById(R.id.tv_sign)
+        mTvSign?.setBackgroundResource(R.drawable.bg_oval)
+        mTvPet = mMainView?.findViewById(R.id.tv_pet)
+        mTvPet?.setBackgroundResource(R.drawable.bg_oval)
         mTvShouyi?.setOnClickListener(mOnclickListener)
         mTvTougu?.setOnClickListener(mOnclickListener)
         mTvDonghua?.setOnClickListener(mOnclickListener)
         mClickView?.setOnClickListener(mOnclickListener)
+        mTvSign?.setOnClickListener(mOnclickListener)
+        mTvPet?.setOnClickListener(mOnclickListener)
 
         windowManager.addView(mMainView, layoutParam)
     }
@@ -187,11 +206,21 @@ class PetFloatWindow private constructor() {
             setViewCircleRadiusAndAlpha(mTvShouyi, value)
             setViewCircleRadiusAndAlpha(mTvTougu, value)
             setViewCircleRadiusAndAlpha(mTvDonghua, value)
-            Log.e(javaClass.simpleName, "anim:" + value)
+            setViewCircleRadiusAndAlpha(mTvSign, value)
+            setViewCircleRadiusAndAlpha(mTvPet, value)
+//            Log.e(javaClass.simpleName, "anim:" + value)
         }
         anim.duration = 200
         anim.interpolator = AccelerateDecelerateInterpolator()
         anim.start()
+    }
+
+    private fun closeWindow() {
+        if (mIsShowing && mMainView != null && mIsOpen) {
+            val windowManager = mContext?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            windowManager.removeView(mMainView)
+            mIsShowing = false
+        }
     }
 
     private fun animGone() {

@@ -7,12 +7,12 @@
     >
     <android.support.constraint.ConstraintLayout
         android:layout_width="100dp"
-        android:layout_height="100dp">
+        android:layout_height="wrap_content">
 
-        <TextView
+        <com.jd.jrapp.other.pet.ui.GradientColorTextView
             android:id="@+id/tv_shouyi"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
             android:text="收益"
             android:gravity="center"
             app:layout_constraintCircle="@+id/view_btn"
@@ -20,10 +20,10 @@
             app:layout_constraintCircleAngle="0"
             android:alpha="0"/>
 
-        <TextView
+        <com.jd.jrapp.other.pet.ui.GradientColorTextView
             android:id="@+id/tv_tougu"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
             android:text="投顾"
             android:gravity="center"
             app:layout_constraintCircle="@+id/view_btn"
@@ -31,15 +31,36 @@
             app:layout_constraintCircleAngle="315"
             android:alpha="0"/>
 
-        <TextView
-            android:id="@+id/tv_anim"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:text="动画"
+        <com.jd.jrapp.other.pet.ui.GradientColorTextView
+            android:id="@+id/tv_pay"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:text="支付"
             android:gravity="center"
             app:layout_constraintCircle="@+id/view_btn"
             app:layout_constraintCircleRadius="0dp"
             app:layout_constraintCircleAngle="270"
+            android:alpha="0"/>
+
+        <com.jd.jrapp.other.pet.ui.GradientColorTextView
+            android:id="@+id/tv_sign"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:text="签到"
+            android:gravity="center"
+            app:layout_constraintCircle="@+id/view_btn"
+            app:layout_constraintCircleRadius="0dp"
+            app:layout_constraintCircleAngle="225"/>
+
+        <com.jd.jrapp.other.pet.ui.GradientColorTextView
+            android:id="@+id/tv_pet"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:text="爱宠"
+            android:gravity="center"
+            app:layout_constraintCircle="@+id/view_btn"
+            app:layout_constraintCircleRadius="0dp"
+            app:layout_constraintCircleAngle="180"
             android:alpha="0"/>
 
         <ImageView
@@ -51,10 +72,6 @@
             tools:background="#FF0000"/>
 
     </android.support.constraint.ConstraintLayout>
-    <FrameLayout
-        android:id="@+id/fl_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></FrameLayout>
 
 </RelativeLayout>
 
