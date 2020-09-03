@@ -68,10 +68,12 @@ class PetFloatWindow private constructor() {
             } else if (v == mTvDonghua) {
                 showPayDialog()
             }else if (v == mTvSign) {
-                val intent = Intent(mContext, AppActivity::class.java)
+                val intent = Intent(mContext, SpeechTranscriberWithRecorderActivity::class.java)
                 mContext?.startActivity(intent)
             } else if (v == mClickView) {
 //                animSwitch()
+            } else if (v == mTvPet) {
+                mContext?.startActivity(Intent(mContext, AppActivity::class.java))
             }
         }
     }
