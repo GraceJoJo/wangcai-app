@@ -46,6 +46,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.jd.jrapp.other.pet.utils.FixAndroidOSystem;
+
 import org.cocos2dx.lib.Cocos2dxHelper.Cocos2dxHelperListener;
 
 import javax.microedition.khronos.egl.EGL10;
@@ -308,8 +310,8 @@ public abstract class Cocos2dxActivity extends Activity implements Cocos2dxHelpe
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         Log.d(TAG, "Cocos2dxActivity onCreate: " + this + ", savedInstanceState: " + savedInstanceState);
+        FixAndroidOSystem.fix(this);
         super.onCreate(savedInstanceState);
-
         Utils.setActivity(this);
 
         // Workaround in https://stackoverflow.com/questions/16283079/re-launch-of-activity-on-home-button-but-only-the-first-time/16447508
@@ -454,8 +456,11 @@ public abstract class Cocos2dxActivity extends Activity implements Cocos2dxHelpe
 
         Cocos2dxRenderer renderer = new Cocos2dxRenderer();
         this.mGLSurfaceView.setCocos2dxRenderer(renderer);
-
-        mFrameLayout.addView(this.mGLSurfaceView);
+        float dpi = getResources().getDisplayMetrics().density;
+        int viewHeight = (int) (dpi * 300);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, viewHeight);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        mFrameLayout.addView(this.mGLSurfaceView, layoutParams);
 
         return renderer;
     }

@@ -62,4 +62,10 @@
     </style>
 
 
+    <style name="pet_them">
+        <item name="android:windowIsTranslucent">true</item><!-- 半透明 -->
+        <item name="android:windowNoTitle">true</item><!-- 无标题 -->
+        <item name="android:windowBackground">@android:color/transparent</item><!-- 背景透明 -->
+        <!--<item name="android:windowFullscreen">true</item>-->
+    </style>
 </resources>
