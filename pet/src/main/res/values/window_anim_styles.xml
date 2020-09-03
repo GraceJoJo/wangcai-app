@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="left_in_out_style">
+        <item name="android:windowEnterAnimation">@anim/anim_translate_left_in</item>
+        <item name="android:windowExitAnimation">@anim/anim_translate_left_out</item>
+    </style>
+
+    <style name="bottom_in_out_style">
+        <item name="android:windowEnterAnimation">@anim/anim_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/anim_bottom_out</item>
+    </style>
+</resources>

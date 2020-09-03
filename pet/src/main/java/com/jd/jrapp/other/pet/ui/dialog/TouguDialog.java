@@ -72,6 +72,7 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
 
         lv = contentView.findViewById(R.id.lv);
         LinearLayoutManager manager = new LinearLayoutManager(mContext);
+//        manager.setStackFromEnd(true);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         lv.setLayoutManager(manager);
 
@@ -82,9 +83,7 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
-                        if(infoList.size()>0){
-                            lv.smoothScrollToPosition(infoList.size()-1);
-                        }
+                        scrollToBottom();
                         startRecognizer(view);
                         return true;
                     }
@@ -243,6 +242,7 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
                     if (jsonObject.containsKey("payload")) {
                         result = jsonObject.getJSONObject("payload").getString("result");
                         myAdapter.add(new TouguInfo(result, 0));
+                        scrollToBottom();
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -261,15 +261,19 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
                 if (jsonObject.containsKey("content")) {
                     String aiResult = jsonObject.getString("content");
                     myAdapter.add(new TouguInfo(aiResult, 1));
-                    if(infoList.size()>0){
-                        lv.smoothScrollToPosition(infoList.size()-1);
-                    }
+                    scrollToBottom();
                 }
 
             }
 
         }
     };
+
+    private void scrollToBottom(){
+        if(infoList.size()>0){
+            lv.scrollToPosition(myAdapter.getItemCount()-1);
+        }
+    }
 
     // 请求结束，关闭连接
     @Override

@@ -22,6 +22,7 @@ import com.jd.jrapp.other.pet.R
 import com.jd.jrapp.other.pet.ui.dialog.JDQrDialog
 import com.jd.jrapp.other.pet.ui.dialog.ShouYiDialog
 import com.jd.jrapp.other.pet.ui.dialog.TouguDialog
+import org.cocos2dx.javascript.AppActivity
 
 /**
  * Created by yuguotao at 2020/8/6,3:58 PM
@@ -74,6 +75,8 @@ class PetFloatWindow private constructor() {
                 mContext?.startActivity(intent)
             } else if (v == mClickView) {
 //                animSwitch()
+            } else if (v == mTvPet) {
+                mContext?.startActivity(Intent(mContext, AppActivity::class.java))
             }
         }
     }
