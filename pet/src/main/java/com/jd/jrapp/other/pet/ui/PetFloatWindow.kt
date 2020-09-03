@@ -21,6 +21,7 @@ import android.widget.Toast
 import com.jd.jrapp.other.pet.R
 import com.jd.jrapp.other.pet.ui.dialog.JDQrDialog
 import com.jd.jrapp.other.pet.ui.dialog.ShouYiDialog
+import com.jd.jrapp.other.pet.ui.dialog.TouguDialog
 
 /**
  * Created by yuguotao at 2020/8/6,3:58 PM
@@ -42,6 +43,7 @@ class PetFloatWindow private constructor() {
     var mTvPet: TextView? = null
     var mShouYiDialog: ShouYiDialog? = null
     var mShouPayDialog: JDQrDialog? = null
+    var mTouguDialog: TouguDialog? = null
 
     private var mContext: Context? = null
 
@@ -62,8 +64,9 @@ class PetFloatWindow private constructor() {
             if (v == mTvShouyi) {
                 showShouYiDialog()
             } else if (v == mTvTougu) {
-                val intent = Intent(mContext, SpeechRecognizerActivity::class.java)
-                mContext?.startActivity(intent)
+//                val intent = Intent(mContext, SpeechRecognizerActivity::class.java)
+//                mContext?.startActivity(intent)
+                showTouguDialog();
             } else if (v == mTvDonghua) {
                 showPayDialog()
             }else if (v == mTvSign) {
@@ -100,6 +103,20 @@ class PetFloatWindow private constructor() {
                 mShouPayDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             }
             mShouPayDialog?.show()
+        }
+    }
+
+    private fun showTouguDialog() {
+        if (mTouguDialog == null) {
+            mTouguDialog = TouguDialog(mContext)
+        }
+        if (mTouguDialog != null) {
+            if (Build.VERSION.SDK_INT >= 25) {
+                mTouguDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+            } else {
+                mTouguDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            }
+            mTouguDialog?.show()
         }
     }
 

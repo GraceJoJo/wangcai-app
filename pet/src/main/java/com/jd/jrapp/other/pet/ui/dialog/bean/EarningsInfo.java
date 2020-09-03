@@ -1,4 +1,4 @@
-package com.jd.jrapp.other.pet.ui.dialog;
+package com.jd.jrapp.other.pet.ui.dialog.bean;
 
 public class EarningsInfo {
     public String getName() {

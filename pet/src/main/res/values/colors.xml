@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="transparent">#00000000</color>
+    <color name="transparent_dialog">#22000000</color>
     <color name="white">#ffffff</color>
     <color name="transparent_ab">#33000000</color>
     <color name="color_333333">#333333</color>

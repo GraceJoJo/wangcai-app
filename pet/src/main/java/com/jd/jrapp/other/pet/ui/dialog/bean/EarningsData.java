@@ -1,4 +1,4 @@
-package com.jd.jrapp.other.pet.ui.dialog;
+package com.jd.jrapp.other.pet.ui.dialog.bean;
 
 import java.util.List;
 
