@@ -21,6 +21,7 @@ import android.widget.Toast
 import com.jd.jrapp.other.pet.R
 import com.jd.jrapp.other.pet.ui.dialog.JDQrDialog
 import com.jd.jrapp.other.pet.ui.dialog.ShouYiDialog
+import org.cocos2dx.javascript.AppActivity
 
 /**
  * Created by yuguotao at 2020/8/6,3:58 PM
@@ -67,7 +68,7 @@ class PetFloatWindow private constructor() {
             } else if (v == mTvDonghua) {
                 showPayDialog()
             }else if (v == mTvSign) {
-                val intent = Intent(mContext, SpeechTranscriberWithRecorderActivity::class.java)
+                val intent = Intent(mContext, AppActivity::class.java)
                 mContext?.startActivity(intent)
             } else if (v == mClickView) {
 //                animSwitch()
