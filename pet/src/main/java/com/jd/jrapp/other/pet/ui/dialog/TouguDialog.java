@@ -17,14 +17,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.idst.token.AccessToken;
 import com.alibaba.idst.util.NlsClient;
 import com.alibaba.idst.util.SpeechRecognizer;
 import com.alibaba.idst.util.SpeechRecognizerCallback;
@@ -146,7 +144,7 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
                 "给您更大的收益空间。根据过去一年的收益数据，该配置方案的预期收益在4%左右，", 1, ""));
     }
 
-    RecycleAdapter<TouguInfo> myAdapter = new RecycleAdapter<TouguInfo>(mContext, R.layout.item_tougu_1_layout, infoList) {
+    RecycleAdapter<TouguInfo> myAdapter = new RecycleAdapter<TouguInfo>(mContext, R.layout.item_tougu_layout, infoList) {
         @Override
         protected void convert(BaseAdapterHelper helper, TouguInfo item, int position) {
             TextView tv_message = helper.getTextView(R.id.tv_message);
