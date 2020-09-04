@@ -73,6 +73,12 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
         height = (int) DisplayUtil.getScreenHeight(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.layout_tougu_dialog, null);
+        if(DisplayUtil.checkDeviceHasNavigationBar(mContext)){
+            contentView.setPadding(0, 0, 0, DisplayUtil.getNavigationBarHeight(mContext));
+        }else {
+            contentView.setPadding(0, 0, 0, 0);
+        }
+
         TextView tv_close = contentView.findViewById(R.id.tv_close);
         ImageView iv_audio = contentView.findViewById(R.id.iv_audio);
         ImageView iv_clear = contentView.findViewById(R.id.iv_clear);
@@ -107,6 +113,7 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
             }
         });
         setCanceledOnTouchOutside(true);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(contentView);
         infoList = new ArrayList<>();
         initData();

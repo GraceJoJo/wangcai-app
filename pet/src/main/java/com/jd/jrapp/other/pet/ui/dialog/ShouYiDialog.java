@@ -44,6 +44,7 @@ public class ShouYiDialog extends Dialog implements View.OnClickListener {
 
     private final Context mContext;
     private int width;
+    private int height;
     private EditText et_num;
     private TextView tv_sssy, tv_ssnh, tv_hbjj, tv_gpjj, tv_zqjj;
     private int num = 100;
@@ -75,6 +76,7 @@ public class ShouYiDialog extends Dialog implements View.OnClickListener {
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
         width = (int) DisplayUtil.getScreenWidth(mContext);
+        height = (int) DisplayUtil.getScreenHeight(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.layout_shouyi_dialog, null);
         tv_sssy = contentView.findViewById(R.id.tv_sssy);
@@ -113,6 +115,7 @@ public class ShouYiDialog extends Dialog implements View.OnClickListener {
         });
 
         setCanceledOnTouchOutside(true);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         setContentView(contentView);
 
         // 设置window属性

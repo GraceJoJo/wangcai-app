@@ -1,9 +1,13 @@
 package com.jd.jrapp.other.pet.utils;
 
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -132,6 +136,5 @@ public class AppManager {
         //params.height最后得到整个ListView完整显示需要的高度
         listView.setLayoutParams(params);
     }
-
 
 }
