@@ -1,6 +1,10 @@
 package com.jd.jrapp.other.pet.ui.dialog.bean;
 
-
+/**
+ * Author: chenghuan15
+ * Date: 2020/8/29
+ * Time: 13:33 PM
+ */
 public class TouguInfo {
 
     public String getMessage() {

@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.alibaba.idst.token.AccessToken;
+import com.alibaba.idst.util.NlsClient;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -22,8 +24,46 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
+/**
+ * Author: chenghuan15
+ * Date: 2020/9/1
+ * Time: 5:33 PM
+ */
+
 public class AppManager {
     private static Gson gson;
+    public static AppManager appManager = null;
+    public static final String NLS_App_KEY = "v3iVhMbn6SK7hVLD";//appKey
+    public static final String NLS_ACCESS_KEY = "LTAI4GH4R2RBEyJiSbmJ5cJS";//AccessKey
+    public static final String NLS_ACCESS_SECRET = "tDoIOFF4NmitymMgPcmkxkD7tfj6Ew";
+    public static AccessToken accessToken;
+    public static NlsClient client;
+
+    public static synchronized AppManager getInstance() {
+        if (appManager == null) {
+            appManager = new AppManager();
+        }
+        return appManager;
+    }
+
+    public void getNLSToken() {
+        client = new NlsClient();
+        new Thread(runnable).start();
+    }
+
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            accessToken = new AccessToken(NLS_ACCESS_KEY, NLS_ACCESS_SECRET);
+            try {
+
+                accessToken.apply();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
     public static Object fromJson(String json, Type typeOfT) {
         if (null == gson) {
             gson = new Gson();
@@ -38,15 +78,16 @@ public class AppManager {
 
     /**
      * 发送Get请求到服务器
+     *
      * @param keyStr:接口地址（带参数）
      * @return
      */
-    public static String getServiceInfo(String keyStr){
-        String httpUrl= "http://api.qingyunke.com/api.php?key=free&appid=0&msg="+keyStr;
+    public static String getServiceInfo(String keyStr) {
+        String httpUrl = "http://api.qingyunke.com/api.php?key=free&appid=0&msg=" + keyStr;
         String strResult = "";
         try {
             URL url = new URL(httpUrl);
-            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setUseCaches(false);
             conn.setConnectTimeout(10000);
@@ -54,7 +95,7 @@ public class AppManager {
             BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
             StringBuffer buffer = new StringBuffer();
             String line = "";
-            while ((line = in.readLine()) != null){
+            while ((line = in.readLine()) != null) {
                 buffer.append(line);
             }
             strResult = buffer.toString();

@@ -3,35 +3,18 @@ package com.jd.jrapp.other.pet.ui.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import com.google.gson.reflect.TypeToken;
 import com.jd.jrapp.other.pet.R;
-import com.jd.jrapp.other.pet.utils.AppManager;
 import com.jd.jrapp.other.pet.utils.DisplayUtil;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Random;
+/**
+ * Author: chenghuan15
+ * Date: 2020/9/2
+ * Time: 8:33 PM
+ */
 
 public class JDQrDialog extends Dialog {
 

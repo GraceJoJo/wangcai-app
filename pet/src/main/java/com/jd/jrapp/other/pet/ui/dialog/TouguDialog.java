@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.idst.token.AccessToken;
 import com.alibaba.idst.util.NlsClient;
 import com.alibaba.idst.util.SpeechRecognizer;
 import com.alibaba.idst.util.SpeechRecognizerCallback;
@@ -39,6 +40,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.media.AudioRecord.STATE_UNINITIALIZED;
+
+/**
+ * Author: chenghuan15
+ * Date: 2020/8/29
+ * Time: 3:33 PM
+ */
 
 public class TouguDialog extends Dialog implements SpeechRecognizerCallback, View.OnClickListener {
     private static final String TAG = "TouguDialog";
@@ -56,12 +63,12 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
     public TouguDialog(Context context) {
         super(context, R.style.loadDialog);
         this.mContext = context;
+        client=AppManager.client;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        client = new NlsClient();
         width = (int) DisplayUtil.getScreenWidth(mContext);
         height = (int) DisplayUtil.getScreenHeight(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -158,15 +165,18 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
      * @param view
      */
     public void startRecognizer(View view) {
+        if(TextUtils.isEmpty(AppManager.accessToken.getToken())){
+            return;
+        }
         // 第二步，新建识别回调类
 
         // 第三步，创建识别request
         speechRecognizer = client.createRecognizerRequest(this);
         // 第四步，设置相关参数
         // Token有有效期，请使用https://help.aliyun.com/document_detail/72153.html 动态生成token
-        speechRecognizer.setToken("b9f370b2ba6448d59b04a431aa0f1913");
+        speechRecognizer.setToken(AppManager.accessToken.getToken());
         // 请使用阿里云语音服务管控台(https://nls-portal.console.aliyun.com/)生成您的appkey
-        speechRecognizer.setAppkey("v3iVhMbn6SK7hVLD");
+        speechRecognizer.setAppkey(AppManager.NLS_App_KEY);
         // 以下为设置各种识别参数，请按需选择，更多参数请见文档
         // 开启ITN
         speechRecognizer.enableInverseTextNormalization(true);
@@ -196,6 +206,9 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
     public void stopRecognizer(View view) {
         // 停止录音
         Log.i(TAG, "Stoping recognizer...");
+        if(recordTask==null){
+            return;
+        }
         recordTask.stop();
         speechRecognizer.stop();
     }

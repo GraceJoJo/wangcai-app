@@ -34,6 +34,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Random;
+/**
+ * Author: chenghuan15
+ * Date: 2020/9/2
+ * Time: 4:05 PM
+ */
 
 public class ShouYiDialog extends Dialog implements View.OnClickListener {
 
