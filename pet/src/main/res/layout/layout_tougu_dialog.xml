@@ -31,7 +31,7 @@
             <com.jd.jrapp.other.pet.ui.view.LineWaveVoiceView
                 android:id="@+id/horvoiceview"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="50dp"
                 android:layout_marginTop="10dp"
                 app:voiceLineColor="@color/color_ef4034"
                 app:voiceTextColor="@color/color_666666"
@@ -43,7 +43,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="36dp"
-                android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -85,12 +84,11 @@
         <TextView
             android:id="@+id/tv_close"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="57dp"
             android:layout_marginTop="20dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/white"
+            android:background="@drawable/icon_bottom_close"
             android:gravity="center"
-            android:text="取消"
             android:textColor="@color/color_333333"
             android:textSize="16dp" />
     </RelativeLayout>

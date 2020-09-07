@@ -43,7 +43,7 @@ public class AudioRecordManager {
     }
 
     public void startRecord() {
-        if (recordStatus == RecordStatus.READY) {
+        if (recordStatus == RecordStatus.READY && mediaRecorder!=null) {
             mediaRecorder = new MediaRecorder();
             mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
@@ -61,7 +61,7 @@ public class AudioRecordManager {
     }
 
     public void stopRecord() {
-        if (recordStatus == RecordStatus.START) {
+        if (recordStatus == RecordStatus.START && mediaRecorder!=null) {
             mediaRecorder.stop();
             mediaRecorder.release();
             mediaRecorder = null;
@@ -71,7 +71,7 @@ public class AudioRecordManager {
     }
 
     public void cancelRecord() {
-        if (recordStatus == RecordStatus.START) {
+        if (recordStatus == RecordStatus.START && mediaRecorder!=null) {
             String file = audioFileName;
             stopRecord();
             File file1 = new File(file);

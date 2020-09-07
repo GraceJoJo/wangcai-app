@@ -116,9 +116,7 @@ class PetFloatWindow private constructor() {
     }
 
     private fun showTouguDialog() {
-        if (mTouguDialog == null) {
-            mTouguDialog = TouguDialog(mContext);
-        }
+        mTouguDialog = TouguDialog(mContext);
         if (mTouguDialog != null) {
             if (Build.VERSION.SDK_INT >= 25) {
                 mTouguDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
@@ -177,8 +175,8 @@ class PetFloatWindow private constructor() {
         if (mIsShowing) {
             return
         }
-        Thread{
-//            startCocosService()
+        Thread {
+            //            startCocosService()
         }.start()
 //        startCocosService()
         mIsShowing = true
@@ -331,7 +329,7 @@ class PetFloatWindow private constructor() {
         return 0
     }
 
-    private fun startCocosService(){
+    private fun startCocosService() {
         mContext?.startService(Intent(mContext, CocosService::class.java))
     }
 
