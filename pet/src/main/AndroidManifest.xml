@@ -33,6 +33,9 @@
             android:process=":cocos_pet">
         </activity>
 
+<!--        <service android:name="org.cocos2dx.javascript.service.CocosService"-->
+<!--            android:process=":cocos_pet"></service>-->
+
         <receiver android:name=".appwidget.PetAppWidget">
             <meta-data android:name="android.appwidget.provider"
                 android:resource="@xml/pet_app_widget"

@@ -50,6 +50,7 @@ android.applicationVariants.all { variant ->
 
     variant.mergeAssets.doLast {
         def sourceDir = "/Users/yuguotao/works/tests/cocos/TestCocosModels/build/native-001"
+        println("outputDir:"+outputDir)
         if (file(sourceDir).exists()){
             copy {
                 from "${sourceDir}/res"

@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
 //                    }
 //                }).start();
             }
+        } else {
+            PetFloatWindow.Companion.getInstance().checkAndShow(MainActivity.this);
         }
     }
 }
