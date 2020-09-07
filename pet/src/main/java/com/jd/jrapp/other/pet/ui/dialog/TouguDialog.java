@@ -30,12 +30,18 @@ import com.jd.jrapp.other.pet.R;
 import com.jd.jrapp.other.pet.ui.BaseRecycler.BaseAdapterHelper;
 import com.jd.jrapp.other.pet.ui.BaseRecycler.RecycleAdapter;
 import com.jd.jrapp.other.pet.ui.dialog.bean.TouguInfo;
+import com.jd.jrapp.other.pet.ui.view.LineWaveVoiceView;
+import com.jd.jrapp.other.pet.ui.view.RecordAudioView;
 import com.jd.jrapp.other.pet.utils.AppManager;
 import com.jd.jrapp.other.pet.utils.DisplayUtil;
 
+import java.io.File;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
 
 import static android.media.AudioRecord.STATE_UNINITIALIZED;
 
@@ -47,6 +53,9 @@ import static android.media.AudioRecord.STATE_UNINITIALIZED;
 
 public class TouguDialog extends Dialog implements SpeechRecognizerCallback, View.OnClickListener {
     private static final String TAG = "TouguDialog";
+    protected static final int DEFAULT_MIN_TIME_UPDATE_TIME = 1000;
+    public static final long DEFAULT_MAX_RECORD_TIME = 600000;
+    public static final long DEFAULT_MIN_RECORD_TIME = 2000;
 
     private Context mContext;
     private int width;
@@ -54,14 +63,26 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
     private List<TouguInfo> infoList;
     private NlsClient client;
     public SpeechRecognizer speechRecognizer;
+    private RecordAudioView recordAudioView;
+    private LineWaveVoiceView mHorVoiceView;
+    private TextView tvRecordTips;
     private RecyclerView lv;
     private RecordTask recordTask;
     private String result;
+    private Timer timer;
+    private TimerTask timerTask;
+    private Handler mainHandler;
+    private long recordTotalTime;
+    private String[] recordStatusDescription = new String[]{"按住录音", "上划取消"};
+    private long maxRecordTime = DEFAULT_MAX_RECORD_TIME;
+    private long minRecordTime = DEFAULT_MIN_RECORD_TIME;
+    private String audioFileName;
+    private boolean isCancel;
 
     public TouguDialog(Context context) {
         super(context, R.style.loadDialog);
         this.mContext = context;
-        client=AppManager.client;
+        client = AppManager.client;
     }
 
     @Override
@@ -71,45 +92,48 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
         height = (int) DisplayUtil.getScreenHeight(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.layout_tougu_dialog, null);
-        if(DisplayUtil.checkDeviceHasNavigationBar(mContext)){
+        if (DisplayUtil.checkDeviceHasNavigationBar(mContext)) {
             contentView.setPadding(0, 0, 0, DisplayUtil.getNavigationBarHeight(mContext));
-        }else {
+        } else {
             contentView.setPadding(0, 0, 0, 0);
         }
-
+        mainHandler = new Handler();
         TextView tv_close = contentView.findViewById(R.id.tv_close);
-        ImageView iv_audio = contentView.findViewById(R.id.iv_audio);
+        tvRecordTips = contentView.findViewById(R.id.record_tips);
+        recordAudioView = contentView.findViewById(R.id.iv_audio);
+        audioInit();
         ImageView iv_clear = contentView.findViewById(R.id.iv_clear);
+        mHorVoiceView = contentView.findViewById(R.id.horvoiceview);
 
         lv = contentView.findViewById(R.id.lv);
         LinearLayoutManager manager = new LinearLayoutManager(mContext);
-//        manager.setStackFromEnd(true);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         lv.setLayoutManager(manager);
 
         iv_clear.setOnClickListener(this);
         tv_close.setOnClickListener(this);
-        iv_audio.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (motionEvent.getAction()) {
-                    case MotionEvent.ACTION_DOWN: {
-                        scrollToBottom();
-                        startRecognizer(view);
-                        return true;
-                    }
-                    case MotionEvent.ACTION_MOVE: {
-                        break;
-                    }
-                    case MotionEvent.ACTION_CANCEL:
-                    case MotionEvent.ACTION_UP: {
-                        stopRecognizer(view);
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
+
+//        recordAudioView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//                switch (motionEvent.getAction()) {
+//                    case MotionEvent.ACTION_DOWN: {
+//                        scrollToBottom();
+//                        startRecognizer();
+//                        return true;
+//                    }
+//                    case MotionEvent.ACTION_MOVE: {
+//                        break;
+//                    }
+//                    case MotionEvent.ACTION_CANCEL:
+//                    case MotionEvent.ACTION_UP: {
+//                        stopRecognizer(view);
+//                        return true;
+//                    }
+//                }
+//                return false;
+//            }
+//        });
         setCanceledOnTouchOutside(true);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(contentView);
@@ -122,9 +146,112 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
         // 设置window属性
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.width = width;
-        lp.height=height;
+        lp.height = height;
         lp.gravity = Gravity.BOTTOM;
         getWindow().setAttributes(lp);
+    }
+
+    public void audioInit() {
+        recordAudioView.setRecordAudioListener(new RecordAudioView.IRecordAudioListener() {
+            @Override
+            public boolean onRecordPrepare() {
+                return true;
+            }
+
+            @Override
+            public String onRecordStart() {
+                isCancel=false;
+                recordTotalTime = 0;
+                initTimer();
+                timer.schedule(timerTask, 0, DEFAULT_MIN_TIME_UPDATE_TIME);
+                audioFileName = mContext.getExternalCacheDir()+ File.separator + createAudioName();
+                mHorVoiceView.startRecord();
+                scrollToBottom();
+                startRecognizer();
+                return audioFileName;
+            }
+
+            @Override
+            public boolean onRecordStop() {
+                if (recordTotalTime >= minRecordTime) {
+                    timer.cancel();
+                    stopRecognizer();
+                } else {
+                    onRecordCancel();
+                    stopRecognizer();
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onRecordCancel() {
+                if (timer != null) {
+                    timer.cancel();
+                }
+                updateCancelUi();
+                isCancel=true;
+                return false;
+            }
+
+            /**
+             * 上划取消
+             */
+            @Override
+            public void onSlideTop() {
+                isCancel=true;
+                mHorVoiceView.setVisibility(View.INVISIBLE);
+                tvRecordTips.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onFingerPress() {
+                mHorVoiceView.setVisibility(View.VISIBLE);
+                tvRecordTips.setVisibility(View.VISIBLE);
+                tvRecordTips.setText(recordStatusDescription[1]);
+            }
+        });
+    }
+
+    public String createAudioName(){
+        long time = System.currentTimeMillis();
+        String fileName = UUID.randomUUID().toString() + time + ".amr";
+        return fileName;
+    }
+
+    /**
+     * 初始化计时器用来更新倒计时
+     */
+    private void initTimer() {
+        timer = new Timer();
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        //每隔1000毫秒更新一次ui
+                        recordTotalTime += 1000;
+                        updateTimerUI();
+                    }
+                });
+            }
+        };
+    }
+
+    private void updateCancelUi() {
+        mHorVoiceView.setVisibility(View.INVISIBLE);
+        tvRecordTips.setVisibility(View.VISIBLE);
+        tvRecordTips.setText(recordStatusDescription[0]);
+        mHorVoiceView.stopRecord();
+    }
+
+    private void updateTimerUI() {
+        if (recordTotalTime >= maxRecordTime) {
+            recordAudioView.invokeStop();
+        } else {
+            String string = String.format(" 倒计时 %s ", AppManager.formatRecordTime(recordTotalTime, maxRecordTime));
+            mHorVoiceView.setText(string);
+        }
     }
 
     @Override
@@ -167,10 +294,9 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
     /**
      * 启动录音和识别
      *
-     * @param view
      */
-    public void startRecognizer(View view) {
-        if(TextUtils.isEmpty(AppManager.accessToken.getToken())){
+    public void startRecognizer() {
+        if (TextUtils.isEmpty(AppManager.accessToken.getToken())) {
             return;
         }
         // 第二步，新建识别回调类
@@ -206,12 +332,11 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
     /**
      * 停止录音和识别
      *
-     * @param view
      */
-    public void stopRecognizer(View view) {
+    public void stopRecognizer() {
         // 停止录音
         Log.i(TAG, "Stoping recognizer...");
-        if(recordTask==null){
+        if (recordTask == null) {
             return;
         }
         recordTask.stop();
@@ -243,6 +368,9 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
     @Override
     public void onRecognizedCompleted(final String msg, int code) {
         recordTask.stop();
+        if(isCancel){
+            return;
+        }
         Message message = new Message();
         message.what = 100;
         message.obj = msg;
@@ -260,6 +388,7 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
                     if (jsonObject.containsKey("payload")) {
                         result = jsonObject.getJSONObject("payload").getString("result");
                         myAdapter.add(new TouguInfo(result, 0));
+                        updateCancelUi();
                         scrollToBottom();
                         new Thread(new Runnable() {
                             @Override
@@ -287,9 +416,9 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
         }
     };
 
-    private void scrollToBottom(){
-        if(infoList.size()>0){
-            lv.scrollToPosition(myAdapter.getItemCount()-1);
+    private void scrollToBottom() {
+        if (infoList.size() > 0) {
+            lv.scrollToPosition(myAdapter.getItemCount() - 1);
         }
     }
 

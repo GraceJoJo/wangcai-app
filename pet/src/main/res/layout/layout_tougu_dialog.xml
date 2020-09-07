@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_dialog"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,12 +28,15 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <ImageView
+            <com.jd.jrapp.other.pet.ui.view.LineWaveVoiceView
+                android:id="@+id/horvoiceview"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginHorizontal="34dp"
-                android:layout_marginTop="26dp"
-                android:background="@android:color/holo_red_light" />
+                android:layout_height="60dp"
+                app:voiceLineColor="@color/color_ef4034"
+                app:voiceTextColor="@color/color_666666"
+                app:voiceTextSize="14dp"
+                app:voiceLineWidth="3dp"
+                android:visibility="invisible" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -41,10 +45,14 @@
                 android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="54dp"
-                    android:layout_height="54dp"
-                    android:background="@android:color/holo_red_light" />
+                <TextView
+                    android:id="@+id/record_tips"
+                    android:text="按住录音"
+                    android:textColor="#ff9c00"
+                    android:textSize="16dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -53,17 +61,12 @@
                     android:gravity="center_horizontal"
                     android:orientation="vertical">
 
-                    <ImageView
+                    <com.jd.jrapp.other.pet.ui.view.RecordAudioView
                         android:id="@+id/iv_audio"
                         android:layout_width="56dp"
                         android:layout_height="56dp"
                         android:layout_marginTop="50dp"
                         android:background="@android:color/holo_red_light" />
-
-                    <TextView
-                        style="@style/text_shouyi"
-                        android:layout_marginTop="12dp"
-                        android:text="按住 说话" />
 
                 </LinearLayout>
 
