@@ -26,16 +26,19 @@ package org.cocos2dx.javascript;
 
 import org.cocos2dx.lib.Cocos2dxActivity;
 import org.cocos2dx.lib.Cocos2dxGLSurfaceView;
+import org.cocos2dx.lib.Cocos2dxJavascriptJavaBridge;
 
 import android.os.Bundle;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.util.Log;
 
 public class AppActivity extends Cocos2dxActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.e(getClass().getSimpleName(), "onCreate---->begin");
         super.onCreate(savedInstanceState);
         // Workaround in https://stackoverflow.com/questions/16283079/re-launch-of-activity-on-home-button-but-only-the-first-time/16447508
         if (!isTaskRoot()) {
@@ -47,7 +50,7 @@ public class AppActivity extends Cocos2dxActivity {
         }
         // DO OTHER INITIALIZATION BELOW
         SDKWrapper.getInstance().init(this);
-
+        Log.e(getClass().getSimpleName(), "onCreate---->end");
     }
     
     @Override
@@ -133,5 +136,12 @@ public class AppActivity extends Cocos2dxActivity {
     protected void onStart() {
         SDKWrapper.getInstance().onStart();
         super.onStart();
+    }
+
+    public static String show(String title, String message) {
+        Log.e("AppActivity", "show called, title:" + title + ",message:" + message+ "thread:" + Thread.currentThread().getName());
+//        Cocos2dxJavascriptJavaBridge.evalString("JsCocosBridge.testNative('hahah')");
+        Cocos2dxJavascriptJavaBridge.evalString("testNative('hahah')");
+        return title + "--" + message;
     }
 }

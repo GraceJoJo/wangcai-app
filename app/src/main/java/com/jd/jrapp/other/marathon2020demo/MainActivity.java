@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
             }else {
                 PetFloatWindow.Companion.getInstance().checkAndShow(MainActivity.this);
             }
+        } else {
+            PetFloatWindow.Companion.getInstance().checkAndShow(MainActivity.this);
         }
     }
 }

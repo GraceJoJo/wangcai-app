@@ -22,6 +22,7 @@ import com.jd.jrapp.other.pet.R
 import com.jd.jrapp.other.pet.ui.dialog.JDQrDialog
 import com.jd.jrapp.other.pet.ui.dialog.ShouYiDialog
 import org.cocos2dx.javascript.AppActivity
+import org.cocos2dx.javascript.service.CocosService
 
 /**
  * Created by yuguotao at 2020/8/6,3:58 PM
@@ -140,6 +141,10 @@ class PetFloatWindow private constructor() {
         if (mIsShowing) {
             return
         }
+        Thread{
+//            startCocosService()
+        }.start()
+//        startCocosService()
         mIsShowing = true
         val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val layoutParam = WindowManager.LayoutParams()
@@ -288,6 +293,10 @@ class PetFloatWindow private constructor() {
             return (it.resources.displayMetrics.density * dp).toInt()
         }
         return 0
+    }
+
+    private fun startCocosService(){
+        mContext?.startService(Intent(mContext, CocosService::class.java))
     }
 
 
