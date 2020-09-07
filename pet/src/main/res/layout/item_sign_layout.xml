@@ -8,27 +8,28 @@
         android:id="@+id/ll_sign"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/color_ef4034"
+        android:background="@drawable/bg_shape_b90c00"
         android:gravity="center_horizontal"
-        android:paddingBottom="8dp"
+        android:orientation="vertical"
         android:paddingHorizontal="6dp"
-        android:orientation="vertical">
+        android:paddingBottom="8dp">
 
         <ImageView
             android:id="@+id/iv_sign"
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_marginTop="10dp"
-            android:src="@drawable/bg_oval" />
+            android:background="@drawable/icon_unsign" />
 
         <TextView
             android:id="@+id/tv_week"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="8dp"
             android:text="周一"
+            android:textStyle="bold"
             android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:textSize="10sp" />
 
     </LinearLayout>
 

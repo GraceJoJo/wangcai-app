@@ -8,29 +8,25 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/color_ef4034"
+        android:background="@drawable/qr_bg_shape"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingHorizontal="10dp"
+        android:paddingHorizontal="6dp"
         android:paddingBottom="15dp">
 
-        <TextView
-            android:id="@+id/tv_money"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="20元"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/iv_coupon"
+            android:layout_width="90dp"
+            android:layout_height="90dp" />
 
         <TextView
             android:id="@+id/tv_pay_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="6dp"
             android:text="金条利息券"
-            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textColor="@color/color_333333"
             android:textSize="12sp" />
 
         <TextView
@@ -39,8 +35,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:text="领取7日有效"
-            android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:textColor="@color/color_999999"
+            android:textSize="11sp" />
 
     </LinearLayout>
 

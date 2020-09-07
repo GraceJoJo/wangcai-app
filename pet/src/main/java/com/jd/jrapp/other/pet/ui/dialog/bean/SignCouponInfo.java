@@ -6,11 +6,14 @@ package com.jd.jrapp.other.pet.ui.dialog.bean;
  */
 public class SignCouponInfo {
 
-    public String getMoney() {
+    private int money;
+    private String couponType;
+
+    public int getMoney() {
         return money;
     }
 
-    public void setMoney(String money) {
+    public void setMoney(int money) {
         this.money = money;
     }
 
@@ -22,21 +25,8 @@ public class SignCouponInfo {
         this.couponType = couponType;
     }
 
-    public String getUsetype() {
-        return usetype;
-    }
-
-    public void setUsetype(String usetype) {
-        this.usetype = usetype;
-    }
-
-    private String money;
-    private String couponType;
-    private String usetype;
-
-    public SignCouponInfo(String money, String couponType, String usetype) {
+    public SignCouponInfo(int money, String couponType) {
         this.money = money;
         this.couponType = couponType;
-        this.usetype = usetype;
     }
 }
