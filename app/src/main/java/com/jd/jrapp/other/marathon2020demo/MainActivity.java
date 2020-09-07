@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.jd.jrapp.other.pet.ui.PetFloatWindow;
+import com.jd.jrapp.other.pet.utils.AppManager;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -38,8 +40,15 @@ public class MainActivity extends AppCompatActivity {
             if (i != PackageManager.PERMISSION_GRANTED) {
                 // 如果没有授予该权限，就去提示用户请求
                 ActivityCompat.requestPermissions(this, permissions, 321);
-            }else {
+            } else {
                 PetFloatWindow.Companion.getInstance().checkAndShow(MainActivity.this);
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        String str = AppManager.getServiceInfo("你好啊");
+//                        Log.e("--------", str);
+//                    }
+//                }).start();
             }
         } else {
             PetFloatWindow.Companion.getInstance().checkAndShow(MainActivity.this);

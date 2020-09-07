@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
 import com.jd.jrapp.other.pet.R;
+import com.jd.jrapp.other.pet.ui.dialog.bean.EarningsData;
 import com.jd.jrapp.other.pet.utils.AppManager;
 import com.jd.jrapp.other.pet.utils.DisplayUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -33,11 +34,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Random;
+/**
+ * Author: chenghuan15
+ * Date: 2020/9/2
+ * Time: 4:05 PM
+ */
 
 public class ShouYiDialog extends Dialog implements View.OnClickListener {
 
     private final Context mContext;
     private int width;
+    private int height;
     private EditText et_num;
     private TextView tv_sssy, tv_ssnh, tv_hbjj, tv_gpjj, tv_zqjj;
     private int num = 100;
@@ -69,6 +76,7 @@ public class ShouYiDialog extends Dialog implements View.OnClickListener {
         imageLoader = ImageLoader.getInstance();
         imageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
         width = (int) DisplayUtil.getScreenWidth(mContext);
+        height = (int) DisplayUtil.getScreenHeight(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.layout_shouyi_dialog, null);
         tv_sssy = contentView.findViewById(R.id.tv_sssy);
@@ -87,7 +95,7 @@ public class ShouYiDialog extends Dialog implements View.OnClickListener {
         setData(true);
         myAdapter = new MyAdapter(getContext(), R.layout.item_shouyi_layout, earningsData.getRecords());
         lv.setAdapter(myAdapter);
-        setListViewHeightBasedOnChildren(lv);
+        AppManager.setListViewHeightBasedOnChildren(lv);
         et_num.setCursorVisible(false);
 
         tv_add.setOnClickListener(this);
@@ -107,6 +115,7 @@ public class ShouYiDialog extends Dialog implements View.OnClickListener {
         });
 
         setCanceledOnTouchOutside(true);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         setContentView(contentView);
 
         // 设置window属性
@@ -219,28 +228,6 @@ public class ShouYiDialog extends Dialog implements View.OnClickListener {
             return view;
 
         }
-    }
-
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
-        //获取ListView对应的Adapter
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null) {
-            // pre-condition
-            return;
-        }
-
-        int totalHeight = 0;
-        for (int i = 0, len = listAdapter.getCount(); i < len; i++) { //listAdapter.getCount()返回数据项的数目
-            View listItem = listAdapter.getView(i, null, listView);
-            listItem.measure(0, 0); //计算子项View 的宽高
-            totalHeight += listItem.getMeasuredHeight(); //统计所有子项的总高度
-        }
-
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        //listView.getDividerHeight()获取子项间分隔符占用的高度
-        //params.height最后得到整个ListView完整显示需要的高度
-        listView.setLayoutParams(params);
     }
 
     public EarningsData getJsonData(String fileName) {

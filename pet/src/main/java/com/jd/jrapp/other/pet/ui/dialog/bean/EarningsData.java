@@ -1,6 +1,11 @@
-package com.jd.jrapp.other.pet.ui.dialog;
+package com.jd.jrapp.other.pet.ui.dialog.bean;
 
 import java.util.List;
+/**
+ * Author: chenghuan15
+ * Date: 2020/9/1
+ * Time: 10:28 AM
+ */
 
 public class EarningsData {
 

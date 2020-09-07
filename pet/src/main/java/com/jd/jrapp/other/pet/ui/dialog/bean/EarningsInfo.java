@@ -1,5 +1,9 @@
-package com.jd.jrapp.other.pet.ui.dialog;
-
+package com.jd.jrapp.other.pet.ui.dialog.bean;
+/**
+ * Author: chenghuan15
+ * Date: 2020/9/1
+ * Time: 11:38 AM
+ */
 public class EarningsInfo {
     public String getName() {
         return name;

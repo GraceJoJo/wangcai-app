@@ -45,6 +45,8 @@ dependencies {
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     //阿里智能语音
 //    implementation(name: 'nlssdk', ext: 'aar')
-    implementation 'com.alibaba:fastjson:1.1.70.android'
+    implementation 'com.alibaba:fastjson:1.1.72.android'
+    implementation "com.android.support:recyclerview-v7:28.0.0"
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.42'
 
 }

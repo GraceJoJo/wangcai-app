@@ -14,6 +14,7 @@ import com.alibaba.idst.util.NlsClient;
 import com.alibaba.idst.util.SpeechTranscriberWithRecorder;
 import com.alibaba.idst.util.SpeechTranscriberWithRecorderCallback;
 import com.jd.jrapp.other.pet.R;
+import com.jd.jrapp.other.pet.utils.AppManager;
 
 import java.lang.ref.WeakReference;
 
@@ -74,9 +75,9 @@ public class SpeechTranscriberWithRecorderActivity extends AppCompatActivity {
 
         // 第四步，设置相关参数
         // Token有有效期，请使用https://help.aliyun.com/document_detail/72153.html 动态生成token
-        speechTranscriber.setToken("4787696798c941f7aad4c985edf3bb22");
+        speechTranscriber.setToken(AppManager.accessToken.getToken());
         // 请使用阿里云语音服务管控台(https://nls-portal.console.aliyun.com/)生成您的appkey
-        speechTranscriber.setAppkey("v3iVhMbn6SK7hVLD");
+        speechTranscriber.setAppkey(AppManager.NLS_App_KEY);
         // 设置返回中间结果，更多参数请参考官方文档
         // 返回中间结果
         speechTranscriber.enableIntermediateResult(true);

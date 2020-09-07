@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="10dp">
+
+    <LinearLayout
+        android:id="@+id/ll_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp">
+
+        <TextView
+            android:id="@+id/tv_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/color_ef4034"
+            android:paddingVertical="10dp"
+            android:paddingLeft="14dp"
+            android:paddingRight="17dp"
+            android:singleLine="false"
+            android:text="金仔你好"
+            android:maxWidth="250dp"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="7dp"
+            android:src="@drawable/icon_tougu_ai" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_left"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginLeft="16dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="7dp"
+            android:src="@drawable/icon_tougu_ai" />
+
+        <TextView
+            android:id="@+id/tv_message_ai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingVertical="10dp"
+            android:maxWidth="250dp"
+            android:background="@color/white"
+            android:paddingLeft="14dp"
+            android:paddingRight="17dp"
+            android:inputType="textMultiLine"
+            android:text="金仔你好"
+            android:textColor="@color/color_333333"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>
