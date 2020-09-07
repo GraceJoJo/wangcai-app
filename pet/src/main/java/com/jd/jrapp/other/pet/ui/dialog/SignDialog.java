@@ -3,6 +3,7 @@ package com.jd.jrapp.other.pet.ui.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -41,6 +42,7 @@ public class SignDialog extends Dialog implements View.OnClickListener {
     private List<SignCouponInfo> signCouponInfos;
     private static final String SIGNTODAY = "signToday";//今日签到
     private static final String RETROACTIVE = "retroactive";//补签
+    private int signToday;
 
     public SignDialog(Context context) {
         super(context, R.style.loadDialog);
@@ -63,7 +65,7 @@ public class SignDialog extends Dialog implements View.OnClickListener {
         LinearLayoutManager manager = new LinearLayoutManager(mContext);
         manager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(manager);
-        int signToday = SharedPrefsMgr.getInstance(mContext).getInt(SIGNTODAY, 1);
+        signToday = SharedPrefsMgr.getInstance(mContext).getInt(SIGNTODAY, 1);
         int retroactive = SharedPrefsMgr.getInstance(mContext).getInt(RETROACTIVE, 2);
         //0已签到 1未签到 2补签
         signInfos = new ArrayList<>();
@@ -120,6 +122,13 @@ public class SignDialog extends Dialog implements View.OnClickListener {
             SignInfo signInfo=signInfos.get(3);
             signInfo.setSigntype(0);
             myAdapter.notifyItemChanged(3);
+            v.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    signToday=0;
+                    myAdapter1.notifyDataSetChanged();
+                }
+            },800);
         }
     }
 
@@ -134,8 +143,13 @@ public class SignDialog extends Dialog implements View.OnClickListener {
                 view.setPadding(0, 0, DisplayUtil.dip2px(mContext, 12), 0);
             }
             view.setLayoutParams(params);
-            helper.setBackgroundRes(R.id.iv_coupon, item.getMoney());
-            helper.setText(R.id.tv_pay_type, item.getCouponType());
+            if(signToday==0){
+                helper.setBackgroundRes(R.id.iv_coupon, item.getMoney());
+                helper.setText(R.id.tv_pay_type, item.getCouponType());
+            }else {
+                helper.setBackgroundRes(R.id.iv_coupon, R.drawable.icon_hongbao);
+                helper.setText(R.id.tv_pay_type, "拆开有惊喜");
+            }
         }
     };
 
