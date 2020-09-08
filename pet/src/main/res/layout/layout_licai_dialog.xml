@@ -79,21 +79,24 @@
                                 android:textColor="@color/color_ccffffff"
                                 android:textSize="18sp" />
 
-                            <ImageView
+                            <CheckBox
                                 android:id="@+id/iv_eye_zzc"
                                 android:layout_width="22dp"
                                 android:layout_height="22dp"
                                 android:layout_marginLeft="4dp"
-                                android:src="@drawable/icon_eye_close" />
+                                android:layout_marginTop="2dp"
+                                android:button="@null"
+                                android:background="@drawable/eye_selector" />
 
                         </LinearLayout>
 
                         <TextView
+                            android:id="@+id/tv_total_assets"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:shadowRadius="3.0"
-                            android:text="2,000.00"
+                            android:text="28,000.00"
                             android:textColor="@color/color_cdffffff"
                             android:textSize="12sp" />
 
@@ -124,7 +127,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:shadowRadius="3.0"
-                            android:text="最新收益"
+                            android:text="待还借款"
                             android:textColor="@color/white"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -150,16 +153,19 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:shadowRadius="3.0"
-                                android:text="总资产"
+                                android:text="可借现金"
                                 android:textColor="@color/color_ccffffff"
                                 android:textSize="18sp" />
 
-                            <ImageView
+                            <CheckBox
                                 android:id="@+id/iv_kjxj"
                                 android:layout_width="22dp"
                                 android:layout_height="22dp"
                                 android:layout_marginLeft="4dp"
-                                android:src="@drawable/icon_eye_close" />
+                                android:layout_gravity="center"
+                                android:button="@null"
+                                android:visibility="gone"
+                                android:background="@drawable/icon_eye_close" />
 
                         </LinearLayout>
 
@@ -168,7 +174,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:shadowRadius="3.0"
-                            android:text="2,000.00"
+                            android:text="200,000.00"
                             android:textColor="@color/color_cdffffff"
                             android:textSize="12sp" />
 
@@ -285,19 +291,22 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="18dp"
+                        android:layout_height="20dp"
                         android:layout_marginTop="14dp"
-                        android:layout_marginBottom="20dp">
+                        android:layout_marginBottom="8dp">
 
                         <TextView
+                            android:id="@+id/tv_tips"
                             style="@style/text_shouyi"
                             android:text="紧跟平台购买趋势，跟着大家买理财" />
-
-                        <View
-                            android:layout_width="235dp"
+                        <TextView
+                            android:id="@+id/tv_tips_view"
+                            android:layout_width="wrap_content"
                             android:layout_height="8dp"
                             android:layout_alignParentBottom="true"
-                            android:background="#145CD7FF" />
+                            android:background="#143E5CD7"
+                            android:text="紧跟平台购买趋势，跟着大家买理财  "
+                            android:textColor="@color/transparent" />
 
                     </RelativeLayout>
 
@@ -309,7 +318,6 @@
                             android:id="@+id/recyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginTop="10dp"
                             android:layout_marginBottom="15dp"
                             android:nestedScrollingEnabled="false" />
                     </RelativeLayout>

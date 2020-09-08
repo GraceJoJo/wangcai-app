@@ -1,0 +1,86 @@
+[
+  {
+    "records": [
+      {
+        "typeStr": "平台热销｜京东小金库",
+        "rank": "今日热销榜No.1",
+        "interestRate": "4.75%",
+        "interestRateDate": "近7日年化收益",
+        "manageType": "灵活存取",
+        "manageTypeLimit": "全民消费 1元起购"
+      },
+      {
+        "typeStr": "稳健收益｜京东小金保",
+        "rank": "今日热销榜No.2",
+        "interestRate": "5.40%",
+        "interestRateDate": "近一年历史年化",
+        "manageType": "稳健享收益",
+        "manageTypeLimit": "银行托管 长期收益稳健"
+      },
+      {
+        "typeStr": "银行甄选｜百信钱包plus",
+        "rank": "今日热销榜No.3",
+        "interestRate": "3.17%",
+        "interestRateDate": "近7日年化收益",
+        "manageType": "灵活存取",
+        "manageTypeLimit": "活期爆款 "
+      }
+    ]
+  },
+  {
+    "records": [
+      {
+        "typeStr": "建行托管 | 民生加银鑫享",
+        "rank": "中低风险",
+        "interestRate": "3.54%",
+        "interestRateDate": "近7日年化收益",
+        "manageType": "坚持长期持有",
+        "manageTypeLimit": "0申购费"
+      },
+      {
+        "typeStr": "招行托管｜招商招旭",
+        "rank": "主投债券",
+        "interestRate": "5.26%",
+        "interestRateDate": "近一年历史年化",
+        "manageType": "强者恒强",
+        "manageTypeLimit": "风险较低"
+      },
+      {
+        "typeStr": "历史年年正收益｜华安鼎丰",
+        "rank": "抗震利器",
+        "interestRate": "5.37%",
+        "interestRateDate": "近7日年化收益",
+        "manageType": "细分龙头",
+        "manageTypeLimit": "不投股市"
+      }
+    ]
+  },
+  {
+    "records": [
+      {
+        "typeStr": "建行托管 | 稳健月月盈",
+        "rank": "中低风险",
+        "interestRate": "2.96%",
+        "interestRateDate": "近7日年化收益",
+        "manageType": "30天",
+        "manageTypeLimit": "0申购费"
+      },
+      {
+        "typeStr": "招行托管｜稳健天天盈",
+        "rank": "一折费率",
+        "interestRate": "2.78%",
+        "interestRateDate": "近7日年化收益",
+        "manageType": "存取灵活",
+        "manageTypeLimit": "风险较低"
+      },
+      {
+        "typeStr": "银历史年年正收益｜华安鼎丰",
+        "rank": "一折费率",
+        "interestRate": "5.37%",
+        "interestRateDate": "近7日年化收益",
+        "manageType": "稳健成长",
+        "manageTypeLimit": "不投股市"
+      }
+    ]
+  }
+]
