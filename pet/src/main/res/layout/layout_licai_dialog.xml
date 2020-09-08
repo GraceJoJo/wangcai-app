@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_dialog"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent_dialog">
+
+    <ScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:layout_alignParentBottom="true"
+        android:descendantFocusability="blocksDescendants"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shouyi_shape"
+            android:orientation="vertical"
+            android:paddingTop="18dp"
+            android:paddingBottom="70dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="16dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_shape_ef4034"
+                        android:orientation="vertical"
+                        android:paddingLeft="14dp"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="20dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:shadowRadius="3.0"
+                            android:text="最新收益"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_zxsy"
+                            style="@style/text_shouyi_red"
+                            android:layout_marginTop="4dp"
+                            android:shadowRadius="3.0"
+                            android:text="+50.00"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:shadowRadius="3.0"
+                                android:text="总资产"
+                                android:textColor="@color/color_ccffffff"
+                                android:textSize="18sp" />
+
+                            <ImageView
+                                android:id="@+id/iv_eye_zzc"
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:layout_marginLeft="4dp"
+                                android:src="@drawable/icon_eye_close" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:shadowRadius="3.0"
+                            android:text="2,000.00"
+                            android:textColor="@color/color_cdffffff"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_white_15_shape"
+                            android:gravity="center"
+                            android:text="花掉收益"
+                            android:textColor="@color/color_ef4034"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_shape_e6b797"
+                        android:orientation="vertical"
+                        android:paddingLeft="14dp"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="20dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:shadowRadius="3.0"
+                            android:text="最新收益"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_dhjk"
+                            style="@style/text_shouyi_red"
+                            android:layout_marginTop="4dp"
+                            android:shadowRadius="3.0"
+                            android:text="2080.60"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:shadowRadius="3.0"
+                                android:text="总资产"
+                                android:textColor="@color/color_ccffffff"
+                                android:textSize="18sp" />
+
+                            <ImageView
+                                android:id="@+id/iv_kjxj"
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:layout_marginLeft="4dp"
+                                android:src="@drawable/icon_eye_close" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:shadowRadius="3.0"
+                            android:text="2,000.00"
+                            android:textColor="@color/color_cdffffff"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_white_15_shape"
+                            android:gravity="center"
+                            android:text="立即借款"
+                            android:textColor="@color/color_a74a00"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/ll_rxph"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="22dp"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <CheckBox
+                            android:id="@+id/cb_rxph"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:button="@null"
+                            android:checked="true"
+                            android:text="热销排行"
+                            android:textColor="@drawable/text_color_tab_selector"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:id="@+id/view_rxph"
+                            android:layout_width="20dp"
+                            android:layout_height="3dp"
+                            android:layout_marginTop="4dp"
+                            android:background="@color/color_ef4034"
+                            android:visibility="visible" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_jxjj"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="22dp"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <CheckBox
+                            android:id="@+id/cb_jxjj"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:button="@null"
+                            android:text="京选基金"
+                            android:textColor="@drawable/text_color_tab_selector"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:id="@+id/view_jxjj"
+                            android:layout_width="20dp"
+                            android:layout_height="3dp"
+                            android:layout_marginTop="4dp"
+                            android:background="@color/color_ef4034"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_dtyy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="22dp"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <CheckBox
+                            android:id="@+id/cb_dtyy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:button="@null"
+                            android:text="定投优选"
+                            android:textColor="@drawable/text_color_tab_selector"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:id="@+id/view_dtyy"
+                            android:layout_width="20dp"
+                            android:layout_height="3dp"
+                            android:layout_marginTop="4dp"
+                            android:background="@color/color_ef4034"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="14dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="18dp"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginBottom="20dp">
+
+                        <TextView
+                            style="@style/text_shouyi"
+                            android:text="紧跟平台购买趋势，跟着大家买理财" />
+
+                        <View
+                            android:layout_width="235dp"
+                            android:layout_height="8dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="#145CD7FF" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="15dp"
+                            android:nestedScrollingEnabled="false" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/tv_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/icon_bottom_close"
+        android:gravity="center"
+        android:textColor="@color/color_333333"
+        android:textSize="16sp" />
+
+</RelativeLayout>

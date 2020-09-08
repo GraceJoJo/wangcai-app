@@ -19,10 +19,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.jd.jrapp.other.pet.R
-import com.jd.jrapp.other.pet.ui.dialog.JDQrDialog
-import com.jd.jrapp.other.pet.ui.dialog.ShouYiDialog
-import com.jd.jrapp.other.pet.ui.dialog.SignDialog
-import com.jd.jrapp.other.pet.ui.dialog.TouguDialog
+import com.jd.jrapp.other.pet.ui.dialog.*
 import com.jd.jrapp.other.pet.utils.AppManager
 import org.cocos2dx.javascript.AppActivity
 import org.cocos2dx.javascript.service.CocosService
@@ -49,6 +46,7 @@ class PetFloatWindow private constructor() {
     var mShouPayDialog: JDQrDialog? = null
     var mTouguDialog: TouguDialog? = null
     var mSignDialog: SignDialog? = null
+    var mLicaiDialog: LicaiDialog? = null
 
     private var mContext: Context? = null
 
@@ -67,7 +65,8 @@ class PetFloatWindow private constructor() {
             Log.e("PetFloatWindow", "onClick: " + v)
             animSwitch()
             if (v == mTvShouyi) {
-                showShouYiDialog()
+//                showShouYiDialog()
+                showLicaiDialog()
             } else if (v == mTvTougu) {
 //                val intent = Intent(mContext, SpeechRecognizerActivity::class.java)
 //                mContext?.startActivity(intent)
@@ -98,6 +97,20 @@ class PetFloatWindow private constructor() {
                 mShouYiDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             }
             mShouYiDialog?.show()
+        }
+    }
+
+    private fun showLicaiDialog() {
+        if (mLicaiDialog == null) {
+            mLicaiDialog = LicaiDialog(mContext)
+        }
+        if (mLicaiDialog != null) {
+            if (Build.VERSION.SDK_INT >= 25) {
+                mLicaiDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+            } else {
+                mLicaiDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            }
+            mLicaiDialog?.show()
         }
     }
 
