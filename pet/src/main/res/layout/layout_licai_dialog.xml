@@ -211,7 +211,7 @@
                             android:layout_height="wrap_content"
                             android:button="@null"
                             android:checked="true"
-                            android:text="热销排行"
+                            android:text="今日热销"
                             android:textColor="@drawable/text_color_tab_selector"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -238,7 +238,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:button="@null"
-                            android:text="京选基金"
+                            android:text="精选基金"
                             android:textColor="@drawable/text_color_tab_selector"
                             android:textSize="18sp"
                             android:textStyle="bold" />
