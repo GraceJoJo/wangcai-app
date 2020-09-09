@@ -17,7 +17,6 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,8 +26,6 @@ import com.jd.jrapp.other.pet.R;
 import com.jd.jrapp.other.pet.ui.dialog.bean.EarningsData;
 import com.jd.jrapp.other.pet.utils.AppManager;
 import com.jd.jrapp.other.pet.utils.DisplayUtil;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,8 +46,6 @@ public class ShouYiDialog extends Dialog implements View.OnClickListener {
     private TextView tv_sssy, tv_ssnh, tv_hbjj, tv_gpjj, tv_zqjj;
     private int num = 100;
     private EarningsData earningsData;
-    public ImageLoader imageLoader;
-    private CountDownTimer mTimer;
     private MyAdapter myAdapter;
 
     public ShouYiDialog(Context context) {
@@ -73,8 +68,6 @@ public class ShouYiDialog extends Dialog implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
         width = (int) DisplayUtil.getScreenWidth(mContext);
         height = (int) DisplayUtil.getScreenHeight(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -223,7 +216,7 @@ public class ShouYiDialog extends Dialog implements View.OnClickListener {
             }
             tv_name.setText(earningsInfo.getNickName());
             tv_shouyi.setText(earningsInfo.getSssyl());
-            imageLoader.displayImage(earningsInfo.getHeaderUrl(), iv_header);
+//            imageLoader.displayImage(earningsInfo.getHeaderUrl(), iv_header);
 
             return view;
 

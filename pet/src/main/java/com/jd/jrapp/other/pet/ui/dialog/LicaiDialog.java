@@ -22,9 +22,6 @@ import com.jd.jrapp.other.pet.ui.dialog.bean.MoneyManagementData;
 import com.jd.jrapp.other.pet.utils.AppManager;
 import com.jd.jrapp.other.pet.utils.DisplayUtil;
 import com.jd.jrapp.other.pet.utils.SharedPrefsMgr;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -44,7 +41,6 @@ public class LicaiDialog extends Dialog implements View.OnClickListener {
     private CheckBox cb_rxph, cb_jxjj, cb_dtyy, iv_eye_zzc, iv_kjxj;
     private View view_rxph, view_jxjj, view_dtyy;
     private ScrollView scrollview;
-    public ImageLoader imageLoader;
     private List<MoneyManagementData.RecordsBean> recordsBeanList;
     private List<MoneyManagementData> moneyManagementData;
     private String[] recordStatusDescription = new String[]{"紧跟平台购买趋势，跟着大家买理财", "精选绩优好基，适合长期持有", "专业团队严选，追求收益"};
@@ -60,8 +56,6 @@ public class LicaiDialog extends Dialog implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         isOpen = SharedPrefsMgr.getInstance(mContext).getBoolean(ISOPEN, false);
-        imageLoader = ImageLoader.getInstance();
-        imageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
         width = (int) DisplayUtil.getScreenWidth(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.layout_licai_dialog, null);
