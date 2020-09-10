@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 // 如果没有授予该权限，就去提示用户请求
                 ActivityCompat.requestPermissions(this, permissions, 321);
             } else {
-                PetFloatWindow.Companion.getInstance().checkAndShow(MainActivity.this);
+                PetFloatWindow.Companion.getInstance().checkAndShow(getApplicationContext());
 //                new Thread(new Runnable() {
 //                    @Override
 //                    public void run() {
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 //                }).start();
             }
         } else {
-            PetFloatWindow.Companion.getInstance().checkAndShow(MainActivity.this);
+            PetFloatWindow.Companion.getInstance().checkAndShow(getApplicationContext());
         }
     }
 }

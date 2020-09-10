@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
@@ -38,8 +39,8 @@
             android:process=":cocos_pet">
         </activity>
 
-<!--        <service android:name="org.cocos2dx.javascript.service.CocosService"-->
-<!--            android:process=":cocos_pet"></service>-->
+        <service android:name="org.cocos2dx.javascript.service.CocosService"
+            android:process=":cocos_pet"></service>
 
         <receiver android:name=".appwidget.PetAppWidget">
             <meta-data android:name="android.appwidget.provider"
