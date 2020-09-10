@@ -2,14 +2,16 @@ package com.jd.jrapp.other.pet.ui
 
 import android.animation.Animator
 import android.animation.ValueAnimator
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
+import android.content.ServiceConnection
 import android.graphics.PixelFormat
 import android.graphics.PointF
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Build
+import android.os.IBinder
 import android.provider.Settings
 import android.support.constraint.ConstraintLayout
 import android.util.Log
@@ -17,14 +19,13 @@ import android.view.*
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import com.jd.jrapp.other.pet.R
 import com.jd.jrapp.other.pet.ui.dialog.JDQrDialog
 import com.jd.jrapp.other.pet.ui.dialog.ShouYiDialog
 import com.jd.jrapp.other.pet.ui.dialog.SignDialog
 import com.jd.jrapp.other.pet.ui.dialog.TouguDialog
 import com.jd.jrapp.other.pet.utils.AppManager
-import org.cocos2dx.javascript.AppActivity
+import org.cocos2dx.javascript.ICocosInterface
 import org.cocos2dx.javascript.service.CocosService
 
 /**
@@ -82,9 +83,17 @@ class PetFloatWindow private constructor() {
             } else if (v == mClickView) {
 //                animSwitch()
             } else if (v == mTvPet) {
-                mContext?.startActivity(Intent(mContext, AppActivity::class.java))
+//                val intent = Intent(mContext, AppActivity::class.java)
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                mContext?.startActivity(intent)
+                showPetDialog()
             }
         }
+    }
+
+
+    private fun showPetDialog() {
+        mCocosInterface?.showPetDialog()
     }
 
     private fun showShouYiDialog() {
@@ -170,6 +179,7 @@ class PetFloatWindow private constructor() {
         val intent = Intent()
         intent.action = Settings.ACTION_MANAGE_OVERLAY_PERMISSION
         intent.data = Uri.parse("package:" + context.packageName)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(intent)
     }
 
@@ -177,10 +187,7 @@ class PetFloatWindow private constructor() {
         if (mIsShowing) {
             return
         }
-        Thread{
-//            startCocosService()
-        }.start()
-//        startCocosService()
+        bindCocosService()
         mIsShowing = true
         val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val layoutParam = WindowManager.LayoutParams()
@@ -333,6 +340,41 @@ class PetFloatWindow private constructor() {
 
     private fun startCocosService(){
         mContext?.startService(Intent(mContext, CocosService::class.java))
+    }
+
+    private var mCocosInterface: ICocosInterface?= null
+
+    private val mDeathRecipent = object :IBinder.DeathRecipient{
+        override fun binderDied() {
+            onBinderDied()
+        }
+    }
+
+    private fun onBinderDied(){
+        Log.e("AppActivity", "onBinderDied!!!")
+        mCocosInterface?.asBinder()?.unlinkToDeath(mDeathRecipent, 0)
+        mCocosInterface = null
+        bindCocosService()
+    }
+
+    private fun bindCocosService(){
+
+        val intent = Intent(mContext, CocosService::class.java)
+        mContext?.bindService(intent, object : ServiceConnection {
+            override fun onServiceDisconnected(name: ComponentName?) {
+
+            }
+
+            override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+                try {
+                    Log.e("AppActivity", "onServiceConnected:" + service)
+                    mCocosInterface = ICocosInterface.Stub.asInterface(service)
+                    service?.linkToDeath(mDeathRecipent, 0)
+                }catch (e: Throwable) {
+                    e.printStackTrace()
+                }
+            }
+        }, Context.BIND_AUTO_CREATE)
     }
 
 
