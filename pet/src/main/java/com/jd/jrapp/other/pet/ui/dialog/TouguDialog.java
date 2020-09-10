@@ -74,6 +74,8 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
     private Handler mainHandler;
     private long recordTotalTime;
     private String[] recordStatusDescription = new String[]{"按住录音", "上划取消"};
+    private String[] keyWords = new String[]{"知道", "请不要说话", "你好"};
+    private String[] words = new String[]{"你怎么知道的", "你管我呢，我就是要说", "你好不好"};
     private long maxRecordTime = DEFAULT_MAX_RECORD_TIME;
     private long minRecordTime = DEFAULT_MIN_RECORD_TIME;
     private String audioFileName;
@@ -160,11 +162,11 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
 
             @Override
             public String onRecordStart() {
-                isCancel=false;
+                isCancel = false;
                 recordTotalTime = 0;
                 initTimer();
                 timer.schedule(timerTask, 0, DEFAULT_MIN_TIME_UPDATE_TIME);
-                audioFileName = mContext.getExternalCacheDir()+ File.separator + createAudioName();
+                audioFileName = mContext.getExternalCacheDir() + File.separator + createAudioName();
                 mHorVoiceView.startRecord();
                 scrollToBottom();
                 startRecognizer();
@@ -189,7 +191,7 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
                     timer.cancel();
                 }
                 updateCancelUi();
-                isCancel=true;
+                isCancel = true;
                 return false;
             }
 
@@ -198,7 +200,7 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
              */
             @Override
             public void onSlideTop() {
-                isCancel=true;
+                isCancel = true;
                 mHorVoiceView.setVisibility(View.INVISIBLE);
                 tvRecordTips.setVisibility(View.INVISIBLE);
             }
@@ -212,7 +214,7 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
         });
     }
 
-    public String createAudioName(){
+    public String createAudioName() {
         long time = System.currentTimeMillis();
         String fileName = UUID.randomUUID().toString() + time + ".amr";
         return fileName;
@@ -293,7 +295,6 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
 
     /**
      * 启动录音和识别
-     *
      */
     public void startRecognizer() {
         if (TextUtils.isEmpty(AppManager.accessToken.getToken())) {
@@ -331,7 +332,6 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
 
     /**
      * 停止录音和识别
-     *
      */
     public void stopRecognizer() {
         // 停止录音
@@ -368,7 +368,7 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
     @Override
     public void onRecognizedCompleted(final String msg, int code) {
         recordTask.stop();
-        if(isCancel){
+        if (isCancel) {
             return;
         }
         Message message = new Message();
@@ -393,8 +393,16 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                String aiStr = AppManager.getServiceInfo(result);
                                 Message message = new Message();
+                                for (int i = 0; i < keyWords.length; i++) {
+                                    if(result.contains(keyWords[i])){
+                                        message.what = 102;
+                                        message.obj = words[i];
+                                        handler.sendMessage(message);
+                                        return;
+                                    }
+                                }
+                                String aiStr = AppManager.getServiceInfo(result);
                                 message.what = 101;
                                 message.obj = aiStr;
                                 handler.sendMessage(message);
@@ -411,6 +419,9 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
                     scrollToBottom();
                 }
 
+            }else if(msg.what == 102){
+                myAdapter.add(new TouguInfo(fullResult, 1));
+                scrollToBottom();
             }
 
         }
