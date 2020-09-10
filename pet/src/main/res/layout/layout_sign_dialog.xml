@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="10dp"
-            android:background="@android:color/holo_red_light"
+            android:background="@drawable/icon_sign_bg"
             android:orientation="vertical">
 
             <android.support.v7.widget.RecyclerView
@@ -45,45 +45,52 @@
 
                 <TextView
                     android:id="@+id/tv_share"
-                    android:layout_width="120dp"
-                    android:layout_height="30dp"
+                    android:layout_width="150dp"
+                    android:layout_height="54dp"
                     android:layout_marginRight="20dp"
-                    android:background="@color/white"
-                    android:gravity="center"
-                    android:text="邀好友补签" />
+                    android:background="@drawable/icon_share_friends" />
 
                 <TextView
                     android:id="@+id/tv_sign"
-                    android:layout_width="120dp"
-                    android:layout_height="30dp"
-                    android:background="@color/white"
-                    android:gravity="center"
-                    android:text="邀好友补签" />
+                    android:layout_width="150dp"
+                    android:layout_height="54dp"
+                    android:background="@drawable/icon_sign_coupon" />
             </LinearLayout>
 
         </LinearLayout>
 
-        <TextView
-            style="@style/text_shouyi_bold"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="18dp"
-            android:text="签到奖励" />
+            android:orientation="horizontal">
+            <TextView
+                style="@style/text_shouyi_bold"
+                android:text="签到奖励" />
+            <TextView
+                style="@style/text_shouyi_bold"
+                android:textColor="@color/color_999999"
+                android:textSize="12sp"
+                android:layout_marginLeft="6dp"
+                android:text="签到奖励可到金融App内查看" />
+
+        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="17dp" />
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="12dp" />
 
         <TextView
             android:id="@+id/tv_close"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@color/white"
+            android:layout_height="57dp"
+            android:background="@drawable/icon_bottom_close"
             android:gravity="center"
-            android:text="取消"
             android:textColor="@color/color_333333"
             android:textSize="16dp" />
 

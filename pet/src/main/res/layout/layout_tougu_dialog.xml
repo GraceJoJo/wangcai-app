@@ -20,7 +20,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:background="@drawable/shouyi_shape"
-        android:layout_height="300dp">
+        android:layout_height="270dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,24 +31,24 @@
             <com.jd.jrapp.other.pet.ui.view.LineWaveVoiceView
                 android:id="@+id/horvoiceview"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
                 app:voiceLineColor="@color/color_ef4034"
                 app:voiceTextColor="@color/color_666666"
                 app:voiceTextSize="14dp"
-                app:voiceLineWidth="3dp"
+                app:voiceLineWidth="4dp"
                 android:visibility="invisible" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="36dp"
-                android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/record_tips"
                     android:text="按住录音"
-                    android:textColor="#ff9c00"
+                    android:textColor="@color/color_ff0000"
                     android:textSize="16dp"
                     android:layout_centerHorizontal="true"
                     android:layout_width="wrap_content"
@@ -63,10 +63,10 @@
 
                     <com.jd.jrapp.other.pet.ui.view.RecordAudioView
                         android:id="@+id/iv_audio"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:layout_marginTop="50dp"
-                        android:background="@android:color/holo_red_light" />
+                        android:layout_width="89dp"
+                        android:layout_height="89dp"
+                        android:layout_marginTop="40dp"
+                        android:background="@drawable/icon_audio" />
 
                 </LinearLayout>
 
@@ -75,6 +75,7 @@
                     android:layout_width="54dp"
                     android:layout_height="54dp"
                     android:layout_alignParentRight="true"
+                    android:visibility="gone"
                     android:background="@android:color/holo_red_light" />
 
             </RelativeLayout>
@@ -83,12 +84,11 @@
         <TextView
             android:id="@+id/tv_close"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="57dp"
             android:layout_marginTop="20dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/white"
+            android:background="@drawable/icon_bottom_close"
             android:gravity="center"
-            android:text="取消"
             android:textColor="@color/color_333333"
             android:textSize="16dp" />
     </RelativeLayout>

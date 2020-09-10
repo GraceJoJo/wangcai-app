@@ -1,13 +1,7 @@
 package com.jd.jrapp.other.pet.utils;
 
-import android.annotation.TargetApi;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Build;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -15,11 +9,9 @@ import com.alibaba.idst.token.AccessToken;
 import com.alibaba.idst.util.NlsClient;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;

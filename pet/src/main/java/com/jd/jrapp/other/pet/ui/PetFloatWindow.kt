@@ -20,10 +20,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import android.widget.TextView
 import com.jd.jrapp.other.pet.R
-import com.jd.jrapp.other.pet.ui.dialog.JDQrDialog
-import com.jd.jrapp.other.pet.ui.dialog.ShouYiDialog
-import com.jd.jrapp.other.pet.ui.dialog.SignDialog
-import com.jd.jrapp.other.pet.ui.dialog.TouguDialog
+import com.jd.jrapp.other.pet.ui.dialog.*
 import com.jd.jrapp.other.pet.utils.AppManager
 import org.cocos2dx.javascript.ICocosInterface
 import org.cocos2dx.javascript.service.CocosService
@@ -50,6 +47,7 @@ class PetFloatWindow private constructor() {
     var mShouPayDialog: JDQrDialog? = null
     var mTouguDialog: TouguDialog? = null
     var mSignDialog: SignDialog? = null
+    var mLicaiDialog: LicaiDialog? = null
 
     private var mContext: Context? = null
 
@@ -68,7 +66,8 @@ class PetFloatWindow private constructor() {
             Log.e("PetFloatWindow", "onClick: " + v)
             animSwitch()
             if (v == mTvShouyi) {
-                showShouYiDialog()
+//                showShouYiDialog()
+                showLicaiDialog()
             } else if (v == mTvTougu) {
 //                val intent = Intent(mContext, SpeechRecognizerActivity::class.java)
 //                mContext?.startActivity(intent)
@@ -110,6 +109,20 @@ class PetFloatWindow private constructor() {
         }
     }
 
+    private fun showLicaiDialog() {
+        if (mLicaiDialog == null) {
+            mLicaiDialog = LicaiDialog(mContext)
+        }
+        if (mLicaiDialog != null) {
+            if (Build.VERSION.SDK_INT >= 25) {
+                mLicaiDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+            } else {
+                mLicaiDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            }
+            mLicaiDialog?.show()
+        }
+    }
+
     private fun showPayDialog() {
         if (mShouPayDialog == null) {
             mShouPayDialog = JDQrDialog(mContext)
@@ -125,9 +138,7 @@ class PetFloatWindow private constructor() {
     }
 
     private fun showTouguDialog() {
-        if (mTouguDialog == null) {
-            mTouguDialog = TouguDialog(mContext);
-        }
+        mTouguDialog = TouguDialog(mContext);
         if (mTouguDialog != null) {
             if (Build.VERSION.SDK_INT >= 25) {
                 mTouguDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
@@ -338,7 +349,7 @@ class PetFloatWindow private constructor() {
         return 0
     }
 
-    private fun startCocosService(){
+    private fun startCocosService() {
         mContext?.startService(Intent(mContext, CocosService::class.java))
     }
 

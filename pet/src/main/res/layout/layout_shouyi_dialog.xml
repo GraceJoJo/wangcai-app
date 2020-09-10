@@ -237,7 +237,7 @@
 
                 <TextView
                     style="@style/text_shouyi_bold"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="16dp"
                     android:text="好友收益榜单" />
 
                 <ListView
@@ -258,11 +258,10 @@
     <TextView
         android:id="@+id/tv_cancel"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="57dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/white"
+        android:background="@drawable/icon_bottom_close"
         android:gravity="center"
-        android:text="取消"
         android:textColor="@color/color_333333"
         android:textSize="16sp" />
 
