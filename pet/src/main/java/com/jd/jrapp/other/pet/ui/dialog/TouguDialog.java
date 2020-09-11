@@ -381,7 +381,7 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
         @Override
         public void handleMessage(final Message msg) {
             super.handleMessage(msg);
-            String fullResult = (String) msg.obj;
+            final String fullResult = (String) msg.obj;
             if (msg.what == 100) {
                 if (!TextUtils.isEmpty((String) msg.obj)) {
                     JSONObject jsonObject = JSONObject.parseObject(fullResult);
@@ -420,8 +420,14 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
                 }
 
             }else if(msg.what == 102){
-                myAdapter.add(new TouguInfo(fullResult, 1));
-                scrollToBottom();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        myAdapter.add(new TouguInfo(fullResult, 1));
+                        scrollToBottom();
+                    }
+                },500);
+
             }
 
         }
