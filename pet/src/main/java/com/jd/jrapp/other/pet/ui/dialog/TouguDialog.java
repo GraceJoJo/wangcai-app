@@ -140,7 +140,7 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(contentView);
         infoList = new ArrayList<>();
-        initData();
+//        initData();
         lv.setAdapter(myAdapter);
         myAdapter.addAll(infoList);
 
