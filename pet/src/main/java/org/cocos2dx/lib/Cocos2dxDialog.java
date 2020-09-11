@@ -20,6 +20,8 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
@@ -32,6 +34,8 @@ import com.jd.jrapp.other.pet.R;
 import com.jd.jrapp.other.pet.utils.DisplayUtil;
 import com.jd.jrapp.other.pet.utils.FixAndroidOSystem;
 
+import org.cocos2dx.javascript.JavaCocosBridge;
+import org.cocos2dx.javascript.JavaCocosConstant;
 import org.cocos2dx.javascript.SDKWrapper;
 import org.cocos2dx.lib.CanvasRenderingContext2DImpl;
 import org.cocos2dx.lib.Cocos2dxActivity;
@@ -44,6 +48,7 @@ import org.cocos2dx.lib.Cocos2dxRenderer;
 import org.cocos2dx.lib.Cocos2dxVideoHelper;
 import org.cocos2dx.lib.Cocos2dxWebViewHelper;
 import org.cocos2dx.lib.Utils;
+import org.json.JSONObject;
 
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
@@ -86,6 +91,30 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
     private TextView mGameInfoTextView_2;
 
     private Handler mUiHandler;
+
+    private JavaCocosBridge.CallJavaListener mStartRecordListener = new JavaCocosBridge.CallJavaListener() {
+        @Override
+        public void onCall(String param) {
+            // TODO 开启录音
+            Log.e(TAG, "开启录音。。。");
+        }
+    };
+
+    private JavaCocosBridge.CallJavaListener mStopRecordListener = new JavaCocosBridge.CallJavaListener() {
+        @Override
+        public void onCall(String param) {
+            // TODO 停止录音
+            Log.e(TAG, "停止录音。。。");
+            try{
+                JSONObject obj = new JSONObject();
+                obj.put("type", JavaCocosConstant.DO_ACTION);
+                obj.put("param", "sss");
+                JavaCocosBridge.callCocos(obj.toString());
+            }catch (Throwable t) {
+                t.printStackTrace();
+            }
+        }
+    };
 
     public Cocos2dxDialog(@NonNull Context context) {
         super(context, R.style.loadDialog);
@@ -364,7 +393,16 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
             @Override
             public void onDismiss(DialogInterface dialog) {
                 Log.e(TAG, "onDismiss");
+                JavaCocosBridge.unRegistCallJavaListener(JavaCocosConstant.START_RECORD, mStartRecordListener);
+                JavaCocosBridge.unRegistCallJavaListener(JavaCocosConstant.STOP_RECORD, mStopRecordListener);
                 Cocos2dxHelperDialog.terminateProcess();
+            }
+        });
+        setOnShowListener(new OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                JavaCocosBridge.registCallJavaListener(JavaCocosConstant.START_RECORD, mStartRecordListener);
+                JavaCocosBridge.registCallJavaListener(JavaCocosConstant.STOP_RECORD, mStopRecordListener);
             }
         });
     }
@@ -479,9 +517,67 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         mFrameLayout.addView(this.mGLSurfaceView, layoutParams);
         TextView test = new TextView(getContext());
-        test.setText("测试时");
+        test.setText("按住说话");
         test.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f);
         test.setBackgroundColor(Color.GREEN);
+        test.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                if (action == MotionEvent.ACTION_DOWN) {
+                    runOnGLThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try{
+                                JSONObject jsonObject = new JSONObject();
+                                jsonObject.put("action_type","pause");
+                                jsonObject.put("action","listen");
+                                jsonObject.put("pause_time",3.5);
+                                JSONObject obj = new JSONObject();
+                                obj.put("type", JavaCocosConstant.DO_ACTION);
+                                obj.put("param", jsonObject);
+                                JavaCocosBridge.callCocos(obj.toString());
+                            }catch (Throwable t) {
+                                t.printStackTrace();
+                            }
+                        }
+                    });
+                } else if (action == MotionEvent.ACTION_UP) {
+                    runOnGLThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try{
+                                JSONObject jsonObject = new JSONObject();
+                                jsonObject.put("action_type","resume");
+                                JSONObject obj = new JSONObject();
+                                obj.put("type", JavaCocosConstant.DO_ACTION);
+                                obj.put("param", jsonObject);
+                                JavaCocosBridge.callCocos(obj.toString());
+                            }catch (Throwable t) {
+                                t.printStackTrace();
+                            }
+                        }
+                    });
+                } else if (action == MotionEvent.ACTION_CANCEL) {
+                    runOnGLThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try{
+                                JSONObject jsonObject = new JSONObject();
+                                jsonObject.put("action_type","resume");
+                                JSONObject obj = new JSONObject();
+                                obj.put("type", JavaCocosConstant.DO_ACTION);
+                                obj.put("param", jsonObject);
+                                JavaCocosBridge.callCocos(obj.toString());
+                            }catch (Throwable t) {
+                                t.printStackTrace();
+                            }
+                        }
+                    });
+                }
+                return true;
+            }
+        });
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(300, 100);
         lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);

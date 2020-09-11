@@ -405,7 +405,7 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
                 }
             } else if (msg.what == 101) {
                 JSONObject jsonObject = JSONObject.parseObject(fullResult);
-                if (jsonObject.containsKey("content")) {
+                if (jsonObject != null && jsonObject.containsKey("content")) {
                     String aiResult = jsonObject.getString("content");
                     myAdapter.add(new TouguInfo(aiResult, 1));
                     scrollToBottom();

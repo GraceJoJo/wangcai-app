@@ -34,8 +34,16 @@ class PetFloatWindow private constructor() {
         val instance: PetFloatWindow by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
             PetFloatWindow()
         }
+        val WIDTH_CENTER = 44
+        val WIDTH_NORMAL = 36
+        val SPACE = 15
+        val TOTAL_WIDTH = WIDTH_CENTER + SPACE + WIDTH_NORMAL
+        val TOTAL_HEIGHT = WIDTH_CENTER + SPACE + WIDTH_NORMAL + SPACE + WIDTH_NORMAL
+        val RADIUS = WIDTH_CENTER / 2 + SPACE + WIDTH_NORMAL / 2
     }
 
+    private lateinit var windowManager: WindowManager
+    private lateinit var layoutParam: WindowManager.LayoutParams
     var mMainView: View? = null
     var mClickView: ImageView? = null
     var mTvShouyi: TextView? = null
@@ -200,20 +208,20 @@ class PetFloatWindow private constructor() {
         }
         bindCocosService()
         mIsShowing = true
-        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val layoutParam = WindowManager.LayoutParams()
+        windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        layoutParam = WindowManager.LayoutParams()
         layoutParam.type = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY else WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
         layoutParam.format = PixelFormat.TRANSPARENT
         layoutParam.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM
-        layoutParam.width = getPxValue(100)
-        layoutParam.height = getPxValue(200)
+        layoutParam.width = getPxValue(TOTAL_WIDTH)
+        layoutParam.height = getPxValue(TOTAL_HEIGHT)
         layoutParam.gravity = Gravity.RIGHT or Gravity.BOTTOM
         layoutParam.x = 0
         layoutParam.y = 300
 
         mMainView = LayoutInflater.from(context).inflate(R.layout.layout_pet_float_window, null)
         val bg = GradientDrawable()
-        bg.cornerRadius = getPxValue(20).toFloat()
+        bg.cornerRadius = getPxValue(25).toFloat()
         mClickView = mMainView?.findViewById(R.id.view_btn)
         mClickView?.setBackgroundResource(R.drawable.bg_oval)
         mClickView?.setOnTouchListener { v, event ->
@@ -274,7 +282,7 @@ class PetFloatWindow private constructor() {
     private fun animSwitch() {
         mIsOpen = !mIsOpen
         val start = (mTvShouyi?.layoutParams as? ConstraintLayout.LayoutParams)?.circleRadius ?: 0
-        val end = getPxValue(if (mIsOpen) 60 else 0)
+        val end = getPxValue(if (mIsOpen) RADIUS else 0)
         val anim = ValueAnimator.ofInt(start, end)
         anim.addUpdateListener {
             val value = it.animatedValue as Int
@@ -283,8 +291,49 @@ class PetFloatWindow private constructor() {
             setViewCircleRadiusAndAlpha(mTvDonghua, value)
             setViewCircleRadiusAndAlpha(mTvSign, value)
             setViewCircleRadiusAndAlpha(mTvPet, value)
-//            Log.e(javaClass.simpleName, "anim:" + value)
         }
+        anim.addListener(object :Animator.AnimatorListener{
+            override fun onAnimationRepeat(animation: Animator?) {
+
+            }
+
+            override fun onAnimationEnd(animation: Animator?) {
+//                if (!mIsOpen) {
+//                    val oldH = layoutParam.height
+//                    layoutParam.width = getPxValue(WIDTH_CENTER)
+//                    layoutParam.height = getPxValue(WIDTH_CENTER)
+//                    layoutParam.y = layoutParam.y - (layoutParam.height - oldH) /2
+//
+////                    val lpMain = mMainView?.layoutParams
+////                    lpMain?.width = layoutParam.width
+////                    lpMain?.height = layoutParam.height
+////                    mMainView?.layoutParams = lpMain
+//                    windowManager.updateViewLayout(mMainView, layoutParam)
+//                } else {
+//
+//                }
+            }
+
+            override fun onAnimationCancel(animation: Animator?) {
+
+            }
+
+            override fun onAnimationStart(animation: Animator?) {
+//                if (mIsOpen) {
+//                    val oldH = layoutParam.height
+//                    layoutParam.width = getPxValue(TOTAL_WIDTH)
+//                    layoutParam.height = getPxValue(TOTAL_HEIGHT)
+//                    layoutParam.y = layoutParam.y - (layoutParam.height - oldH) / 2
+////                    val lpMain = mMainView?.layoutParams
+////                    lpMain?.width = layoutParam.width
+////                    lpMain?.height = layoutParam.height
+////                    mMainView?.layoutParams = lpMain
+//                    windowManager.updateViewLayout(mMainView, layoutParam)
+//                } else {
+//
+//                }
+            }
+        })
         anim.duration = 200
         anim.interpolator = AccelerateDecelerateInterpolator()
         anim.start()
