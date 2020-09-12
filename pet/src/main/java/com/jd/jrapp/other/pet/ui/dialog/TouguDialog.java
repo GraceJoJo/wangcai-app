@@ -2,6 +2,7 @@ package com.jd.jrapp.other.pet.ui.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
@@ -9,9 +10,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -90,7 +98,7 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        words = new String[]{mContext.getString(R.string.licai), mContext.getString(R.string.jijin), mContext.getString(R.string.baoxian)};
+        words = new String[]{mContext.getString(R.string.licai), mContext.getString(R.string.licai), mContext.getString(R.string.jijin), mContext.getString(R.string.baoxian)};
         width = (int) DisplayUtil.getScreenWidth(mContext);
         height = (int) DisplayUtil.getScreenHeight(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -285,6 +293,9 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
                 ll_left.setVisibility(View.VISIBLE);
                 ll_right.setVisibility(View.GONE);
                 tv_message_ai.setText(item.getMessage());
+                if (item.getMessage().contains("点击一键下单")) {
+                    setRedText(item.getMessage(), tv_message_ai);
+                }
             } else {
                 ll_left.setVisibility(View.GONE);
                 ll_right.setVisibility(View.VISIBLE);
@@ -421,10 +432,10 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
                 }
 
             } else if (msg.what == 102) {
+                myAdapter.add(new TouguInfo(fullResult, 1));
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        myAdapter.add(new TouguInfo(fullResult, 1));
                         scrollToBottom();
                     }
                 }, 500);
@@ -435,7 +446,7 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
     };
 
     private void scrollToBottom() {
-        if (infoList.size() > 0) {
+        if (myAdapter != null && myAdapter.getItemCount() > 0) {
             lv.scrollToPosition(myAdapter.getItemCount() - 1);
         }
     }
@@ -501,6 +512,32 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
             mAudioRecorder.stop();
             return null;
         }
+    }
+
+    protected void setRedText(String contentStr, TextView textView) {
+        SpannableStringBuilder style = new SpannableStringBuilder();
+
+        //设置文字
+        style.append(contentStr);
+        //设置部分文字点击事件
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+            }
+
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                ds.setUnderlineText(false);
+            }
+        };
+        style.setSpan(clickableSpan, contentStr.length() - 7, contentStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        textView.setText(style);
+        //设置部分文字颜色
+        ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(Color.parseColor("#EF4034"));
+        style.setSpan(foregroundColorSpan, contentStr.length() - 7, contentStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        //配置给TextView
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
+        textView.setText(style);
     }
 
 
