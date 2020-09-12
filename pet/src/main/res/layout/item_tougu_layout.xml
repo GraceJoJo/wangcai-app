@@ -31,7 +31,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginLeft="7dp"
-            android:src="@drawable/icon_gk" />
+            android:src="@drawable/icon_xmright" />
     </LinearLayout>
 
     <LinearLayout
@@ -45,7 +45,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginLeft="7dp"
-            android:src="@drawable/icon_tougu_ai" />
+            android:src="@drawable/icon_xmleft" />
 
         <TextView
             android:id="@+id/tv_message_ai"

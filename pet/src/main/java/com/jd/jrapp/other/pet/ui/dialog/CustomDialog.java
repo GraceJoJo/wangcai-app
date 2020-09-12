@@ -40,9 +40,9 @@ public class CustomDialog extends Dialog implements View.OnClickListener {
     private int width;
     private List<CustomData> customData;
     private ItemClickCallback itemClickCallback;
-    private int[] icons1 = {R.drawable.icon_syms, R.drawable.icon_syms, R.drawable.icon_syms};
-    private int[] icons2 = {R.drawable.icon_bt, R.drawable.icon_bt, R.drawable.icon_jt, R.drawable.icon_jj, R.drawable.icon_bx};
-    private int[] icons3 = {R.drawable.icon_zxyh, R.drawable.icon_zxyh, R.drawable.icon_zxyh, R.drawable.icon_bjyh, R.drawable.icon_add};
+    private int[] icons1 = {R.drawable.icon_syms, R.drawable.icon_acms, R.drawable.icon_ysms};
+    private int[] icons2 = {R.drawable.icon_hy, R.drawable.icon_bt, R.drawable.icon_jt, R.drawable.icon_jj, R.drawable.icon_bx};
+    private int[] icons3 = {R.drawable.icon_zsyh, R.drawable.icon_zxyh, R.drawable.icon_msyh, R.drawable.icon_bjyh, R.drawable.icon_add};
 
     public CustomDialog(Context context, ItemClickCallback itemClickCallback) {
         super(context, R.style.loadDialog);
