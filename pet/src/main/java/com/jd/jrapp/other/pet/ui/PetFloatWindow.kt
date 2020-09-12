@@ -93,6 +93,7 @@ class PetFloatWindow private constructor() {
 //                val intent = Intent(mContext, AppActivity::class.java)
 //                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 //                mContext?.startActivity(intent)
+                AppManager.getInstance().getNLSToken()
                 showPetDialog()
             }
         }
