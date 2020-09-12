@@ -1,0 +1,98 @@
+[
+  {
+    "title": "浮窗显示形式",
+    "records": [
+      {
+        "icon": 0,
+        "iconStr": "收益模式",
+        "type": 0
+
+      },
+      {
+        "icon": 1,
+        "iconStr": "爱宠模式",
+        "type": 0
+
+      },
+      {
+        "icon": 2,
+        "iconStr": "隐身模式",
+        "type": 0
+      },
+      {
+        "icon": 2,
+        "iconStr": "隐身模式",
+        "type": 0
+      },
+      {
+        "icon": 2,
+        "iconStr": "隐身模式",
+        "type": 0
+      }
+    ]
+  },
+  {
+    "title": "自定义功能",
+    "records": [
+      {
+        "icon": 0,
+        "iconStr": "好友",
+        "type": 1
+
+      },
+      {
+        "icon": 1,
+        "iconStr": "白条",
+        "type": 1
+
+      },
+      {
+        "icon": 2,
+        "iconStr": "金条",
+        "type": 1
+      },
+      {
+        "icon": 3,
+        "iconStr": "基金",
+        "type": 1
+      },
+      {
+        "icon": 4,
+        "iconStr": "保险",
+        "type": 1
+      }
+    ]
+  },
+  {
+    "title": "自定义账户",
+    "records": [
+      {
+        "icon": 0,
+        "iconStr": "招商银行",
+        "type": 2
+
+      },
+      {
+        "icon": 1,
+        "iconStr": "中信银行",
+        "type": 2
+
+      },
+      {
+        "icon": 2,
+        "iconStr": "民生银行",
+        "type": 2
+      },
+      {
+        "icon": 3,
+        "iconStr": "北京银行",
+        "type": 2
+      },
+      {
+        "icon": 4,
+        "iconStr": "添加",
+        "type": 2
+      }
+    ]
+  }
+]

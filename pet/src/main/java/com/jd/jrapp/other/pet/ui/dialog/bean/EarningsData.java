@@ -1,6 +1,7 @@
 package com.jd.jrapp.other.pet.ui.dialog.bean;
 
 import java.util.List;
+
 /**
  * Author: chenghuan15
  * Date: 2020/9/1

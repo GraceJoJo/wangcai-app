@@ -12,6 +12,7 @@ import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.IBinder
+import android.os.SystemClock
 import android.provider.Settings
 import android.support.constraint.ConstraintLayout
 import android.util.Log
@@ -45,7 +46,7 @@ class PetFloatWindow private constructor() {
     private lateinit var windowManager: WindowManager
     private lateinit var layoutParam: WindowManager.LayoutParams
     var mMainView: View? = null
-    var mClickView: ImageView? = null
+    var mClickView: TextView? = null
     var mTvShouyi: TextView? = null
     var mTvTougu: TextView? = null
     var mTvDonghua: TextView? = null
@@ -57,6 +58,7 @@ class PetFloatWindow private constructor() {
     var mSignDialog: SignDialog? = null
     var mLicaiDialog: LicaiDialog? = null
     var mTouchSlop: Int = 8
+    var mCustomDialog: CustomDialog? = null
 
     private var mContext: Context? = null
 
@@ -71,29 +73,32 @@ class PetFloatWindow private constructor() {
     private var mCanTouch = true
 
     private var mOnclickListener = object : View.OnClickListener {
+        //需要监听几次点击事件数组的长度就为几
+        //如果要监听双击事件则数组长度为2，如果要监听3次连续点击事件则数组长度为3...
+        val mHints = LongArray(2);//初始全部为0
+
         override fun onClick(v: View?) {
             Log.e("PetFloatWindow", "onClick: " + v)
             animSwitch()
             if (v == mTvShouyi) {
-//                showShouYiDialog()
                 showLicaiDialog()
             } else if (v == mTvTougu) {
-//                val intent = Intent(mContext, SpeechRecognizerActivity::class.java)
-//                mContext?.startActivity(intent)
                 AppManager.getInstance().getNLSToken()
                 showTouguDialog();
             } else if (v == mTvDonghua) {
                 showPayDialog()
             } else if (v == mTvSign) {
-//                val intent = Intent(mContext, SpeechTranscriberWithRecorderActivity::class.java)
-//                mContext?.startActivity(intent)
                 showSignDialog();
             } else if (v == mClickView) {
 //                animSwitch()
+                //将mHints数组内的所有元素左移一个位置
+                System.arraycopy(mHints, 1, mHints, 0, mHints.size - 1);
+                //获得当前系统已经启动的时间
+                mHints[mHints.size - 1] = SystemClock.uptimeMillis();
+                if (SystemClock.uptimeMillis() - mHints[0] <= 500) {
+                    showCustomDialog()
+                }
             } else if (v == mTvPet) {
-//                val intent = Intent(mContext, AppActivity::class.java)
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//                mContext?.startActivity(intent)
                 showPetDialog()
             }
         }
@@ -115,6 +120,36 @@ class PetFloatWindow private constructor() {
                 mShouYiDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             }
             mShouYiDialog?.show()
+        }
+    }
+
+    private fun showCustomDialog() {
+        mCustomDialog = CustomDialog(mContext, object : CustomDialog.ItemClickCallback {
+            override fun clickCallback(type: Int) {
+                if(type==0){
+                    mClickView?.alpha=1f
+                    mClickView?.setText("+50")
+                    mClickView?.setBackgroundResource(R.drawable.bg_oval)
+                }else if(type==1){
+                    mClickView?.alpha=1f
+                    mClickView?.setText("")
+                    mClickView?.setBackgroundResource(R.drawable.icon_pw);
+                }else if(type==2){
+                    mClickView?.setText("")
+                    mClickView?.setBackgroundResource(R.drawable.bg_oval)
+                    mClickView?.alpha=0.2f
+                }
+                animSwitch()
+                mCustomDialog?.dismiss()
+            }
+        })
+        if (mCustomDialog != null) {
+            if (Build.VERSION.SDK_INT >= 25) {
+                mCustomDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+            } else {
+                mCustomDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            }
+            mCustomDialog?.show()
         }
     }
 
@@ -294,7 +329,7 @@ class PetFloatWindow private constructor() {
             setViewCircleRadiusAndAlpha(mTvSign, value)
             setViewCircleRadiusAndAlpha(mTvPet, value)
         }
-        anim.addListener(object :Animator.AnimatorListener{
+        anim.addListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(animation: Animator?) {
 
             }
@@ -404,22 +439,22 @@ class PetFloatWindow private constructor() {
         mContext?.startService(Intent(mContext, CocosService::class.java))
     }
 
-    private var mCocosInterface: ICocosInterface?= null
+    private var mCocosInterface: ICocosInterface? = null
 
-    private val mDeathRecipent = object :IBinder.DeathRecipient{
+    private val mDeathRecipent = object : IBinder.DeathRecipient {
         override fun binderDied() {
             onBinderDied()
         }
     }
 
-    private fun onBinderDied(){
+    private fun onBinderDied() {
         Log.e("AppActivity", "onBinderDied!!!")
         mCocosInterface?.asBinder()?.unlinkToDeath(mDeathRecipent, 0)
         mCocosInterface = null
         bindCocosService()
     }
 
-    private fun bindCocosService(){
+    private fun bindCocosService() {
 
         val intent = Intent(mContext, CocosService::class.java)
         mContext?.bindService(intent, object : ServiceConnection {
@@ -432,7 +467,7 @@ class PetFloatWindow private constructor() {
                     Log.e("AppActivity", "onServiceConnected:" + service)
                     mCocosInterface = ICocosInterface.Stub.asInterface(service)
                     service?.linkToDeath(mDeathRecipent, 0)
-                }catch (e: Throwable) {
+                } catch (e: Throwable) {
                     e.printStackTrace()
                 }
             }
