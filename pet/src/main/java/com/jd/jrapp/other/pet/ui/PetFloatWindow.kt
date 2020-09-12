@@ -272,13 +272,13 @@ class PetFloatWindow private constructor() {
                 }
                 mTouchEvent = false
             } else if (event.action == MotionEvent.ACTION_MOVE) {
-                if (mCanTouch && PointF(curX - mLastX, curY - mLastY).length() >= mTouchSlop) {
+                if (mCanTouch && PointF(curX - mLastX, curY - mLastY).length() >= 8) {
                     mTouchEvent = true
                     layoutParam.x -= (curX - mLastX).toInt()
                     layoutParam.y -= (curY - mLastY).toInt()
                     windowManager.updateViewLayout(mMainView, layoutParam)
                 } else if (!mCanTouch) {
-                    if (mIsOpen) {
+                    if (mIsOpen && !animSwitching) {
                         animSwitch()
                     }
                 }
@@ -316,7 +316,13 @@ class PetFloatWindow private constructor() {
         windowManager.addView(mMainView, layoutParam)
     }
 
+    var animSwitching = false
+
     private fun animSwitch() {
+        if (animSwitching) {
+            return
+        }
+        animSwitching = true
         mIsOpen = !mIsOpen
         val start = (mTvShouyi?.layoutParams as? ConstraintLayout.LayoutParams)?.circleRadius ?: 0
         val end = getPxValue(if (mIsOpen) RADIUS else 0)
@@ -335,6 +341,7 @@ class PetFloatWindow private constructor() {
             }
 
             override fun onAnimationEnd(animation: Animator?) {
+                animSwitching = false
 //                if (!mIsOpen) {
 //                    val oldH = layoutParam.height
 //                    layoutParam.width = getPxValue(WIDTH_CENTER)
