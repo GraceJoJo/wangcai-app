@@ -44,7 +44,7 @@ public class PtDialog extends Dialog implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         width = (int) DisplayUtil.getScreenWidth(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contentView = inflater.inflate(R.layout.layout_custom_dialog, null);
+        View contentView = inflater.inflate(R.layout.layout_pt_dialog, null);
         TextView tv_send = contentView.findViewById(R.id.tv_send);
         RelativeLayout rl_dialog = contentView.findViewById(R.id.rl_dialog);
         RecyclerView recyclerView = contentView.findViewById(R.id.recyclerView);

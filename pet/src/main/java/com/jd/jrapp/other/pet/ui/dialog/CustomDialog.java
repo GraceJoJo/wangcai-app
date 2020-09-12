@@ -3,6 +3,8 @@ package com.jd.jrapp.other.pet.ui.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +26,7 @@ import com.jd.jrapp.other.pet.utils.DisplayUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Author: chenghuan15
@@ -75,7 +78,6 @@ public class CustomDialog extends Dialog implements View.OnClickListener {
         getWindow().setAttributes(lp);
 
     }
-
 
     @Override
     public void onClick(View v) {

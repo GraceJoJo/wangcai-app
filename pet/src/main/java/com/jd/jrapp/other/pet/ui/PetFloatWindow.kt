@@ -10,9 +10,7 @@ import android.graphics.PixelFormat
 import android.graphics.PointF
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
-import android.os.Build
-import android.os.IBinder
-import android.os.SystemClock
+import android.os.*
 import android.provider.Settings
 import android.support.constraint.ConstraintLayout
 import android.util.Log
@@ -25,6 +23,7 @@ import com.jd.jrapp.other.pet.ui.dialog.*
 import com.jd.jrapp.other.pet.utils.AppManager
 import org.cocos2dx.javascript.ICocosInterface
 import org.cocos2dx.javascript.service.CocosService
+import java.util.*
 
 /**
  * Created by yuguotao at 2020/8/6,3:58 PM
@@ -41,6 +40,7 @@ class PetFloatWindow private constructor() {
         val TOTAL_WIDTH = WIDTH_CENTER + SPACE + WIDTH_NORMAL
         val TOTAL_HEIGHT = WIDTH_CENTER + SPACE + WIDTH_NORMAL + SPACE + WIDTH_NORMAL
         val RADIUS = WIDTH_CENTER / 2 + SPACE + WIDTH_NORMAL / 2
+        var zjsy = 50
     }
 
     private lateinit var windowManager: WindowManager
@@ -61,6 +61,7 @@ class PetFloatWindow private constructor() {
     var mCustomDialog: CustomDialog? = null
     var mPtDialog: PtDialog? = null
 
+
     private var mContext: Context? = null
 
     private var mIsOpen = false
@@ -72,6 +73,40 @@ class PetFloatWindow private constructor() {
 
     private var mTouchEvent = false
     private var mCanTouch = true
+
+    private val zjsys = intArrayOf(50, 49, 51, 46, 47, 52, 48, 46, 49, 45, 43)
+
+    internal var handler: Handler = object : Handler() {
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            if (msg.what == 100) {
+                setData(false)
+            }
+
+        }
+    }
+
+    fun startTimer() {
+        handler.postDelayed({ handler.sendEmptyMessage(100) }, (5 * 1000).toLong())
+    }
+
+    fun stopTimer() {
+        if(handler!=null){
+            handler.removeMessages(100)
+        }
+    }
+
+    fun setData(isFirst: Boolean) {
+        if (mClickView != null) {
+            mClickView?.setText("+${zjsy}")
+            val number = Math.floor((Random().nextInt(10) + 1).toDouble()).toInt()
+            zjsy = zjsys[number]
+            if (!isFirst) {
+                startTimer()
+            }
+        }
+    }
+
 
     private var mOnclickListener = object : View.OnClickListener {
         //需要监听几次点击事件数组的长度就为几
@@ -142,18 +177,22 @@ class PetFloatWindow private constructor() {
     private fun showCustomDialog() {
         mCustomDialog = CustomDialog(mContext, object : CustomDialog.ItemClickCallback {
             override fun clickCallback(type: Int) {
-                if(type==0){
-                    mClickView?.alpha=1f
-                    mClickView?.setText("+50")
+                if (type == 0) {
+                    mClickView?.alpha = 1f
+                    mClickView?.setText("+" + zjsy)
                     mClickView?.setBackgroundResource(R.drawable.bg_oval)
-                }else if(type==1){
-                    mClickView?.alpha=1f
+                    setData(true)
+                    startTimer()
+                } else if (type == 1) {
+                    mClickView?.alpha = 1f
                     mClickView?.setText("")
                     mClickView?.setBackgroundResource(R.drawable.icon_pw);
-                }else if(type==2){
+                    stopTimer()
+                } else if (type == 2) {
                     mClickView?.setText("")
                     mClickView?.setBackgroundResource(R.drawable.bg_oval)
-                    mClickView?.alpha=0.2f
+                    mClickView?.alpha = 0.2f
+                    stopTimer()
                 }
                 animSwitch()
                 mCustomDialog?.dismiss()
@@ -170,9 +209,7 @@ class PetFloatWindow private constructor() {
     }
 
     private fun showLicaiDialog() {
-        if (mLicaiDialog == null) {
-            mLicaiDialog = LicaiDialog(mContext)
-        }
+        mLicaiDialog = LicaiDialog(mContext, zjsy)
         if (mLicaiDialog != null) {
             if (Build.VERSION.SDK_INT >= 25) {
                 mLicaiDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
@@ -328,7 +365,6 @@ class PetFloatWindow private constructor() {
         mClickView?.setOnClickListener(mOnclickListener)
         mTvSign?.setOnClickListener(mOnclickListener)
         mTvPet?.setOnClickListener(mOnclickListener)
-
         windowManager.addView(mMainView, layoutParam)
     }
 

@@ -3,6 +3,8 @@ package com.jd.jrapp.other.pet.ui.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -18,13 +20,16 @@ import com.google.gson.reflect.TypeToken;
 import com.jd.jrapp.other.pet.R;
 import com.jd.jrapp.other.pet.ui.BaseRecycler.BaseAdapterHelper;
 import com.jd.jrapp.other.pet.ui.BaseRecycler.RecycleAdapter;
+import com.jd.jrapp.other.pet.ui.PetFloatWindow;
 import com.jd.jrapp.other.pet.ui.dialog.bean.MoneyManagementData;
 import com.jd.jrapp.other.pet.utils.AppManager;
 import com.jd.jrapp.other.pet.utils.DisplayUtil;
 import com.jd.jrapp.other.pet.utils.SharedPrefsMgr;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Author: chenghuan15
@@ -37,7 +42,7 @@ public class LicaiDialog extends Dialog implements View.OnClickListener {
     private Context mContext;
     private static final String ISOPEN = "isOpen";
     private int width;
-    private TextView tv_tips, tv_tips_view, tv_total_assets;
+    private TextView tv_tips, tv_tips_view, tv_total_assets, tv_zxsy;
     private CheckBox cb_rxph, cb_jxjj, cb_dtyy, iv_eye_zzc, iv_kjxj;
     private View view_rxph, view_jxjj, view_dtyy;
     private ScrollView scrollview;
@@ -45,11 +50,12 @@ public class LicaiDialog extends Dialog implements View.OnClickListener {
     private List<MoneyManagementData> moneyManagementData;
     private String[] recordStatusDescription = new String[]{"紧跟平台购买趋势，跟着大家买理财", "精选绩优好基，适合长期持有", "专业团队严选，追求收益"};
     private boolean isOpen = false;
+    private int zjsy = 50;
 
-
-    public LicaiDialog(Context context) {
+    public LicaiDialog(Context context, int zjsy) {
         super(context, R.style.loadDialog);
         this.mContext = context;
+        this.zjsy=zjsy;
     }
 
     @Override
@@ -62,6 +68,7 @@ public class LicaiDialog extends Dialog implements View.OnClickListener {
         iv_eye_zzc = contentView.findViewById(R.id.iv_eye_zzc);
         iv_kjxj = contentView.findViewById(R.id.iv_kjxj);
 
+        tv_zxsy = contentView.findViewById(R.id.tv_zxsy);
         cb_rxph = contentView.findViewById(R.id.cb_rxph);
         cb_jxjj = contentView.findViewById(R.id.cb_jxjj);
         cb_dtyy = contentView.findViewById(R.id.cb_dtyy);
@@ -81,7 +88,7 @@ public class LicaiDialog extends Dialog implements View.OnClickListener {
         moneyManagementData = getJsonData("licai.json");
         recordsBeanList = (List<MoneyManagementData.RecordsBean>) moneyManagementData.get(0).getRecords();
         hideTotalAssets();
-
+        tv_zxsy.setText("+" +zjsy+".00");
         iv_eye_zzc.setOnClickListener(this);
         iv_kjxj.setOnClickListener(this);
         cb_rxph.setOnClickListener(this);
@@ -110,9 +117,9 @@ public class LicaiDialog extends Dialog implements View.OnClickListener {
 
     public void hideTotalAssets() {
         iv_eye_zzc.setChecked(isOpen);
-        if(isOpen){
+        if (isOpen) {
             tv_total_assets.setText("28,000.00");
-        }else {
+        } else {
             tv_total_assets.setText("****");
         }
     }
@@ -123,7 +130,7 @@ public class LicaiDialog extends Dialog implements View.OnClickListener {
         } else if (v.getId() == R.id.rl_dialog) {
             dismiss();
         } else if (v.getId() == R.id.iv_eye_zzc) {
-            isOpen=!isOpen;
+            isOpen = !isOpen;
             hideTotalAssets();
         } else if (v.getId() == R.id.iv_kjxj) {
         } else if (v.getId() == R.id.cb_rxph) {
