@@ -63,14 +63,15 @@
         app:layout_constraintCircleAngle="180"
         app:layout_constraintCircleRadius="0dp" />
 
-    <ImageView
+    <com.jd.jrapp.other.pet.ui.GradientColorTextView
         android:id="@+id/view_btn"
         android:layout_width="44dp"
         android:layout_height="44dp"
+        android:text=""
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:background="#FF0000" />
+        app:layout_constraintRight_toRightOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
 

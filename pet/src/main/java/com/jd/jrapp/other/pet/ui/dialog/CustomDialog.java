@@ -39,13 +39,15 @@ public class CustomDialog extends Dialog implements View.OnClickListener {
     private Context mContext;
     private int width;
     private List<CustomData> customData;
+    private ItemClickCallback itemClickCallback;
     private int[] icons1 = {R.drawable.icon_syms, R.drawable.icon_syms, R.drawable.icon_syms};
     private int[] icons2 = {R.drawable.icon_bt, R.drawable.icon_bt, R.drawable.icon_jt, R.drawable.icon_jj, R.drawable.icon_bx};
     private int[] icons3 = {R.drawable.icon_zxyh, R.drawable.icon_zxyh, R.drawable.icon_zxyh, R.drawable.icon_bjyh, R.drawable.icon_add};
 
-    public CustomDialog(Context context) {
+    public CustomDialog(Context context, ItemClickCallback itemClickCallback) {
         super(context, R.style.loadDialog);
         this.mContext = context;
+        this.itemClickCallback=itemClickCallback;
     }
 
     @Override
@@ -95,7 +97,7 @@ public class CustomDialog extends Dialog implements View.OnClickListener {
             recyclerView.setLayoutManager(manager);
             RecycleAdapter<CustomData.RecordsBean> myItemAdapter = new RecycleAdapter<CustomData.RecordsBean>(mContext, R.layout.item_custom_layout) {
                 @Override
-                protected void convert(BaseAdapterHelper helper, CustomData.RecordsBean item, int position) {
+                protected void convert(BaseAdapterHelper helper, CustomData.RecordsBean item, final int position) {
 //                    LinearLayout view = helper.getView(R.id.rl_sign);
 //                    ViewGroup.LayoutParams params = view.getLayoutParams();
 //                    if (position == customItemData.getRecords().size() - 1) {
@@ -110,6 +112,12 @@ public class CustomDialog extends Dialog implements View.OnClickListener {
                             helper.setVisible(R.id.ll_sign, true);
                             helper.setBackgroundRes(R.id.iv_ms, icons1[position]);
                         }
+                        helper.setOnClickListener(R.id.ll_sign, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                itemClickCallback.clickCallback(position);
+                            }
+                        });
                     } else if (item.getType() == 1) {
                         helper.setBackgroundRes(R.id.iv_ms, icons2[position]);
                     } else if (item.getType() == 2) {
@@ -150,6 +158,10 @@ public class CustomDialog extends Dialog implements View.OnClickListener {
             }
         }
         return null;
+    }
+
+    public interface ItemClickCallback{
+        void clickCallback(int type);
     }
 
 }
