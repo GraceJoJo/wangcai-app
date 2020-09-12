@@ -56,6 +56,7 @@ class PetFloatWindow private constructor() {
     var mTouguDialog: TouguDialog? = null
     var mSignDialog: SignDialog? = null
     var mLicaiDialog: LicaiDialog? = null
+    var mTouchSlop: Int = 8
 
     private var mContext: Context? = null
 
@@ -206,6 +207,7 @@ class PetFloatWindow private constructor() {
         if (mIsShowing) {
             return
         }
+        mTouchSlop = ViewConfiguration.get(mContext).scaledTouchSlop
         bindCocosService()
         mIsShowing = true
         windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -235,7 +237,7 @@ class PetFloatWindow private constructor() {
                 }
                 mTouchEvent = false
             } else if (event.action == MotionEvent.ACTION_MOVE) {
-                if (mCanTouch && PointF(curX - mLastX, curY - mLastY).length() >= 8) {
+                if (mCanTouch && PointF(curX - mLastX, curY - mLastY).length() >= mTouchSlop) {
                     mTouchEvent = true
                     layoutParam.x -= (curX - mLastX).toInt()
                     layoutParam.y -= (curY - mLastY).toInt()
