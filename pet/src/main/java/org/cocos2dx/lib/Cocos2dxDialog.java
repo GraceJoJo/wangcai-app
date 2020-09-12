@@ -6,13 +6,20 @@ import android.content.DialogInterface;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
+import android.media.AudioFormat;
 import android.media.AudioManager;
+import android.media.AudioRecord;
+import android.media.MediaRecorder;
 import android.opengl.GLSurfaceView;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -25,7 +32,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.idst.util.NlsClient;
+import com.alibaba.idst.util.SpeechRecognizer;
+import com.alibaba.idst.util.SpeechRecognizerCallback;
 import com.jd.jrapp.other.pet.R;
+import com.jd.jrapp.other.pet.ui.dialog.TouguDialog;
+import com.jd.jrapp.other.pet.ui.dialog.bean.TouguInfo;
+import com.jd.jrapp.other.pet.utils.AppManager;
 import com.jd.jrapp.other.pet.utils.DisplayUtil;
 
 import org.cocos2dx.javascript.JavaCocosBridge;
@@ -33,14 +46,18 @@ import org.cocos2dx.javascript.JavaCocosConstant;
 import org.cocos2dx.javascript.SDKWrapper;
 import org.json.JSONObject;
 
+import java.nio.ByteBuffer;
+
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.egl.EGLDisplay;
 
+import static android.media.AudioRecord.STATE_UNINITIALIZED;
+
 /**
  * Created by yuguotao at 2020/9/9,6:27 PM
  */
-public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Cocos2dxHelperListener {
+public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Cocos2dxHelperListener, SpeechRecognizerCallback {
     // ===========================================================
     // Constants
     // ===========================================================
@@ -72,8 +89,15 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
     private TextView mGameInfoTextView_0;
     private TextView mGameInfoTextView_1;
     private TextView mGameInfoTextView_2;
+    private NlsClient client;
+    public SpeechRecognizer speechRecognizer;
 
     private Handler mUiHandler;
+    private Handler mainHandler;
+    private String result;
+    private RecordTask recordTask;
+    private boolean isCancel;
+    private String[] keyWords = new String[]{"知道", "请不要说话", "你好"};
 
     private JavaCocosBridge.CallJavaListener mStartRecordListener = new JavaCocosBridge.CallJavaListener() {
         @Override
@@ -101,7 +125,33 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
 
     public Cocos2dxDialog(@NonNull Context context) {
         super(context, R.style.loadDialog);
-        mUiHandler = new Handler(Looper.getMainLooper());
+        mUiHandler = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                final String fullResult = (String) msg.obj;
+                if (msg.what == 100) {
+                    if (!TextUtils.isEmpty((String) msg.obj)) {
+                        com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(fullResult);
+                        if (jsonObject.containsKey("payload")) {
+                            result = jsonObject.getJSONObject("payload").getString("result");
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Message message = new Message();
+                                    for (int i = 0; i < keyWords.length; i++) {
+                                        if(result.contains(keyWords[i])){
+                                            return;
+                                        }
+                                    }
+                                }
+                            }).start();
+
+                        }
+                    }
+                }
+            }
+        };
     }
     // DEBUG VIEW END
 
@@ -525,6 +575,7 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
                             }
                         }
                     });
+                    startRecognizer();
                 } else if (action == MotionEvent.ACTION_UP) {
                     runOnGLThread(new Runnable() {
                         @Override
@@ -541,6 +592,7 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
                             }
                         }
                     });
+                    stopRecognizer();
                 } else if (action == MotionEvent.ACTION_CANCEL) {
                     runOnGLThread(new Runnable() {
                         @Override
@@ -557,6 +609,7 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
                             }
                         }
                     });
+                    stopRecognizer();
                 }
                 return true;
             }
@@ -725,4 +778,152 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
 
     //native method,call GLViewImpl::getGLContextAttrs() to get the OpenGL ES context attributions
 //    private static native int[] getGLContextAttrs();
+
+    /**
+     * 启动录音和识别
+     */
+    public void startRecognizer() {
+        if (TextUtils.isEmpty(AppManager.accessToken.getToken())) {
+            return;
+        }
+        // 第二步，新建识别回调类
+
+        // 第三步，创建识别request
+        speechRecognizer = client.createRecognizerRequest(this);
+        // 第四步，设置相关参数
+        // Token有有效期，请使用https://help.aliyun.com/document_detail/72153.html 动态生成token
+        speechRecognizer.setToken(AppManager.accessToken.getToken());
+        // 请使用阿里云语音服务管控台(https://nls-portal.console.aliyun.com/)生成您的appkey
+        speechRecognizer.setAppkey(AppManager.NLS_App_KEY);
+        // 以下为设置各种识别参数，请按需选择，更多参数请见文档
+        // 开启ITN
+        speechRecognizer.enableInverseTextNormalization(true);
+        // 开启标点
+        speechRecognizer.enablePunctuationPrediction(false);
+        // 不返回中间结果
+        speechRecognizer.enableIntermediateResult(false);
+        // 设置打开服务端VAD
+        speechRecognizer.enableVoiceDetection(true);
+        speechRecognizer.setMaxStartSilence(3000);
+        speechRecognizer.setMaxEndSilence(600);
+        // 设置定制模型和热词
+        // speechRecognizer.setCustomizationId("yourCustomizationId");
+        // speechRecognizer.setVocabularyId("yourVocabularyId");
+        speechRecognizer.start();
+
+        //启动录音线程
+        recordTask = new RecordTask(getContext(), speechRecognizer);
+        recordTask.execute();
+    }
+
+    /**
+     * 停止录音和识别
+     */
+    public void stopRecognizer() {
+        // 停止录音
+        Log.i(TAG, "Stoping recognizer...");
+        if (recordTask == null) {
+            return;
+        }
+        recordTask.stop();
+        speechRecognizer.stop();
+    }
+
+    // 语音识别回调类，用户在这里得到语音识别结果，加入您自己的业务处理逻辑
+    // 注意不要在回调方法里执行耗时操作
+    @Override
+    public void onRecognizedStarted(String msg, int code) {
+        Log.d(TAG, "OnRecognizedStarted " + msg + ": " + String.valueOf(code));
+    }
+
+    // 请求失败
+    @Override
+    public void onTaskFailed(String msg, int code) {
+        Log.d(TAG, "OnTaskFailed: " + msg + ": " + String.valueOf(code));
+        recordTask.stop();
+        speechRecognizer.stop();
+    }
+
+    // 识别返回中间结果，只有enableIntermediateResult(true)时才会回调
+    @Override
+    public void onRecognizedResultChanged(final String msg, int code) {
+        Log.d(TAG, "OnRecognizedResultChanged " + msg + ": " + String.valueOf(code));
+    }
+
+    // 第七步，识别结束，得到最终完整结果
+    @Override
+    public void onRecognizedCompleted(final String msg, int code) {
+        recordTask.stop();
+        if (isCancel) {
+            return;
+        }
+        Message message = new Message();
+        message.what = 100;
+        message.obj = msg;
+        mUiHandler.sendMessage(message);
+    }
+
+    // 请求结束，关闭连接
+    @Override
+    public void onChannelClosed(String msg, int code) {
+
+        Log.d(TAG, "OnChannelClosed " + msg + ": " + String.valueOf(code));
+    }
+
+    static class RecordTask extends AsyncTask<Void, Integer, Void> {
+        final static int SAMPLE_RATE = 16000;
+        final static int SAMPLES_PER_FRAME = 640;
+        private Context mContext;
+        private boolean sending;
+        private SpeechRecognizer speechRecognizer;
+
+        public RecordTask(Context mContext, SpeechRecognizer speechRecognizer) {
+            this.mContext = mContext;
+            this.speechRecognizer = speechRecognizer;
+        }
+
+        public void stop() {
+            sending = false;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Log.d(TAG, "Init audio recorder");
+            int bufferSizeInBytes = AudioRecord.getMinBufferSize(SAMPLE_RATE,
+                    AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
+            AudioRecord mAudioRecorder = new AudioRecord(MediaRecorder.AudioSource.DEFAULT, SAMPLE_RATE,
+                    AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, bufferSizeInBytes * 2);
+
+            if (mAudioRecorder == null || mAudioRecorder.getState() == STATE_UNINITIALIZED) {
+                throw new IllegalStateException("Failed to initialize AudioRecord!");
+            }
+            mAudioRecorder.startRecording();
+
+            ByteBuffer buf = ByteBuffer.allocateDirect(SAMPLES_PER_FRAME);
+            sending = true;
+            while (sending) {
+                buf.clear();
+                // 采集语音
+                int readBytes = mAudioRecorder.read(buf, SAMPLES_PER_FRAME);
+                byte[] bytes = new byte[SAMPLES_PER_FRAME];
+                buf.get(bytes, 0, SAMPLES_PER_FRAME);
+                if (readBytes > 0 && sending) {
+                    // 第六步，发送语音数据到识别服务
+                    int code = speechRecognizer.sendAudio(bytes, bytes.length);
+                    if (code < 0) {
+                        Log.i(TAG, "Failed to send audio!");
+                        speechRecognizer.stop();
+                        break;
+                    }
+                    Log.d(TAG, "Send audio data length: " + bytes.length);
+                }
+                buf.position(readBytes);
+                buf.flip();
+            }
+            speechRecognizer.stop();
+            mAudioRecorder.stop();
+            return null;
+        }
+    }
+
 }
