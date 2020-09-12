@@ -202,14 +202,20 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
                                 new Thread(){
                                     @Override
                                     public void run() {
-                                        final String aiStr = AppManager.getServiceInfo(result);
-                                        mUiHandler.post(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                Toast.makeText(getContext(), aiStr, Toast.LENGTH_SHORT).show();
-                                                showLabelInfo(aiStr);
-                                            }
-                                        });
+                                        try{
+                                            final String aiStr = AppManager.getServiceInfo(result);
+                                            JSONObject json = new JSONObject(aiStr);
+                                            final String content = json.optString("content");
+                                            mUiHandler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Toast.makeText(getContext(), content, Toast.LENGTH_SHORT).show();
+                                                    showLabelInfo(aiStr);
+                                                }
+                                            });
+                                        }catch (Throwable t) {
+                                            t.printStackTrace();
+                                        }
                                     }
                                 }.start();
                             }
