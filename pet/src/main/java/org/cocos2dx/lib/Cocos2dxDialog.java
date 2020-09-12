@@ -20,6 +20,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -31,6 +32,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.idst.util.NlsClient;
 import com.alibaba.idst.util.SpeechRecognizer;
@@ -47,6 +49,7 @@ import org.cocos2dx.javascript.SDKWrapper;
 import org.json.JSONObject;
 
 import java.nio.ByteBuffer;
+import java.util.Map;
 
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
@@ -99,6 +102,25 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
     private boolean isCancel;
     private String[] keyWords = new String[]{"知道", "请不要说话", "你好"};
 
+    private static Map<String, String> actionKeywords = new ArrayMap(8);
+    static {
+        actionKeywords.put("哭", JavaCocosConstant.ACTION_CRY);
+        actionKeywords.put("笑", JavaCocosConstant.ACTION_HAPPY);
+        actionKeywords.put("招呼", JavaCocosConstant.ACTION_GREET);
+        actionKeywords.put("hello", JavaCocosConstant.ACTION_GREET);
+        actionKeywords.put("hi", JavaCocosConstant.ACTION_GREET);
+        actionKeywords.put("好", JavaCocosConstant.ACTION_GREET);
+        actionKeywords.put("跳", JavaCocosConstant.ACTION_JUMP);
+    }
+
+    private static Map<String, String> licaiKeywords = new ArrayMap<>(8);
+    static {
+        licaiKeywords.put("理财", "客官，根据您的情况，推荐您将资金的50%配置小金库，方便您随时存取，50%配置小金存，给您更大的收益空间。根据过去一年的收益数据测算，该配置方案的预期年化收益在4%左右，点击一键下单");
+        licaiKeywords.put("投资", "客官，根据您的情况，推荐您将资金的50%配置小金库，方便您随时存取，50%配置小金存，给您更大的收益空间。根据过去一年的收益数据测算，该配置方案的预期年化收益在4%左右，点击一键下单");
+        licaiKeywords.put("基金", "客官，推荐您将资金的40%配置广发沪深300指数基金，给您较大的收益想象空间，30%配置前海开源沪港深优势精选混合基金，分散您的投资风险，30%的资金配置小金库，方便您随时存取。点击一键下单");
+        licaiKeywords.put("保险", "客官，根据您的情况，推荐您将资金的70%配置小金保，在给您带来保障的同时让您获得稳健的收益，30%配置小金存，方便您随时存取。该配置方案的预期年化收益在5%左右，点击一键下单");
+    }
+
     private JavaCocosBridge.CallJavaListener mStartRecordListener = new JavaCocosBridge.CallJavaListener() {
         @Override
         public void onCall(String param) {
@@ -133,26 +155,75 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
                 if (msg.what == 100) {
                     if (!TextUtils.isEmpty((String) msg.obj)) {
                         com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(fullResult);
-                        if (jsonObject.containsKey("payload")) {
+                        if (jsonObject != null && jsonObject.containsKey("payload")) {
                             result = jsonObject.getJSONObject("payload").getString("result");
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Message message = new Message();
-                                    for (int i = 0; i < keyWords.length; i++) {
-                                        if(result.contains(keyWords[i])){
-                                            return;
+                            Log.e(TAG, "result:" + result);
+                            boolean actiomMatched = false;
+                            for (String key :actionKeywords.keySet()){
+                                if (result.contains(key)) {
+                                    actiomMatched = true;
+                                    final String action = actionKeywords.get(key);
+                                    runOnGLThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try{
+                                                JSONObject jsonObject = new JSONObject();
+                                                jsonObject.put("action_type","normal");
+                                                jsonObject.put("action", action);
+                                                JSONObject obj = new JSONObject();
+                                                obj.put("type", JavaCocosConstant.TYPE_DO_ACTION);
+                                                obj.put("param", jsonObject);
+                                                JavaCocosBridge.callCocos(obj.toString());
+                                            }catch (Throwable t) {
+                                                t.printStackTrace();
+                                            }
                                         }
+                                    });
+                                    break;
+                                }
+                            }
+
+                            boolean licaiMathed = false;
+                            // 没有匹配默认动作，需要调用对话接口
+                            if (!actiomMatched) {
+                                for (String key: licaiKeywords.keySet()) {
+                                    if (result.contains(key)) {
+                                        licaiMathed = true;
+                                        String txt = licaiKeywords.get(key);
+                                        Toast.makeText(getContext(), txt, Toast.LENGTH_SHORT).show();
+                                        showLabelInfo(txt);
+                                        break;
                                     }
                                 }
-                            }).start();
+                            }
 
+                            // 最后调用对话接口
+                            if (!actiomMatched && !licaiMathed) {
+                                new Thread(){
+                                    @Override
+                                    public void run() {
+                                        final String aiStr = AppManager.getServiceInfo(result);
+                                        mUiHandler.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Toast.makeText(getContext(), aiStr, Toast.LENGTH_SHORT).show();
+                                                showLabelInfo(aiStr);
+                                            }
+                                        });
+                                    }
+                                }.start();
+                            }
                         }
                     }
                 }
             }
         };
     }
+
+    private void showLabelInfo(String text) {
+
+    }
+
     // DEBUG VIEW END
 
     // ===========================================================
@@ -380,6 +451,7 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
 //        FixAndroidOSystem.fix(this);
         super.onCreate(savedInstanceState);
         AppManager.getInstance().getNLSToken();
+        client = AppManager.client;
 //        Utils.setActivity(this);
 
         // Workaround in https://stackoverflow.com/questions/16283079/re-launch-of-activity-on-home-button-but-only-the-first-time/16447508
@@ -566,7 +638,7 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
                                 JSONObject jsonObject = new JSONObject();
                                 jsonObject.put("action_type","pause");
                                 jsonObject.put("action","listen");
-                                jsonObject.put("pause_time",3.5);
+                                jsonObject.put("pause_time",1);
                                 JSONObject obj = new JSONObject();
                                 obj.put("type", JavaCocosConstant.TYPE_DO_ACTION);
                                 obj.put("param", jsonObject);
@@ -861,7 +933,7 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
         Message message = new Message();
         message.what = 100;
         message.obj = msg;
-        mUiHandler.sendMessage(message);
+        mUiHandler.sendMessageDelayed(message, 1000);
     }
 
     // 请求结束，关闭连接
