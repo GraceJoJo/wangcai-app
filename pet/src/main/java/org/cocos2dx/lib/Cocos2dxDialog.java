@@ -3,19 +3,15 @@ package org.cocos2dx.lib;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.PixelFormat;
 import android.media.AudioManager;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.TypedValue;
@@ -25,29 +21,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jd.jrapp.other.pet.R;
 import com.jd.jrapp.other.pet.utils.DisplayUtil;
-import com.jd.jrapp.other.pet.utils.FixAndroidOSystem;
 
 import org.cocos2dx.javascript.JavaCocosBridge;
 import org.cocos2dx.javascript.JavaCocosConstant;
 import org.cocos2dx.javascript.SDKWrapper;
-import org.cocos2dx.lib.CanvasRenderingContext2DImpl;
-import org.cocos2dx.lib.Cocos2dxActivity;
-import org.cocos2dx.lib.Cocos2dxAudioFocusManager;
-import org.cocos2dx.lib.Cocos2dxEditBox;
-import org.cocos2dx.lib.Cocos2dxGLSurfaceView;
-import org.cocos2dx.lib.Cocos2dxHandler;
-import org.cocos2dx.lib.Cocos2dxHelper;
-import org.cocos2dx.lib.Cocos2dxRenderer;
-import org.cocos2dx.lib.Cocos2dxVideoHelper;
-import org.cocos2dx.lib.Cocos2dxWebViewHelper;
-import org.cocos2dx.lib.Utils;
 import org.json.JSONObject;
 
 import javax.microedition.khronos.egl.EGL10;
@@ -107,7 +90,7 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
             Log.e(TAG, "停止录音。。。");
             try{
                 JSONObject obj = new JSONObject();
-                obj.put("type", JavaCocosConstant.DO_ACTION);
+                obj.put("type", JavaCocosConstant.TYPE_DO_ACTION);
                 obj.put("param", "sss");
                 JavaCocosBridge.callCocos(obj.toString());
             }catch (Throwable t) {
@@ -393,16 +376,16 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
             @Override
             public void onDismiss(DialogInterface dialog) {
                 Log.e(TAG, "onDismiss");
-                JavaCocosBridge.unRegistCallJavaListener(JavaCocosConstant.START_RECORD, mStartRecordListener);
-                JavaCocosBridge.unRegistCallJavaListener(JavaCocosConstant.STOP_RECORD, mStopRecordListener);
+                JavaCocosBridge.unRegistCallJavaListener(JavaCocosConstant.TYPE_START_RECORD, mStartRecordListener);
+                JavaCocosBridge.unRegistCallJavaListener(JavaCocosConstant.TYPE_STOP_RECORD, mStopRecordListener);
                 Cocos2dxHelperDialog.terminateProcess();
             }
         });
         setOnShowListener(new OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                JavaCocosBridge.registCallJavaListener(JavaCocosConstant.START_RECORD, mStartRecordListener);
-                JavaCocosBridge.registCallJavaListener(JavaCocosConstant.STOP_RECORD, mStopRecordListener);
+                JavaCocosBridge.registCallJavaListener(JavaCocosConstant.TYPE_START_RECORD, mStartRecordListener);
+                JavaCocosBridge.registCallJavaListener(JavaCocosConstant.TYPE_STOP_RECORD, mStopRecordListener);
             }
         });
     }
@@ -534,7 +517,7 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
                                 jsonObject.put("action","listen");
                                 jsonObject.put("pause_time",3.5);
                                 JSONObject obj = new JSONObject();
-                                obj.put("type", JavaCocosConstant.DO_ACTION);
+                                obj.put("type", JavaCocosConstant.TYPE_DO_ACTION);
                                 obj.put("param", jsonObject);
                                 JavaCocosBridge.callCocos(obj.toString());
                             }catch (Throwable t) {
@@ -550,7 +533,7 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
                                 JSONObject jsonObject = new JSONObject();
                                 jsonObject.put("action_type","resume");
                                 JSONObject obj = new JSONObject();
-                                obj.put("type", JavaCocosConstant.DO_ACTION);
+                                obj.put("type", JavaCocosConstant.TYPE_DO_ACTION);
                                 obj.put("param", jsonObject);
                                 JavaCocosBridge.callCocos(obj.toString());
                             }catch (Throwable t) {
@@ -566,7 +549,7 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
                                 JSONObject jsonObject = new JSONObject();
                                 jsonObject.put("action_type","resume");
                                 JSONObject obj = new JSONObject();
-                                obj.put("type", JavaCocosConstant.DO_ACTION);
+                                obj.put("type", JavaCocosConstant.TYPE_DO_ACTION);
                                 obj.put("param", jsonObject);
                                 JavaCocosBridge.callCocos(obj.toString());
                             }catch (Throwable t) {
