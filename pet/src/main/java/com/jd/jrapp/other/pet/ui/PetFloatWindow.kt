@@ -87,12 +87,14 @@ class PetFloatWindow private constructor() {
     }
 
     fun startTimer() {
-        handler.postDelayed({ handler.sendEmptyMessage(100) }, (5 * 1000).toLong())
+        if(!handler.hasMessages(100)){
+            handler.postDelayed({ handler.sendEmptyMessage(100) }, (5 * 1000).toLong())
+        }
     }
 
     fun stopTimer() {
         if(handler!=null){
-            handler.removeMessages(100)
+            handler.removeCallbacksAndMessages(null)
         }
     }
 
