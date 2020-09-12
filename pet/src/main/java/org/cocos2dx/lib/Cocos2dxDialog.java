@@ -41,6 +41,7 @@ import com.alibaba.idst.util.NlsClient;
 import com.alibaba.idst.util.SpeechRecognizer;
 import com.alibaba.idst.util.SpeechRecognizerCallback;
 import com.jd.jrapp.other.pet.R;
+import com.jd.jrapp.other.pet.ui.dialog.PtDialog;
 import com.jd.jrapp.other.pet.utils.AppManager;
 import com.jd.jrapp.other.pet.utils.DisplayUtil;
 
@@ -860,6 +861,15 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
             @Override
             public void onClick(View v) {
                 // TODO 送萌宠
+                PtDialog ptDialog = new PtDialog(getContext());
+                if (ptDialog != null) {
+                    if (Build.VERSION.SDK_INT >= 25) {
+                        ptDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+                    } else {
+                        ptDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                    }
+                    ptDialog.show();
+                }
             }
         });
         mIvShare.setBackgroundResource(R.drawable.icon_share_pet);

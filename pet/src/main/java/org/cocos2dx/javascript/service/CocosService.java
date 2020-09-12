@@ -37,6 +37,9 @@ public class CocosService extends Service {
             mUIHandler.post(new Runnable() {
                 @Override
                 public void run() {
+                    if (mCocos2dxDialog != null && mCocos2dxDialog.isShowing()) {
+                        return;
+                    }
                     mCocos2dxDialog = new Cocos2dxDialog(getApplicationContext());
                     if (Build.VERSION.SDK_INT >= 25) {
                         mCocos2dxDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
