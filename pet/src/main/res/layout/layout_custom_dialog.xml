@@ -8,26 +8,40 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/shouyi_shape"
+        android:background="@drawable/icon_pt_bg"
         android:orientation="vertical">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_marginTop="18dp"
-            android:layout_marginBottom="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <ImageView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:src="@drawable/icon_arrows_left" />
 
-        <TextView
-            android:id="@+id/tv_close"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="57dp"
-            android:background="@drawable/icon_bottom_close"
-            android:gravity="center"
-            android:textColor="@color/color_333333"
-            android:textSize="16dp" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_send"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="16dp"
+                android:textColor="@color/color_636200"
+                android:background="@drawable/icon_pt_bt"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:text="送好友" />
+        </LinearLayout>
 
     </LinearLayout>
 
