@@ -379,6 +379,7 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
         Log.d(TAG, "Cocos2dxActivity onCreate: " + this + ", savedInstanceState: " + savedInstanceState);
 //        FixAndroidOSystem.fix(this);
         super.onCreate(savedInstanceState);
+        AppManager.getInstance().getNLSToken();
 //        Utils.setActivity(this);
 
         // Workaround in https://stackoverflow.com/questions/16283079/re-launch-of-activity-on-home-button-but-only-the-first-time/16447508
