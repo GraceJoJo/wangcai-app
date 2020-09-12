@@ -1,12 +1,14 @@
 package org.cocos2dx.lib;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.PixelFormat;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioRecord;
@@ -29,17 +31,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.idst.util.NlsClient;
 import com.alibaba.idst.util.SpeechRecognizer;
 import com.alibaba.idst.util.SpeechRecognizerCallback;
 import com.jd.jrapp.other.pet.R;
-import com.jd.jrapp.other.pet.ui.dialog.TouguDialog;
-import com.jd.jrapp.other.pet.ui.dialog.bean.TouguInfo;
 import com.jd.jrapp.other.pet.utils.AppManager;
 import com.jd.jrapp.other.pet.utils.DisplayUtil;
 
@@ -96,29 +97,42 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
     public SpeechRecognizer speechRecognizer;
 
     private Handler mUiHandler;
-    private Handler mainHandler;
+    private Handler mainHandler = new Handler(Looper.getMainLooper());
     private String result;
     private RecordTask recordTask;
     private boolean isCancel;
     private String[] keyWords = new String[]{"知道", "请不要说话", "你好"};
 
+    private TextView mPetInfoView;
+    private ImageView mIvRecord, mIvClose, mIvShare;
+
     private static Map<String, String> actionKeywords = new ArrayMap(8);
     static {
         actionKeywords.put("哭", JavaCocosConstant.ACTION_CRY);
+        actionKeywords.put("打你", JavaCocosConstant.ACTION_CRY);
+        actionKeywords.put("揍你", JavaCocosConstant.ACTION_CRY);
         actionKeywords.put("笑", JavaCocosConstant.ACTION_HAPPY);
+        actionKeywords.put("有趣", JavaCocosConstant.ACTION_HAPPY);
+        actionKeywords.put("好看", JavaCocosConstant.ACTION_HAPPY);
+        actionKeywords.put("漂亮", JavaCocosConstant.ACTION_HAPPY);
+        actionKeywords.put("厉害", JavaCocosConstant.ACTION_HAPPY);
         actionKeywords.put("招呼", JavaCocosConstant.ACTION_GREET);
         actionKeywords.put("hello", JavaCocosConstant.ACTION_GREET);
         actionKeywords.put("hi", JavaCocosConstant.ACTION_GREET);
-        actionKeywords.put("好", JavaCocosConstant.ACTION_GREET);
+        actionKeywords.put("你好", JavaCocosConstant.ACTION_GREET);
+        actionKeywords.put("您好", JavaCocosConstant.ACTION_GREET);
+        actionKeywords.put("嗨", JavaCocosConstant.ACTION_GREET);
         actionKeywords.put("跳", JavaCocosConstant.ACTION_JUMP);
+        actionKeywords.put("蹦", JavaCocosConstant.ACTION_JUMP);
+        actionKeywords.put("后空翻", JavaCocosConstant.ACTION_JUMP);
     }
 
     private static Map<String, String> licaiKeywords = new ArrayMap<>(8);
     static {
-        licaiKeywords.put("理财", "客官，根据您的情况，推荐您将资金的50%配置小金库，方便您随时存取，50%配置小金存，给您更大的收益空间。根据过去一年的收益数据测算，该配置方案的预期年化收益在4%左右，点击一键下单");
-        licaiKeywords.put("投资", "客官，根据您的情况，推荐您将资金的50%配置小金库，方便您随时存取，50%配置小金存，给您更大的收益空间。根据过去一年的收益数据测算，该配置方案的预期年化收益在4%左右，点击一键下单");
-        licaiKeywords.put("基金", "客官，推荐您将资金的40%配置广发沪深300指数基金，给您较大的收益想象空间，30%配置前海开源沪港深优势精选混合基金，分散您的投资风险，30%的资金配置小金库，方便您随时存取。点击一键下单");
-        licaiKeywords.put("保险", "客官，根据您的情况，推荐您将资金的70%配置小金保，在给您带来保障的同时让您获得稳健的收益，30%配置小金存，方便您随时存取。该配置方案的预期年化收益在5%左右，点击一键下单");
+        licaiKeywords.put("理财", "主人，根据您的情况，推荐您将资金的50%配置小金库，50%配置小金存。点击一键下单>");
+        licaiKeywords.put("投资", "主人，根据您的情况，推荐您将资金的50%配置小金库，50%配置小金存。点击一键下单>");
+        licaiKeywords.put("基金", "主人，推荐您将资金的40%配置广发沪深300指数基金，30%配置前海开源沪港深优势精选混合基金，30%的资金配置小金库。点击一键下单>");
+        licaiKeywords.put("保险", "主人，根据您的情况，推荐您将资金的70%配置小金保，30%配置小金存。点击一键下单>");
     }
 
     private JavaCocosBridge.CallJavaListener mStartRecordListener = new JavaCocosBridge.CallJavaListener() {
@@ -190,7 +204,6 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
                                     if (result.contains(key)) {
                                         licaiMathed = true;
                                         String txt = licaiKeywords.get(key);
-                                        Toast.makeText(getContext(), txt, Toast.LENGTH_SHORT).show();
                                         showLabelInfo(txt);
                                         break;
                                     }
@@ -209,8 +222,7 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
                                             mUiHandler.post(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    Toast.makeText(getContext(), content, Toast.LENGTH_SHORT).show();
-                                                    showLabelInfo(aiStr);
+                                                    showLabelInfo(content);
                                                 }
                                             });
                                         }catch (Throwable t) {
@@ -227,7 +239,18 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
     }
 
     private void showLabelInfo(String text) {
-
+        if (mPetInfoView == null || TextUtils.isEmpty(text) || text.contains("未获取到相关信息")) {
+            return;
+        }
+        mainHandler.removeCallbacksAndMessages(null);
+        fadeInView(mPetInfoView);
+        mPetInfoView.setText(text);
+        mainHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                fadeOutView(mPetInfoView);
+            }
+        }, 3000);
     }
 
     // DEBUG VIEW END
@@ -394,6 +417,105 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
         return  mGLSurfaceView;
     }
 
+    private void fadeInView(final View... views) {
+        ValueAnimator animator = ValueAnimator.ofFloat(0.0f, 1.0f);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (float) animation.getAnimatedValue();
+                for (View view : views) {
+                    view.setAlpha(value);
+                }
+            }
+        });
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                super.onAnimationCancel(animation);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+                super.onAnimationRepeat(animation);
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                for (View view : views) {
+                    view.setAlpha(0);
+                    view.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onAnimationPause(Animator animation) {
+                super.onAnimationPause(animation);
+            }
+
+            @Override
+            public void onAnimationResume(Animator animation) {
+                super.onAnimationResume(animation);
+            }
+        });
+        animator.setDuration(200);
+        animator.setInterpolator(new AccelerateDecelerateInterpolator());
+        animator.start();
+    }
+
+    private void fadeOutView(final View... views) {
+        ValueAnimator animator = ValueAnimator.ofFloat(1.0f, 0.0f);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (float) animation.getAnimatedValue();
+                for (View view: views) {
+                    view.setAlpha(value);
+                }
+            }
+        });
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                super.onAnimationCancel(animation);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                for (View view : views) {
+                    view.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+                super.onAnimationRepeat(animation);
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+            }
+
+            @Override
+            public void onAnimationPause(Animator animation) {
+                super.onAnimationPause(animation);
+            }
+
+            @Override
+            public void onAnimationResume(Animator animation) {
+                super.onAnimationResume(animation);
+            }
+        });
+        animator.start();
+    }
+
     public void init() {
         ViewGroup.LayoutParams frameLayoutParams =
                 new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -409,6 +531,12 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
 
         // Set frame layout as the content view
         setContentView(mFrameLayout);
+        mUiHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                fadeInView(mIvClose, mIvShare, mIvRecord);
+            }
+        }, 1000);
     }
 
     public void setKeepScreenOn(boolean value) {
@@ -628,11 +756,9 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, viewHeight);
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         mFrameLayout.addView(this.mGLSurfaceView, layoutParams);
-        TextView test = new TextView(getContext());
-        test.setText("按住说话");
-        test.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f);
-        test.setBackgroundColor(Color.GREEN);
-        test.setOnTouchListener(new View.OnTouchListener() {
+        mIvRecord = new ImageView(getContext());
+        mIvRecord.setImageResource(R.drawable.icon_record_normal);
+        mIvRecord.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getAction();
@@ -693,11 +819,57 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
                 return true;
             }
         });
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(300, 100);
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(DisplayUtil.dip2px(getContext(), 50), DisplayUtil.dip2px(getContext(), 50));
         lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        test.setLayoutParams(lp);
-        mFrameLayout.addView(test);
+        lp.rightMargin = DisplayUtil.dip2px(getContext(), 16);
+        lp.bottomMargin = DisplayUtil.dip2px(getContext(), 30);
+        mIvRecord.setLayoutParams(lp);
+        mFrameLayout.addView(mIvRecord);
+        mIvRecord.setVisibility(View.GONE);
+
+        mPetInfoView = new TextView(getContext());
+        mPetInfoView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+        mPetInfoView.setMaxLines(4);
+        mPetInfoView.setMaxWidth(DisplayUtil.getScreenWidth(getContext()) / 2 - DisplayUtil.dip2px(getContext(), 16 * 2));
+        mPetInfoView.setEllipsize(TextUtils.TruncateAt.END);
+        RelativeLayout.LayoutParams lpInfo = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        lpInfo.leftMargin = DisplayUtil.dip2px(getContext(),16);
+        lpInfo.rightMargin = DisplayUtil.dip2px(getContext(), 16);
+        lpInfo.topMargin = DisplayUtil.dip2px(getContext(), 20);
+        mFrameLayout.addView(mPetInfoView, lpInfo);
+        mPetInfoView.setVisibility(View.GONE);
+
+        mIvClose = new ImageView(getContext());
+        mIvClose.setImageResource(R.drawable.icon_close_pet);
+        mIvClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+        RelativeLayout.LayoutParams lpIvClose = new RelativeLayout.LayoutParams(DisplayUtil.dip2px(getContext(), 44), DisplayUtil.dip2px(getContext(), 44));
+        lpIvClose.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        lpIvClose.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        lpIvClose.topMargin = DisplayUtil.dip2px(getContext(), 9);
+        mFrameLayout.addView(mIvClose, lpIvClose);
+        mIvClose.setVisibility(View.GONE);
+
+        mIvShare = new ImageView(getContext());
+        mIvShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO 送萌宠
+            }
+        });
+        mIvShare.setBackgroundResource(R.drawable.icon_share_pet);
+        RelativeLayout.LayoutParams lpIvShare = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        lpIvShare.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        lpIvShare.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        lpIvShare.rightMargin = DisplayUtil.dip2px(getContext(), 16);
+        lpIvShare.topMargin = DisplayUtil.dip2px(getContext(), 58);
+        mFrameLayout.addView(mIvShare, lpIvShare);
+        mIvShare.setVisibility(View.GONE);
 
         return renderer;
     }
