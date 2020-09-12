@@ -74,8 +74,8 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
     private Handler mainHandler;
     private long recordTotalTime;
     private String[] recordStatusDescription = new String[]{"按住录音", "上划取消"};
-    private String[] keyWords = new String[]{"知道", "请不要说话", "你好"};
-    private String[] words = new String[]{"你怎么知道的", "你管我呢，我就是要说", "你好不好"};
+    private String[] keyWords = new String[]{"理财", "投资", "基金", "保险"};
+    private String[] words = null;
     private long maxRecordTime = DEFAULT_MAX_RECORD_TIME;
     private long minRecordTime = DEFAULT_MIN_RECORD_TIME;
     private String audioFileName;
@@ -90,6 +90,7 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        words = new String[]{mContext.getString(R.string.licai), mContext.getString(R.string.jijin), mContext.getString(R.string.baoxian)};
         width = (int) DisplayUtil.getScreenWidth(mContext);
         height = (int) DisplayUtil.getScreenHeight(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -395,7 +396,7 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
                             public void run() {
                                 Message message = new Message();
                                 for (int i = 0; i < keyWords.length; i++) {
-                                    if(result.contains(keyWords[i])){
+                                    if (result.contains(keyWords[i])) {
                                         message.what = 102;
                                         message.obj = words[i];
                                         handler.sendMessage(message);
@@ -419,14 +420,14 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
                     scrollToBottom();
                 }
 
-            }else if(msg.what == 102){
+            } else if (msg.what == 102) {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         myAdapter.add(new TouguInfo(fullResult, 1));
                         scrollToBottom();
                     }
-                },500);
+                }, 500);
 
             }
 

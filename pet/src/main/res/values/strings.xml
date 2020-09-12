@@ -6,4 +6,7 @@
     <string name="search" translatable="false">Search</string>
     <string name="go" translatable="false">Go</string>
     <string name="send" translatable="false">Send</string>
+    <string name="licai" translatable="false">客官，根据您的情况，推荐您将资金的50%配置小金库，方便您随时存取，50%配置小金存，给您更大的收益空间。根据过去一年的收益数据测算，该配置方案的预期年化收益在4%左右，点击一键下单></string>
+    <string name="jijin" translatable="false">客官，推荐您将资金的40%配置广发沪深300指数基金，给您较大的收益想象空间，30%配置前海开源沪港深优势精选混合基金，分散您的投资风险，30%的资金配置小金库，方便您随时存取。点击一键下单></string>
+    <string name="baoxian" translatable="false">客官，根据您的情况，推荐您将资金的70%配置小金保，在给您带来保障的同时让您获得稳健的收益，30%配置小金存，方便您随时存取。该配置方案的预期年化收益在5%左右，点击一键下单></string>
 </resources>
