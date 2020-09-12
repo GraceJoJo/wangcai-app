@@ -138,6 +138,7 @@ class PetFloatWindow private constructor() {
                     mClickView?.setBackgroundResource(R.drawable.bg_oval)
                     mClickView?.alpha=0.2f
                 }
+                animSwitch()
                 mCustomDialog?.dismiss()
             }
         })
