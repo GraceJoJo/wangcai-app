@@ -9,9 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -25,7 +23,6 @@ import com.jd.jrapp.other.pet.utils.DisplayUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -98,13 +95,6 @@ public class CustomDialog extends Dialog implements View.OnClickListener {
             RecycleAdapter<CustomData.RecordsBean> myItemAdapter = new RecycleAdapter<CustomData.RecordsBean>(mContext, R.layout.item_custom_layout) {
                 @Override
                 protected void convert(BaseAdapterHelper helper, CustomData.RecordsBean item, final int position) {
-//                    LinearLayout view = helper.getView(R.id.rl_sign);
-//                    ViewGroup.LayoutParams params = view.getLayoutParams();
-//                    if (position == customItemData.getRecords().size() - 1) {
-//                        view.setPadding(0, 0, 0, 0);
-//                    } else {
-//                        view.setPadding(0, 0, DisplayUtil.dip2px(mContext, 6), 0);
-//                    }
                     if (item.getType() == 0) {
                         if (position == 3 || position == 4) {
                             helper.setInVisible(R.id.ll_sign);

@@ -103,7 +103,7 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
         height = (int) DisplayUtil.getScreenHeight(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.layout_tougu_dialog, null);
-        if (DisplayUtil.checkDeviceHasNavigationBar(mContext)) {
+        if (!DisplayUtil.checkDeviceHasNavigationBar(mContext)) {
             contentView.setPadding(0, 0, 0, DisplayUtil.getNavigationBarHeight(mContext));
         } else {
             contentView.setPadding(0, 0, 0, 0);

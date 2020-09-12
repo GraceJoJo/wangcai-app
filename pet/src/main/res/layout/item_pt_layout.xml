@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_pt"
+    android:layout_width="62dp"
+    android:layout_height="87dp"
+    android:background="@drawable/icon_pt_inselect"
+    android:layout_marginBottom="24dp">
+
+    <ImageView
+        android:id="@+id/iv_pt"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="12dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/icon_pt_1" />
+
+    <TextView
+        android:id="@+id/tv_pt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="2dp"
+        android:text="小顾"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/color_636200"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

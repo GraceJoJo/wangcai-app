@@ -59,6 +59,7 @@ class PetFloatWindow private constructor() {
     var mLicaiDialog: LicaiDialog? = null
     var mTouchSlop: Int = 8
     var mCustomDialog: CustomDialog? = null
+    var mPtDialog: PtDialog? = null
 
     private var mContext: Context? = null
 
@@ -100,6 +101,7 @@ class PetFloatWindow private constructor() {
                 }
             } else if (v == mTvPet) {
                 showPetDialog()
+//                showPtDialog()
             }
         }
     }
@@ -120,6 +122,20 @@ class PetFloatWindow private constructor() {
                 mShouYiDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             }
             mShouYiDialog?.show()
+        }
+    }
+
+    private fun showPtDialog() {
+        if (mPtDialog == null) {
+            mPtDialog = PtDialog(mContext)
+        }
+        if (mPtDialog != null) {
+            if (Build.VERSION.SDK_INT >= 25) {
+                mPtDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+            } else {
+                mPtDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            }
+            mPtDialog?.show()
         }
     }
 
