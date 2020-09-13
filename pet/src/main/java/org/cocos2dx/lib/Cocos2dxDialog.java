@@ -21,7 +21,13 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.util.TypedValue;
@@ -245,7 +251,11 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
         }
         mainHandler.removeCallbacksAndMessages(null);
         fadeInView(mPetInfoView);
-        mPetInfoView.setText(text);
+        if (text.contains("点击一键下单")) {
+            setRedText(text, mPetInfoView);
+        } else {
+            mPetInfoView.setText(text);
+        }
         mainHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -830,14 +840,22 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
         mIvRecord.setVisibility(View.GONE);
 
         mPetInfoView = new TextView(getContext());
+        mPetInfoView.setBackgroundResource(R.drawable.pet_talk_bg);
         mPetInfoView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+        mPetInfoView.setTextColor(Color.parseColor("#333333"));
         mPetInfoView.setMaxLines(4);
+        mPetInfoView.setGravity(Gravity.CENTER_VERTICAL);
+        mPetInfoView.setLineSpacing(0, 0.8f);
+        mPetInfoView.setPadding(DisplayUtil.dip2px(getContext(), 8), DisplayUtil.dip2px(getContext(), 8), DisplayUtil.dip2px(getContext(), 8), DisplayUtil.dip2px(getContext(), 8));
         mPetInfoView.setMaxWidth(DisplayUtil.getScreenWidth(getContext()) / 2 - DisplayUtil.dip2px(getContext(), 16 * 2));
         mPetInfoView.setEllipsize(TextUtils.TruncateAt.END);
         RelativeLayout.LayoutParams lpInfo = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        lpInfo.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        lpInfo.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         lpInfo.leftMargin = DisplayUtil.dip2px(getContext(),16);
-        lpInfo.rightMargin = DisplayUtil.dip2px(getContext(), 16);
+        lpInfo.rightMargin = DisplayUtil.dip2px(getContext(), 16) + DisplayUtil.getScreenWidth(getContext()) / 2;
         lpInfo.topMargin = DisplayUtil.dip2px(getContext(), 20);
+        lpInfo.bottomMargin = DisplayUtil.dip2px(getContext(), 200);
         mFrameLayout.addView(mPetInfoView, lpInfo);
         mPetInfoView.setVisibility(View.GONE);
 
@@ -1185,6 +1203,32 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
             mAudioRecorder.stop();
             return null;
         }
+    }
+
+    protected void setRedText(String contentStr, TextView textView) {
+        SpannableStringBuilder style = new SpannableStringBuilder();
+
+        //设置文字
+        style.append(contentStr);
+        //设置部分文字点击事件
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+            }
+
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                ds.setUnderlineText(false);
+            }
+        };
+        style.setSpan(clickableSpan, contentStr.length() - 7, contentStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        textView.setText(style);
+        //设置部分文字颜色
+        ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(Color.parseColor("#EF4034"));
+        style.setSpan(foregroundColorSpan, contentStr.length() - 7, contentStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        //配置给TextView
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
+        textView.setText(style);
     }
 
 }

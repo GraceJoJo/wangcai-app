@@ -6,15 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
+    <ImageView
         android:id="@+id/btn"
-        android:layout_width="200dp"
-        android:layout_height="80dp"
-        android:text="开启悬浮框"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/bg_img"
+        android:scaleType="fitXY"/>
 
 </android.support.constraint.ConstraintLayout>
