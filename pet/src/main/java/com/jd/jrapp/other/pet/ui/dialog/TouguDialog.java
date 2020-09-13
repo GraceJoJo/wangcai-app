@@ -82,7 +82,7 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
     private Handler mainHandler;
     private long recordTotalTime;
     private String[] recordStatusDescription = new String[]{"按住录音", "上划取消"};
-    private String[] keyWords = new String[]{"理财", "投资", "基金", "保险"};
+    private String[] keyWords = new String[]{"理财", "投资", "基金", "保险", "名字", "你是谁", "你叫什么"};
     private String[] words = null;
     private long maxRecordTime = DEFAULT_MAX_RECORD_TIME;
     private long minRecordTime = DEFAULT_MIN_RECORD_TIME;
@@ -98,7 +98,8 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        words = new String[]{mContext.getString(R.string.licai), mContext.getString(R.string.licai), mContext.getString(R.string.jijin), mContext.getString(R.string.baoxian)};
+        words = new String[]{mContext.getString(R.string.licai), mContext.getString(R.string.licai),
+                mContext.getString(R.string.jijin), mContext.getString(R.string.baoxian), "我叫金仔", "我是金仔", "我叫金仔"};
         width = (int) DisplayUtil.getScreenWidth(mContext);
         height = (int) DisplayUtil.getScreenHeight(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
