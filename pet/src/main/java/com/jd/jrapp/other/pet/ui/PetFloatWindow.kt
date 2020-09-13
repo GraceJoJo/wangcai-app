@@ -80,6 +80,8 @@ class PetFloatWindow private constructor() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             if (msg.what == 100) {
+                val number = Math.floor((Random().nextInt(10) + 1).toDouble()).toInt()
+                zjsy = zjsys[number]
                 setData(false)
             }
 
@@ -101,8 +103,6 @@ class PetFloatWindow private constructor() {
     fun setData(isFirst: Boolean) {
         if (mClickView != null) {
             mClickView?.setText("+${zjsy}")
-            val number = Math.floor((Random().nextInt(10) + 1).toDouble()).toInt()
-            zjsy = zjsys[number]
             if (!isFirst) {
                 startTimer()
             }
