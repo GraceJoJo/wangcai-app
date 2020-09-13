@@ -121,7 +121,6 @@ class PetFloatWindow private constructor() {
             if (v == mTvShouyi) {
                 showLicaiDialog()
             } else if (v == mTvTougu) {
-                AppManager.getInstance().getNLSToken()
                 showTouguDialog();
             } else if (v == mTvDonghua) {
                 showPayDialog()

@@ -98,6 +98,7 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppManager.getInstance().getNLSToken();
         words = new String[]{mContext.getString(R.string.licai), mContext.getString(R.string.licai), mContext.getString(R.string.jijin), mContext.getString(R.string.baoxian)};
         width = (int) DisplayUtil.getScreenWidth(mContext);
         height = (int) DisplayUtil.getScreenHeight(mContext);
