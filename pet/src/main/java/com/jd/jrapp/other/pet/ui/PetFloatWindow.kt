@@ -58,6 +58,7 @@ class PetFloatWindow private constructor() {
     var mSignDialog: SignDialog? = null
     var mLicaiDialog: LicaiDialog? = null
     var mOrderDialog: OrderDialog? = null
+    var mCommunityDialog: CommunityDialog? = null
     var mTouchSlop: Int = 8
     var mCustomDialog: CustomDialog? = null
     var mPtDialog: PtDialog? = null
@@ -122,8 +123,9 @@ class PetFloatWindow private constructor() {
             if (v == mTvShouyi) {
                 showOrderDialog()
             } else if (v == mTvTougu) {
-                AppManager.getInstance().getNLSToken()
-                showTouguDialog();
+//                AppManager.getInstance().getNLSToken()
+//                showTouguDialog();
+                showCommunityDialog()
             } else if (v == mTvDonghua) {
                 showPayDialog()
             } else if (v == mTvSign) {
@@ -232,6 +234,17 @@ class PetFloatWindow private constructor() {
                 mOrderDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             }
             mOrderDialog?.show()
+        }
+    }
+    private fun showCommunityDialog() {
+        mCommunityDialog = CommunityDialog(mContext, zjsy)
+        if (mCommunityDialog != null) {
+            if (Build.VERSION.SDK_INT >= 25) {
+                mCommunityDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+            } else {
+                mCommunityDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            }
+            mCommunityDialog?.show()
         }
     }
 
