@@ -59,6 +59,7 @@ class PetFloatWindow private constructor() {
     var mLicaiDialog: LicaiDialog? = null
     var mOrderDialog: OrderDialog? = null
     var mCommunityDialog: CommunityDialog? = null
+    var mSearchDialog: SearchDialog? = null
     var mTouchSlop: Int = 8
     var mCustomDialog: CustomDialog? = null
     var mPtDialog: PtDialog? = null
@@ -127,7 +128,8 @@ class PetFloatWindow private constructor() {
 //                showTouguDialog();
                 showCommunityDialog()
             } else if (v == mTvDonghua) {
-                showPayDialog()
+//                showPayDialog()
+                showSearchDialog()
             } else if (v == mTvSign) {
                 showSignDialog();
             } else if (v == mClickView) {
@@ -245,6 +247,17 @@ class PetFloatWindow private constructor() {
                 mCommunityDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             }
             mCommunityDialog?.show()
+        }
+    }
+    private fun showSearchDialog() {
+        mSearchDialog = SearchDialog(mContext, zjsy)
+        if (mSearchDialog != null) {
+            if (Build.VERSION.SDK_INT >= 25) {
+                mSearchDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+            } else {
+                mSearchDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            }
+            mSearchDialog?.show()
         }
     }
 
