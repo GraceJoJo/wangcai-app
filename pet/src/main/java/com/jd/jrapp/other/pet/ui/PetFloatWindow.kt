@@ -57,6 +57,7 @@ class PetFloatWindow private constructor() {
     var mTouguDialog: TouguDialog? = null
     var mSignDialog: SignDialog? = null
     var mLicaiDialog: LicaiDialog? = null
+    var mOrderDialog: OrderDialog? = null
     var mTouchSlop: Int = 8
     var mCustomDialog: CustomDialog? = null
     var mPtDialog: PtDialog? = null
@@ -119,7 +120,7 @@ class PetFloatWindow private constructor() {
             Log.e("PetFloatWindow", "onClick: " + v)
             animSwitch()
             if (v == mTvShouyi) {
-                showLicaiDialog()
+                showOrderDialog()
             } else if (v == mTvTougu) {
                 AppManager.getInstance().getNLSToken()
                 showTouguDialog();
@@ -137,7 +138,7 @@ class PetFloatWindow private constructor() {
                     showCustomDialog()
                 }
             } else if (v == mTvPet) {
-                showPetDialog()
+                showLicaiDialog()
 //                showPtDialog()
             }
         }
@@ -219,6 +220,18 @@ class PetFloatWindow private constructor() {
                 mLicaiDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             }
             mLicaiDialog?.show()
+        }
+    }
+
+    private fun showOrderDialog() {
+        mOrderDialog = OrderDialog(mContext, zjsy)
+        if (mOrderDialog != null) {
+            if (Build.VERSION.SDK_INT >= 25) {
+                mOrderDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+            } else {
+                mOrderDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            }
+            mOrderDialog?.show()
         }
     }
 
