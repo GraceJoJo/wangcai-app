@@ -1,5 +1,6 @@
 package com.jd.jrapp.other.pet.ui.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -37,6 +39,7 @@ public class SearchDialog extends Dialog implements View.OnClickListener {
     private Context mContext;
     private static final String ISOPEN = "isOpen";
     private int width;
+    private ImageView iv_list;
     private TextView cb_all, cb_sales, cb_price;
     private View view_all, view_sales, view_price;
     private ScrollView scrollview;
@@ -58,6 +61,10 @@ public class SearchDialog extends Dialog implements View.OnClickListener {
         width = (int) DisplayUtil.getScreenWidth(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.layout_search_dialog, null);
+
+        iv_list = contentView.findViewById(R.id.iv_list);
+        DisplayUtil.fitImage((Activity) mContext,iv_list,DisplayUtil.px2dip(mContext,750),DisplayUtil.px2dip(mContext,3648));
+
 
         cb_all = contentView.findViewById(R.id.cb_all);
         cb_sales = contentView.findViewById(R.id.cb_sales);
@@ -112,6 +119,8 @@ public class SearchDialog extends Dialog implements View.OnClickListener {
         } else if (v.getId() == R.id.rl_dialog) {
 //            dismiss();
         } else if (v.getId() == R.id.cb_all) {
+            iv_list.setImageResource(R.drawable.tab_search_all);
+
             cb_all.setSelected(true);
             cb_sales.setSelected(false);
             cb_price.setSelected(false);
@@ -131,6 +140,8 @@ public class SearchDialog extends Dialog implements View.OnClickListener {
             scrollview.scrollTo(0, 0);
 
         } else if (v.getId() == R.id.cb_sales) {
+            iv_list.setImageResource(R.drawable.tab_search_sales);
+
             cb_all.setSelected(false);
             cb_sales.setSelected(true);
             cb_price.setSelected(false);
@@ -149,6 +160,8 @@ public class SearchDialog extends Dialog implements View.OnClickListener {
             scrollview.scrollTo(0, 0);
 
         } else if (v.getId() == R.id.cb_price) {
+            iv_list.setImageResource(R.drawable.tab_search_price);
+
             cb_all.setSelected(false);
             cb_sales.setSelected(false);
             cb_price.setSelected(true);

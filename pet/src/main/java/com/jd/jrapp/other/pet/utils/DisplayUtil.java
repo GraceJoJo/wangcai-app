@@ -1,12 +1,15 @@
 package com.jd.jrapp.other.pet.utils;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import java.lang.reflect.Method;
 
@@ -110,4 +113,21 @@ public class DisplayUtil {
         }
         return hasNavigationBar;
     }
+
+    /**
+     * 根据图片大小按比例适配全屏:解决Scrol显示长图图片拉伸的问题
+     *
+     * @param imageView
+     * @param picWidth
+     * @param picHeight
+     */
+    public static void fitImage(Activity activity, ImageView imageView, float picWidth, float picHeight) {
+        WindowManager wm = activity.getWindowManager();
+        int width = wm.getDefaultDisplay().getWidth();
+        float height = (float) width / picWidth * picHeight;
+        ViewGroup.LayoutParams layoutParams = imageView.getLayoutParams();
+        layoutParams.height = (int) height;
+        imageView.setLayoutParams(layoutParams);
+    }
+
 }

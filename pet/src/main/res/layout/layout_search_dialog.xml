@@ -150,11 +150,22 @@
                             android:paddingBottom="0dp">
 
                             <android.support.v7.widget.RecyclerView
+                                android:visibility="gone"
                                 android:id="@+id/recyclerView"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:nestedScrollingEnabled="false"
                                 android:paddingBottom="60dp" />
+
+                            <ImageView
+                                android:id="@+id/iv_list"
+                                android:src="@drawable/tab_search_all"
+                                android:layout_width="match_parent"
+                                android:scaleType="fitXY"
+                                android:paddingBottom="50dp"
+                                android:layout_height="wrap_content">
+                            </ImageView>
+
                         </RelativeLayout>
 
                     </LinearLayout>

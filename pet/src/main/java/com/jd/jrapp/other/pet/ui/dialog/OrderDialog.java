@@ -1,5 +1,6 @@
 package com.jd.jrapp.other.pet.ui.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -8,7 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -59,6 +62,9 @@ public class OrderDialog extends Dialog implements View.OnClickListener {
         width = (int) DisplayUtil.getScreenWidth(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.layout_order_dialog, null);
+
+        ImageView iv_list = contentView.findViewById(R.id.iv_list);
+        DisplayUtil.fitImage((Activity) mContext,iv_list,DisplayUtil.px2dip(mContext,750),DisplayUtil.px2dip(mContext,3648));
 
         cb_all = contentView.findViewById(R.id.cb_all);
         cb_pay = contentView.findViewById(R.id.cb_pay);
