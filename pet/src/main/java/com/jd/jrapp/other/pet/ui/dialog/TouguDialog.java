@@ -2,7 +2,6 @@ package com.jd.jrapp.other.pet.ui.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
@@ -10,16 +9,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.TextPaint;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -27,23 +21,26 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.idst.util.NlsClient;
 import com.alibaba.idst.util.SpeechRecognizer;
 import com.alibaba.idst.util.SpeechRecognizerCallback;
+import com.google.gson.reflect.TypeToken;
 import com.jd.jrapp.other.pet.R;
-import com.jd.jrapp.other.pet.ui.BaseRecycler.BaseAdapterHelper;
-import com.jd.jrapp.other.pet.ui.BaseRecycler.RecycleAdapter;
-import com.jd.jrapp.other.pet.ui.dialog.bean.TouguInfo;
+import com.jd.jrapp.other.pet.ui.dialog.bean.AutoPollAdapter;
+import com.jd.jrapp.other.pet.ui.dialog.bean.CommitInfo;
+import com.jd.jrapp.other.pet.ui.view.AutoPollRecyclerView;
 import com.jd.jrapp.other.pet.ui.view.LineWaveVoiceView;
 import com.jd.jrapp.other.pet.ui.view.RecordAudioView;
 import com.jd.jrapp.other.pet.utils.AppManager;
 import com.jd.jrapp.other.pet.utils.DisplayUtil;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,11 +65,13 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
     private Context mContext;
     private int width;
     private int height;
-    private List<TouguInfo> infoList;
     private NlsClient client;
     public SpeechRecognizer speechRecognizer;
-    private RecordAudioView recordAudioView;
+    private LinearSmoothScroller linearSmoothScroller;
     private LineWaveVoiceView mHorVoiceView;
+    private RelativeLayout rl_video;
+    private AutoPollRecyclerView autoPollRecyclerView;
+    private RecordAudioView recordAudioView;
     private TextView tvRecordTips;
     private RecyclerView lv;
     private RecordTask recordTask;
@@ -82,12 +81,16 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
     private Handler mainHandler;
     private long recordTotalTime;
     private String[] recordStatusDescription = new String[]{"按住录音", "上划取消"};
-    private String[] keyWords = new String[]{"理财", "投资", "基金", "保险", "名字", "你是谁", "你叫什么"};
-    private String[] words = null;
     private long maxRecordTime = DEFAULT_MAX_RECORD_TIME;
     private long minRecordTime = DEFAULT_MIN_RECORD_TIME;
     private String audioFileName;
     private boolean isCancel;
+    private CommitInfo commitInfo;
+    private AutoPollAdapter autoPollAdapter;
+    private int currentPosition = 0;
+    private LinearLayoutManager linearLayoutManager;
+    private List<CommitInfo.CommitsBean> commitsBeans;
+    private boolean isFirstInto = true;
 
     public TouguDialog(Context context) {
         super(context, R.style.loadDialog);
@@ -98,20 +101,24 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        words = new String[]{mContext.getString(R.string.licai), mContext.getString(R.string.licai),
-                mContext.getString(R.string.jijin), mContext.getString(R.string.baoxian), "我叫金仔", "我是金仔", "我叫金仔"};
+        commitsBeans = new ArrayList<>();
+        commitInfo = getJsonData("commits.json");
+        commitsBeans = commitInfo.getCommits();
         width = (int) DisplayUtil.getScreenWidth(mContext);
         height = (int) DisplayUtil.getScreenHeight(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contentView = inflater.inflate(R.layout.layout_tougu_dialog, null);
+        View contentView = inflater.inflate(R.layout.layout_community_dialog, null);
         if (!DisplayUtil.checkDeviceHasNavigationBar(mContext)) {
             contentView.setPadding(0, 0, 0, DisplayUtil.getNavigationBarHeight(mContext));
         } else {
             contentView.setPadding(0, 0, 0, 0);
         }
+
+        initAutoRecycleView(contentView);
         mainHandler = new Handler();
         TextView tv_close = contentView.findViewById(R.id.tv_close);
         tvRecordTips = contentView.findViewById(R.id.record_tips);
+        rl_video = contentView.findViewById(R.id.rl_video);
         recordAudioView = contentView.findViewById(R.id.iv_audio);
         audioInit();
         ImageView iv_clear = contentView.findViewById(R.id.iv_clear);
@@ -125,42 +132,63 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
         iv_clear.setOnClickListener(this);
         tv_close.setOnClickListener(this);
 
-//        recordAudioView.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View view, MotionEvent motionEvent) {
-//                switch (motionEvent.getAction()) {
-//                    case MotionEvent.ACTION_DOWN: {
-//                        scrollToBottom();
-//                        startRecognizer();
-//                        return true;
-//                    }
-//                    case MotionEvent.ACTION_MOVE: {
-//                        break;
-//                    }
-//                    case MotionEvent.ACTION_CANCEL:
-//                    case MotionEvent.ACTION_UP: {
-//                        stopRecognizer(view);
-//                        return true;
-//                    }
-//                }
-//                return false;
-//            }
-//        });
         setCanceledOnTouchOutside(true);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(contentView);
-        infoList = new ArrayList<>();
-//        initData();
-        lv.setAdapter(myAdapter);
-        myAdapter.addAll(infoList);
+        // 设置window属性
+        freshDialog(width, height);
+    }
 
-
+    private void freshDialog(int width, int height) {
         // 设置window属性
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.width = width;
         lp.height = height;
         lp.gravity = Gravity.BOTTOM;
         getWindow().setAttributes(lp);
+    }
+
+    private void initAutoRecycleView(View view) {
+        autoPollRecyclerView = view.findViewById(R.id.autoPollRecyclerView);
+        linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+        autoPollRecyclerView.setLayoutManager(linearLayoutManager);
+        linearSmoothScroller = new LinearSmoothScroller(mContext) {
+            @Override
+            protected int getVerticalSnapPreference() {
+                return SNAP_TO_END;
+            }
+
+            @Override
+            protected int getHorizontalSnapPreference() {
+                return SNAP_TO_START;
+            }
+
+            @Override
+            protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+                return 5f / (displayMetrics.density);
+            }
+        };
+        autoPollRecyclerView.setAutoTaskCallback(new AutoPollRecyclerView.AutoTaskLister() {
+            @Override
+            public void scrollCallback() {
+                freshBarrage(currentPosition);
+            }
+        });
+        autoPollAdapter = new AutoPollAdapter(mContext, commitsBeans);
+        autoPollRecyclerView.start(false);
+        autoPollRecyclerView.setAdapter(autoPollAdapter);
+    }
+
+    private void freshBarrage(int position) {
+        linearSmoothScroller.setTargetPosition(position);
+        linearLayoutManager.startSmoothScroll(linearSmoothScroller);
+//            autoPollRecyclerView.scrollBy(0, DisplayUtil.dip2px(mContext, 30));
+        if (position == commitsBeans.size() - 1) {
+            currentPosition = 0;
+        } else {
+            currentPosition = (currentPosition + 1) % commitsBeans.size();
+        }
+
     }
 
     public void audioInit() {
@@ -172,13 +200,13 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
 
             @Override
             public String onRecordStart() {
+                autoPollRecyclerView.stop();//停止弹幕轮播
                 isCancel = false;
                 recordTotalTime = 0;
                 initTimer();
                 timer.schedule(timerTask, 0, DEFAULT_MIN_TIME_UPDATE_TIME);
                 audioFileName = mContext.getExternalCacheDir() + File.separator + createAudioName();
                 mHorVoiceView.startRecord();
-                scrollToBottom();
                 startRecognizer();
                 return audioFileName;
             }
@@ -270,41 +298,12 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
     public void onClick(View v) {
         int viewId = v.getId();
         if (viewId == R.id.tv_close) {
-            dismiss();
-        } else if (viewId == R.id.iv_clear) {
-            infoList.clear();
-            myAdapter.clear();
-        }
-    }
-
-    private void initData() {
-        infoList.add(new TouguInfo("我从没买过理财产品，我应该怎么入手？", 0, ""));
-        infoList.add(new TouguInfo("客官，根据您的情况，推荐您将资金的50%配置小金库，方便您随时存取，50%配置小金存，" +
-                "给您更大的收益空间。根据过去一年的收益数据，该配置方案的预期收益在4%左右，", 1, ""));
-    }
-
-    RecycleAdapter<TouguInfo> myAdapter = new RecycleAdapter<TouguInfo>(mContext, R.layout.item_tougu_layout, infoList) {
-        @Override
-        protected void convert(BaseAdapterHelper helper, TouguInfo item, int position) {
-            TextView tv_message = helper.getTextView(R.id.tv_message);
-            TextView tv_message_ai = helper.getTextView(R.id.tv_message_ai);
-            LinearLayout ll_left = helper.getView(R.id.ll_left);
-            LinearLayout ll_right = helper.getView(R.id.ll_right);
-            if (item.getMessageType() == 1) {
-                ll_left.setVisibility(View.VISIBLE);
-                ll_right.setVisibility(View.GONE);
-                tv_message_ai.setText(item.getMessage());
-                if (item.getMessage().contains("点击一键下单")) {
-                    setRedText(item.getMessage(), tv_message_ai);
-                }
-            } else {
-                ll_left.setVisibility(View.GONE);
-                ll_right.setVisibility(View.VISIBLE);
-                tv_message.setText(item.getMessage());
+            if (autoPollRecyclerView != null) {
+                autoPollRecyclerView.stop();
             }
-
+            dismiss();
         }
-    };
+    }
 
     /**
      * 启动录音和识别
@@ -349,6 +348,10 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
     public void stopRecognizer() {
         // 停止录音
         Log.i(TAG, "Stoping recognizer...");
+        if (autoPollRecyclerView != null) {
+            autoPollRecyclerView.start(true);
+        }
+        updateCancelUi();
         if (recordTask == null) {
             return;
         }
@@ -400,57 +403,25 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
                     JSONObject jsonObject = JSONObject.parseObject(fullResult);
                     if (jsonObject.containsKey("payload")) {
                         result = jsonObject.getJSONObject("payload").getString("result");
-                        myAdapter.add(new TouguInfo(result, 0));
-                        updateCancelUi();
-                        scrollToBottom();
-                        new Thread(new Runnable() {
+//                        result="hello";
+                        if (!TextUtils.isEmpty(result)) {
+                            int indexPosition = (currentPosition + 3) % commitsBeans.size();
+                            commitsBeans.add(indexPosition, new CommitInfo.CommitsBean(true, result));
+                            autoPollAdapter.notifyDataSetChanged();
+                            updateCancelUi();
+                        }
+                        new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                Message message = new Message();
-                                for (int i = 0; i < keyWords.length; i++) {
-                                    if (result.contains(keyWords[i])) {
-                                        message.what = 102;
-                                        message.obj = words[i];
-                                        handler.sendMessage(message);
-                                        return;
-                                    }
-                                }
-                                String aiStr = AppManager.getServiceInfo(result);
-                                message.what = 101;
-                                message.obj = aiStr;
-                                handler.sendMessage(message);
+                                autoPollRecyclerView.start(false);
                             }
-                        }).start();
-
+                        }, 200);
                     }
                 }
-            } else if (msg.what == 101) {
-                JSONObject jsonObject = JSONObject.parseObject(fullResult);
-                if (jsonObject != null && jsonObject.containsKey("content")) {
-                    String aiResult = jsonObject.getString("content");
-                    myAdapter.add(new TouguInfo(aiResult, 1));
-                    scrollToBottom();
-                }
-
-            } else if (msg.what == 102) {
-                myAdapter.add(new TouguInfo(fullResult, 1));
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        scrollToBottom();
-                    }
-                }, 500);
-
             }
 
         }
     };
-
-    private void scrollToBottom() {
-        if (myAdapter != null && myAdapter.getItemCount() > 0) {
-            lv.scrollToPosition(myAdapter.getItemCount() - 1);
-        }
-    }
 
     // 请求结束，关闭连接
     @Override
@@ -515,30 +486,32 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
         }
     }
 
-    protected void setRedText(String contentStr, TextView textView) {
-        SpannableStringBuilder style = new SpannableStringBuilder();
-
-        //设置文字
-        style.append(contentStr);
-        //设置部分文字点击事件
-        ClickableSpan clickableSpan = new ClickableSpan() {
-            @Override
-            public void onClick(View widget) {
+    public CommitInfo getJsonData(String fileName) {
+        InputStream in = null;
+        try {
+            in = getContext().getResources().getAssets().open(fileName);
+            // 获取文件的字节数
+            int lenght = in.available();
+            // 创建byte数组
+            byte[] buffer = new byte[lenght];
+            // 将文件中的数据读到byte数组中
+            in.read(buffer);
+            String countryJson = new String(buffer, "utf-8");
+            CommitInfo moneyManagementData = (CommitInfo) AppManager.fromJson(countryJson, new TypeToken<CommitInfo>() {
+            }.getType());
+            return moneyManagementData;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-
-            @Override
-            public void updateDrawState(@NonNull TextPaint ds) {
-                ds.setUnderlineText(false);
-            }
-        };
-        style.setSpan(clickableSpan, contentStr.length() - 7, contentStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        textView.setText(style);
-        //设置部分文字颜色
-        ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(Color.parseColor("#EF4034"));
-        style.setSpan(foregroundColorSpan, contentStr.length() - 7, contentStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        //配置给TextView
-        textView.setMovementMethod(LinkMovementMethod.getInstance());
-        textView.setText(style);
+        }
+        return null;
     }
 
 

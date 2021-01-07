@@ -97,7 +97,7 @@ public class LicaiDialog extends Dialog implements View.OnClickListener {
         tv_cancel.setOnClickListener(this);
         rl_dialog.setOnClickListener(this);
 
-        setCanceledOnTouchOutside(true);
+        setCanceledOnTouchOutside(false);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         setContentView(contentView);
         recyclerView.setAdapter(myAdapter);

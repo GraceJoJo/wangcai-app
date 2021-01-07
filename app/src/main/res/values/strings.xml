@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">JD金融</string>
+    <!--<string name="app_name">JD金融</string>-->
+    <string name="app_name">JD</string>
 </resources>
