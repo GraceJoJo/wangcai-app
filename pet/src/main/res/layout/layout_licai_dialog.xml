@@ -1,367 +1,343 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:layout="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/rl_dialog"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/transparent_dialog">
+    android:layout_height="450dp"
+    android:layout_alignParentBottom="true">
 
-    <ScrollView
-        android:id="@+id/scrollview"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:layout_alignParentBottom="true"
-        android:descendantFocusability="blocksDescendants"
-        android:overScrollMode="never"
-        android:scrollbars="none">
+        android:layout_height="match_parent"
+        android:background="@drawable/shouyi_shape"
+        android:orientation="vertical"
+        android:paddingTop="18dp"
+        android:paddingBottom="70dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/shouyi_shape"
-            android:orientation="vertical"
-            android:paddingTop="18dp"
-            android:paddingBottom="70dp">
+            android:layout_marginHorizontal="16dp"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="16dp"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_shape_ef4034">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="14dp"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="20dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:shadowRadius="3.0"
+                            android:text="最新收益"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_zxsy"
+                            style="@style/text_shouyi_red"
+                            android:layout_marginTop="4dp"
+                            android:shadowRadius="3.0"
+                            android:text="+50.00"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:shadowRadius="3.0"
+                                android:text="总资产"
+                                android:textColor="@color/color_ccffffff"
+                                android:textSize="18sp" />
+
+                            <CheckBox
+                                android:id="@+id/iv_eye_zzc"
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:layout_marginLeft="4dp"
+                                android:layout_marginTop="2dp"
+                                android:background="@drawable/eye_selector"
+                                android:button="@null" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_total_assets"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:shadowRadius="3.0"
+                            android:text="28,000.00"
+                            android:textColor="@color/color_cdffffff"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_white_15_shape"
+                            android:gravity="center"
+                            android:text="花掉收益"
+                            android:textColor="@color/color_ef4034"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/icon_shouyi_left" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_shape_e6b797">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/icon_shouyi_right" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="14dp"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="20dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:shadowRadius="3.0"
+                            android:text="待还借款"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_dhjk"
+                            style="@style/text_shouyi_red"
+                            android:layout_marginTop="4dp"
+                            android:shadowRadius="3.0"
+                            android:text="2080.60"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:shadowRadius="3.0"
+                                android:text="可借现金"
+                                android:textColor="@color/color_ccffffff"
+                                android:textSize="18sp" />
+
+                            <CheckBox
+                                android:id="@+id/iv_kjxj"
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="4dp"
+                                android:background="@drawable/icon_eye_close"
+                                android:button="@null"
+                                android:visibility="gone" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:shadowRadius="3.0"
+                            android:text="200,000.00"
+                            android:textColor="@color/color_cdffffff"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/bg_white_15_shape"
+                            android:gravity="center"
+                            android:text="立即借款"
+                            android:textColor="@color/color_a74a00"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/ll_rxph"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
+                    android:layout_marginRight="22dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
 
-                    <RelativeLayout
-                        android:layout_width="0dp"
+                    <CheckBox
+                        android:id="@+id/cb_rxph"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="4dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_shape_ef4034">
+                        android:button="@null"
+                        android:checked="true"
+                        android:text="今日热销"
+                        android:textColor="@drawable/text_color_tab_selector"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:paddingLeft="14dp"
-                            android:paddingTop="16dp"
-                            android:paddingBottom="20dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:shadowRadius="3.0"
-                                android:text="最新收益"
-                                android:textColor="@color/white"
-                                android:textSize="18sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/tv_zxsy"
-                                style="@style/text_shouyi_red"
-                                android:layout_marginTop="4dp"
-                                android:shadowRadius="3.0"
-                                android:text="+50.00"
-                                android:textColor="@color/white"
-                                android:textSize="18sp"
-                                android:textStyle="bold" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:shadowRadius="3.0"
-                                    android:text="总资产"
-                                    android:textColor="@color/color_ccffffff"
-                                    android:textSize="18sp" />
-
-                                <CheckBox
-                                    android:id="@+id/iv_eye_zzc"
-                                    android:layout_width="22dp"
-                                    android:layout_height="22dp"
-                                    android:layout_marginLeft="4dp"
-                                    android:layout_marginTop="2dp"
-                                    android:background="@drawable/eye_selector"
-                                    android:button="@null" />
-
-                            </LinearLayout>
-
-                            <TextView
-                                android:id="@+id/tv_total_assets"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:shadowRadius="3.0"
-                                android:text="28,000.00"
-                                android:textColor="@color/color_cdffffff"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:layout_width="80dp"
-                                android:layout_height="30dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/bg_white_15_shape"
-                                android:gravity="center"
-                                android:text="花掉收益"
-                                android:textColor="@color/color_ef4034"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:src="@drawable/icon_shouyi_left" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="4dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_shape_e6b797">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/icon_shouyi_right" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:paddingLeft="14dp"
-                            android:paddingTop="16dp"
-                            android:paddingBottom="20dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:shadowRadius="3.0"
-                                android:text="待还借款"
-                                android:textColor="@color/white"
-                                android:textSize="18sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/tv_dhjk"
-                                style="@style/text_shouyi_red"
-                                android:layout_marginTop="4dp"
-                                android:shadowRadius="3.0"
-                                android:text="2080.60"
-                                android:textColor="@color/white"
-                                android:textSize="18sp"
-                                android:textStyle="bold" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:shadowRadius="3.0"
-                                    android:text="可借现金"
-                                    android:textColor="@color/color_ccffffff"
-                                    android:textSize="18sp" />
-
-                                <CheckBox
-                                    android:id="@+id/iv_kjxj"
-                                    android:layout_width="22dp"
-                                    android:layout_height="22dp"
-                                    android:layout_gravity="center"
-                                    android:layout_marginLeft="4dp"
-                                    android:background="@drawable/icon_eye_close"
-                                    android:button="@null"
-                                    android:visibility="gone" />
-
-                            </LinearLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:shadowRadius="3.0"
-                                android:text="200,000.00"
-                                android:textColor="@color/color_cdffffff"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:layout_width="80dp"
-                                android:layout_height="30dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/bg_white_15_shape"
-                                android:gravity="center"
-                                android:text="立即借款"
-                                android:textColor="@color/color_a74a00"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                    </RelativeLayout>
+                    <View
+                        android:id="@+id/view_rxph"
+                        android:layout_width="20dp"
+                        android:layout_height="3dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@color/color_ef4034"
+                        android:visibility="visible" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/ll_jxjj"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal">
+                    android:layout_marginRight="22dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:id="@+id/ll_rxph"
+                    <CheckBox
+                        android:id="@+id/cb_jxjj"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="22dp"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical">
+                        android:button="@null"
+                        android:text="精选基金"
+                        android:textColor="@drawable/text_color_tab_selector"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
-                        <CheckBox
-                            android:id="@+id/cb_rxph"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:button="@null"
-                            android:checked="true"
-                            android:text="今日热销"
-                            android:textColor="@drawable/text_color_tab_selector"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <View
-                            android:id="@+id/view_rxph"
-                            android:layout_width="20dp"
-                            android:layout_height="3dp"
-                            android:layout_marginTop="4dp"
-                            android:background="@color/color_ef4034"
-                            android:visibility="visible" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ll_jxjj"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="22dp"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical">
-
-                        <CheckBox
-                            android:id="@+id/cb_jxjj"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:button="@null"
-                            android:text="精选基金"
-                            android:textColor="@drawable/text_color_tab_selector"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <View
-                            android:id="@+id/view_jxjj"
-                            android:layout_width="20dp"
-                            android:layout_height="3dp"
-                            android:layout_marginTop="4dp"
-                            android:background="@color/color_ef4034"
-                            android:visibility="gone" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ll_dtyy"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="22dp"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical">
-
-                        <CheckBox
-                            android:id="@+id/cb_dtyy"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:button="@null"
-                            android:text="个性推荐"
-                            android:textColor="@drawable/text_color_tab_selector"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <View
-                            android:id="@+id/view_dtyy"
-                            android:layout_width="20dp"
-                            android:layout_height="3dp"
-                            android:layout_marginTop="4dp"
-                            android:background="@color/color_ef4034"
-                            android:visibility="gone" />
-                    </LinearLayout>
-
+                    <View
+                        android:id="@+id/view_jxjj"
+                        android:layout_width="20dp"
+                        android:layout_height="3dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@color/color_ef4034"
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/white"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="14dp">
+                    android:id="@+id/ll_dtyy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="22dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="20dp"
-                        android:layout_marginTop="14dp"
-                        android:layout_marginBottom="8dp">
+                    <CheckBox
+                        android:id="@+id/cb_dtyy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:text="个性推荐"
+                        android:textColor="@drawable/text_color_tab_selector"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/tv_tips"
-                            style="@style/text_shouyi"
-                            android:text="紧跟平台购买趋势，跟着大家买理财" />
-
-                        <TextView
-                            android:id="@+id/tv_tips_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="8dp"
-                            android:layout_alignParentBottom="true"
-                            android:background="#143E5CD7"
-                            android:text="紧跟平台购买趋势，跟着大家买理财  "
-                            android:textColor="@color/transparent" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/recyclerView"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginBottom="15dp"
-                            android:nestedScrollingEnabled="false" />
-                    </RelativeLayout>
-
+                    <View
+                        android:id="@+id/view_dtyy"
+                        android:layout_width="20dp"
+                        android:layout_height="3dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@color/color_ef4034"
+                        android:visibility="gone" />
                 </LinearLayout>
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingHorizontal="14dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/tv_tips"
+                        style="@style/text_shouyi"
+                        android:text="紧跟平台购买趋势，跟着大家买理财" />
+
+                    <TextView
+                        android:id="@+id/tv_tips_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="8dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="#143E5CD7"
+                        android:text="紧跟平台购买趋势，跟着大家买理财  "
+                        android:textColor="@color/transparent" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="15dp"
+                        android:nestedScrollingEnabled="false" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
-    </ScrollView>
 
-    <TextView
-        android:id="@+id/tv_cancel"
-        android:layout_width="match_parent"
-        android:layout_height="57dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/icon_bottom_close"
-        android:gravity="center"
-        android:visibility="gone"
-        android:textColor="@color/color_333333"
-        android:textSize="16sp" />
-
-</RelativeLayout>
+    </LinearLayout>
+</LinearLayout>
