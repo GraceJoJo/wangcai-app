@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_ffffff"
+    android:orientation="horizontal"
+    android:padding="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="42dp"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/et_search_kw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/bg_shape_search_side"
+                android:hint="请输入搜索内容"
+                android:imeOptions="actionSearch"
+                android:paddingBottom="16px"
+                android:paddingLeft="22dp"
+                android:paddingRight="50px"
+                android:paddingTop="16px"
+                android:singleLine="true"
+                android:textColor="@color/color_333333"
+                android:textColorHint="@color/color_999999"
+                android:textCursorDrawable="@drawable/bg_shape_et_cursor_color"
+                android:textSize="14sp" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:src="@drawable/icon_search"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content">
+            </ImageView>
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/iv_clear_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12px"
+            android:src="@drawable/ic_clear_text"
+            android:visibility="visible" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_do_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="搜索"></TextView>
+</RelativeLayout>

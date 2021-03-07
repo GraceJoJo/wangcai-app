@@ -6,20 +6,24 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.gson.internal.$Gson$Preconditions;
 import com.google.gson.reflect.TypeToken;
 import com.jd.jrapp.other.pet.R;
 import com.jd.jrapp.other.pet.ui.BaseRecycler.BaseAdapterHelper;
 import com.jd.jrapp.other.pet.ui.BaseRecycler.RecycleAdapter;
 import com.jd.jrapp.other.pet.ui.dialog.bean.MoneyManagementData;
+import com.jd.jrapp.other.pet.ui.view.RefreshScrollView;
 import com.jd.jrapp.other.pet.utils.AppManager;
 import com.jd.jrapp.other.pet.utils.DisplayUtil;
 import com.jd.jrapp.other.pet.utils.SharedPrefsMgr;
@@ -42,11 +46,12 @@ public class SearchDialog extends Dialog implements View.OnClickListener {
     private ImageView iv_list;
     private TextView cb_all, cb_sales, cb_price;
     private View view_all, view_sales, view_price;
-    private ScrollView scrollview;
-    private List<MoneyManagementData.RecordsBean> recordsBeanList;
-    private List<MoneyManagementData> moneyManagementData;
     private boolean isOpen = false;
     private int zjsy = 50;
+    private ImageView ivSearch;
+    private View llSearchTitle;
+    private boolean isRefresh;
+    private RefreshScrollView refreshScrollView;
 
     public SearchDialog(Context context, int zjsy) {
         super(context, R.style.loadDialog);
@@ -60,36 +65,105 @@ public class SearchDialog extends Dialog implements View.OnClickListener {
         isOpen = SharedPrefsMgr.getInstance(mContext).getBoolean(ISOPEN, false);
         width = (int) DisplayUtil.getScreenWidth(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contentView = inflater.inflate(R.layout.layout_search_dialog, null);
+        final View contentView = inflater.inflate(R.layout.layout_search_dialog, null);
 
-        iv_list = contentView.findViewById(R.id.iv_list);
-        DisplayUtil.fitImage((Activity) mContext,iv_list,DisplayUtil.px2dip(mContext,750),DisplayUtil.px2dip(mContext,3648));
+        refreshScrollView = contentView.findViewById(R.id.refresh_scrollview);
+        refreshScrollView.setEnableRefresh(true);
+        LinearLayout scrollviewContent = (LinearLayout) LayoutInflater.from(mContext).inflate(R.layout.scrollview_content, null);
+        refreshScrollView.setupContainer(mContext, scrollviewContent);
+        iv_list = scrollviewContent.findViewById(R.id.iv_content);
+        //处理图片拉伸问题
+        DisplayUtil.fitImage((Activity) mContext, iv_list, DisplayUtil.px2dip(mContext, 750), DisplayUtil.px2dip(mContext, 3648));
+        refreshScrollView.setOnRefreshScrollViewListener(new RefreshScrollView.OnRefreshScrollViewListener() {
+            @Override
+            public void onRefreshFinish() {
+                Log.e("TAG", "刷新完成");
+                if (!isRefresh) {
+                    iv_list.setImageResource(R.drawable.bg_ulike_refresh_after);
+                    isRefresh = true;
+                } else {
+                    iv_list.setImageResource(R.drawable.bg_ulike_refresh_before);
+                    isRefresh = false;
+                }
+            }
 
+            @Override
+            public void refreshing() {
+                Log.e("TAG", "正在刷新...");
+            }
+
+        });
 
         cb_all = contentView.findViewById(R.id.cb_all);
         cb_sales = contentView.findViewById(R.id.cb_sales);
         cb_price = contentView.findViewById(R.id.cb_price);
 
+
+        //处理搜索按钮的状态
+        contentView.findViewById(R.id.ll_subview_ulike).setVisibility(View.VISIBLE);
+        contentView.findViewById(R.id.ll_subview_search).setVisibility(View.GONE);
+        contentView.findViewById(R.id.iv_back).setVisibility(View.GONE);
+        ivSearch = contentView.findViewById(R.id.iv_search);
+        ivSearch.setImageResource(R.drawable.icon_search);
+        ivSearch.setClickable(true);
+        iv_list.setImageResource(R.drawable.bg_ulike_refresh_before);
+
+        llSearchTitle = contentView.findViewById(R.id.ll_search_title);
+        llSearchTitle.setVisibility(View.GONE);
+        //展示搜索框
+        contentView.findViewById(R.id.tv_do_search).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                contentView.findViewById(R.id.iv_back).setVisibility(View.VISIBLE);
+                contentView.findViewById(R.id.ll_subview_ulike).setVisibility(View.GONE);
+                contentView.findViewById(R.id.ll_subview_search).setVisibility(View.VISIBLE);
+                ivSearch.setClickable(false);
+                ivSearch.setImageResource(R.drawable.icon_search_unable);
+                iv_list.setImageResource(R.drawable.tab_search_all);
+            }
+        });
+
+        //点击搜索时，展示搜索结果的推荐tab
+        contentView.findViewById(R.id.iv_search).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                llSearchTitle.setVisibility(View.VISIBLE);
+                refreshScrollView.setEnableRefresh(false);
+            }
+        });
+        //返回时回到猜你喜欢
+        contentView.findViewById(R.id.iv_back).findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (llSearchTitle.getVisibility() == View.VISIBLE) {
+                    llSearchTitle.setVisibility(View.GONE);
+                    return;
+                }
+                contentView.findViewById(R.id.ll_subview_ulike).setVisibility(View.VISIBLE);
+                contentView.findViewById(R.id.ll_subview_search).setVisibility(View.GONE);
+                contentView.findViewById(R.id.iv_back).setVisibility(View.GONE);
+                ivSearch = contentView.findViewById(R.id.iv_search);
+                ivSearch.setImageResource(R.drawable.icon_search);
+                ivSearch.setClickable(true);
+                iv_list.setImageResource(R.drawable.bg_ulike_refresh_before);
+                llSearchTitle.setVisibility(View.GONE);
+                refreshScrollView.setEnableRefresh(true);
+            }
+        });
+
         view_all = contentView.findViewById(R.id.view_all);
-        view_sales= contentView.findViewById(R.id.view_sales);
+        view_sales = contentView.findViewById(R.id.view_sales);
         view_price = contentView.findViewById(R.id.view_price);
 
         cb_all.setSelected(true);
         cb_all.getPaint().setFakeBoldText(true);
 
-        scrollview = contentView.findViewById(R.id.scrollview);
         TextView tv_cancel = contentView.findViewById(R.id.tv_cancel);
         RelativeLayout rl_dialog = contentView.findViewById(R.id.rl_dialog);
-        RecyclerView recyclerView = contentView.findViewById(R.id.recyclerView);
-        LinearLayoutManager manager = new LinearLayoutManager(mContext);
-        manager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(manager);
-        moneyManagementData = getJsonData("order.json");
-        recordsBeanList = (List<MoneyManagementData.RecordsBean>) moneyManagementData.get(0).getRecords();
 
-        cb_all.setOnClickListener(this);
-        cb_sales.setOnClickListener(this);
-        cb_price.setOnClickListener(this);
+        contentView.findViewById(R.id.ll_price).setOnClickListener(this);
+        contentView.findViewById(R.id.ll_sales).setOnClickListener(this);
+        contentView.findViewById(R.id.ll_all).setOnClickListener(this);
 
         tv_cancel.setOnClickListener(this);
         rl_dialog.setOnClickListener(this);
@@ -97,12 +171,10 @@ public class SearchDialog extends Dialog implements View.OnClickListener {
         setCanceledOnTouchOutside(true);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         setContentView(contentView);
-        recyclerView.setAdapter(myAdapter);
-        myAdapter.addAll(recordsBeanList);
         contentView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                scrollview.scrollTo(0, 0);
+                refreshScrollView.scrollTo(0, 0);
             }
         }, 300);
         // 设置window属性
@@ -118,7 +190,7 @@ public class SearchDialog extends Dialog implements View.OnClickListener {
             dismiss();
         } else if (v.getId() == R.id.rl_dialog) {
 //            dismiss();
-        } else if (v.getId() == R.id.cb_all) {
+        } else if (v.getId() == R.id.ll_all) {
             iv_list.setImageResource(R.drawable.tab_search_all);
 
             cb_all.setSelected(true);
@@ -133,13 +205,10 @@ public class SearchDialog extends Dialog implements View.OnClickListener {
             view_sales.setVisibility(View.GONE);
             view_price.setVisibility(View.GONE);
 
-            myAdapter.clear();
-            recordsBeanList = (List<MoneyManagementData.RecordsBean>) moneyManagementData.get(0).getRecords();
-            myAdapter.addAll(recordsBeanList);
 
-            scrollview.scrollTo(0, 0);
+//            refreshScrollView.scrollTo(0, 0);
 
-        } else if (v.getId() == R.id.cb_sales) {
+        } else if (v.getId() == R.id.ll_sales) {
             iv_list.setImageResource(R.drawable.tab_search_sales);
 
             cb_all.setSelected(false);
@@ -154,12 +223,9 @@ public class SearchDialog extends Dialog implements View.OnClickListener {
             view_sales.setVisibility(View.VISIBLE);
             view_price.setVisibility(View.GONE);
 
-            myAdapter.clear();
-            recordsBeanList = (List<MoneyManagementData.RecordsBean>) moneyManagementData.get(1).getRecords();
-            myAdapter.addAll(recordsBeanList);
-            scrollview.scrollTo(0, 0);
+//            refreshScrollView.scrollTo(0, 0);
 
-        } else if (v.getId() == R.id.cb_price) {
+        } else if (v.getId() == R.id.ll_price) {
             iv_list.setImageResource(R.drawable.tab_search_price);
 
             cb_all.setSelected(false);
@@ -175,60 +241,8 @@ public class SearchDialog extends Dialog implements View.OnClickListener {
             view_sales.setVisibility(View.GONE);
             view_price.setVisibility(View.VISIBLE);
 
-            myAdapter.clear();
-            recordsBeanList = (List<MoneyManagementData.RecordsBean>) moneyManagementData.get(2).getRecords();
-            myAdapter.addAll(recordsBeanList);
-            scrollview.scrollTo(0, 0);
+//            refreshScrollView.scrollTo(0, 0);
         }
-    }
-
-    private void  updateData(){
-        for (int i = 0; i < Math.random(); i++) {
-            recordsBeanList.add(new MoneyManagementData.RecordsBean());
-        }
-    }
-    RecycleAdapter<MoneyManagementData.RecordsBean> myAdapter = new RecycleAdapter<MoneyManagementData.RecordsBean>(mContext, R.layout.item_order_one, recordsBeanList) {
-        @Override
-        protected void convert(BaseAdapterHelper helper, MoneyManagementData.RecordsBean item, int position) {
-            if (position == recordsBeanList.size() - 1) {
-                helper.setInVisible(R.id.view_line);
-            }
-//            helper.setText(R.id.tv_rx1, item.getTypeStr());
-//            helper.setText(R.id.tv_rx2, item.getRank());
-//            helper.setText(R.id.tv_rx3, item.getInterestRate());
-//            helper.setText(R.id.tv_rx4, item.getInterestRateDate());
-//            helper.setText(R.id.tv_rx5, item.getManageType());
-//            helper.setText(R.id.tv_rx6, item.getManageTypeLimit());
-        }
-    };
-
-
-    public List<MoneyManagementData> getJsonData(String fileName) {
-        InputStream in = null;
-        try {
-            in = getContext().getResources().getAssets().open(fileName);
-            // 获取文件的字节数
-            int lenght = in.available();
-            // 创建byte数组
-            byte[] buffer = new byte[lenght];
-            // 将文件中的数据读到byte数组中
-            in.read(buffer);
-            String countryJson = new String(buffer, "utf-8");
-            List<MoneyManagementData> moneyManagementData = (List<MoneyManagementData>) AppManager.fromJson(countryJson, new TypeToken<List<MoneyManagementData>>() {
-            }.getType());
-            return moneyManagementData;
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return null;
     }
 
 }

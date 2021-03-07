@@ -4,186 +4,81 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/transparent_dialog">
-    <!-- 111111111   -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/color_ffffff"
-            android:orientation="horizontal"
-            android:paddingBottom="17dp"
-            android:paddingTop="17dp">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/iv_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.2"
-                android:src="@drawable/icon_arrows_left"></ImageView>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/color_ffffff">
 
-            <LinearLayout
-                android:id="@+id/ll_all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/cb_all"
+                <ImageView
+                    android:id="@+id/iv_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:button="@null"
-                    android:text="综合"
-                    android:textColor="@drawable/text_color_tab_selector2"
-                    android:textSize="13sp" />
-
-                <View
-                    android:id="@+id/view_all"
-                    android:layout_width="20dp"
-                    android:layout_height="3dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@color/color_ef4034"
-                    android:visibility="visible" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_sales"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/cb_sales"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@null"
-                    android:text="销量"
-                    android:textColor="@drawable/text_color_tab_selector2"
-                    android:textSize="13sp" />
-
-                <View
-                    android:id="@+id/view_sales"
-                    android:layout_width="20dp"
-                    android:layout_height="3dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@color/color_ef4034"
-                    android:visibility="gone" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/cb_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@null"
-                    android:text="价格"
-                    android:textColor="@drawable/text_color_tab_selector2"
-                    android:textSize="13sp" />
-
-                <View
-                    android:id="@+id/view_price"
-                    android:layout_width="20dp"
-                    android:layout_height="3dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@color/color_ef4034"
-                    android:visibility="gone" />
-            </LinearLayout>
+                    android:layout_centerVertical="true"
+                    android:padding="8dp"
+                    android:src="@drawable/arrow_left"></ImageView>
 
 
                 <ImageView
-                    android:layout_weight="1"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/arrows_gray">
-
-                </ImageView>
-
-        </LinearLayout>
-
-        <ScrollView
-            android:id="@+id/scrollview"
-            android:layout_width="match_parent"
-            android:layout_height="450dp"
-            android:layout_alignParentBottom="true"
-            android:descendantFocusability="blocksDescendants"
-            android:overScrollMode="never"
-            android:scrollbars="none">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/shouyi_shape"
-                android:orientation="vertical"
-                android:paddingTop="0dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="0dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/white"
-                        android:orientation="vertical"
-                        android:paddingHorizontal="0dp">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:paddingBottom="0dp">
-
-                            <android.support.v7.widget.RecyclerView
-                                android:visibility="gone"
-                                android:id="@+id/recyclerView"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:nestedScrollingEnabled="false"
-                                android:paddingBottom="60dp" />
-
-                            <ImageView
-                                android:id="@+id/iv_list"
-                                android:src="@drawable/tab_search_all"
-                                android:layout_width="match_parent"
-                                android:scaleType="fitXY"
-                                android:paddingBottom="50dp"
-                                android:layout_height="wrap_content">
-                            </ImageView>
-
-                        </RelativeLayout>
-
-                    </LinearLayout>
+                    android:id="@+id/iv_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:padding="8dp"
+                    android:src="@drawable/icon_search_unable"></ImageView>
 
 
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/ll_subview_ulike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="猜你喜欢"
+                    android:textColor="#262626"
+                    android:textSize="14sp"
+                    android:textStyle="bold"></TextView>
 
-            </LinearLayout>
-        </ScrollView>
 
+                <include
+                    android:id="@+id/ll_subview_search"
+                    layout="@layout/layout_search_buy"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"></include>
+            </RelativeLayout>
+
+
+        </FrameLayout>
+
+        <!--        http://pan.baidu.com/s/1jG67mzc-->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/color_eeeeee"></View>
 
+        <com.jd.jrapp.other.pet.ui.view.RefreshScrollView
+            android:id="@+id/refresh_scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:layout_alignParentBottom="true"
+            android:descendantFocusability="blocksDescendants"
+            android:overScrollMode="never"
+            android:scrollbars="none"></com.jd.jrapp.other.pet.ui.view.RefreshScrollView>
+
     </LinearLayout>
     <!-- 111111111   -->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -206,5 +101,21 @@
             android:background="@color/color_eeeeee"></View>
 
     </LinearLayout>
+
+
+    <!--    <include-->
+    <!--        android:id="@+id/ll_subview_ulike"-->
+    <!--        android:visibility="gone"-->
+    <!--        layout="@layout/layout_search_ulike"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"></include>-->
+
+
+    <include
+        android:id="@+id/ll_search_title"
+        layout="@layout/layout_search_titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></include>
+    <!-- 111111111   -->
 
 </RelativeLayout>

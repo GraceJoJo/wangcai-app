@@ -30,11 +30,10 @@ import java.io.InputStream;
 import java.util.List;
 
 /**
- * Author: chenghuan15
- * Date: 2020/9/8
- * Time: 4:05 PM
+ * Author: zhoujuan26
+ * Date: 2021/1/3
+ * Time: 11:12 PM
  */
-
 public class OrderDialog extends Dialog implements View.OnClickListener {
 
     private Context mContext;
@@ -45,7 +44,6 @@ public class OrderDialog extends Dialog implements View.OnClickListener {
     private ScrollView scrollview;
     private List<MoneyManagementData.RecordsBean> recordsBeanList;
     private List<MoneyManagementData> moneyManagementData;
-    private String[] recordStatusDescription = new String[]{"紧跟平台购买趋势，跟着大家买理财", "精选绩优好基，适合长期持有", "专业团队严选，追求收益"};
     private boolean isOpen = false;
     private int zjsy = 50;
 
@@ -91,11 +89,18 @@ public class OrderDialog extends Dialog implements View.OnClickListener {
         moneyManagementData = getJsonData("order.json");
         recordsBeanList = (List<MoneyManagementData.RecordsBean>) moneyManagementData.get(0).getRecords();
 
-        cb_all.setOnClickListener(this);
-        cb_pay.setOnClickListener(this);
-        cb_shouhuo.setOnClickListener(this);
-        cb_pingjia.setOnClickListener(this);
-        cb_tuihuan.setOnClickListener(this);
+        contentView.findViewById(R.id.ll_all).setOnClickListener(this);
+        contentView.findViewById(R.id.ll_pay).setOnClickListener(this);
+        contentView.findViewById(R.id.ll_pay).setOnClickListener(this);
+        contentView.findViewById(R.id.ll_shouhuo).setOnClickListener(this);
+        contentView.findViewById(R.id.ll_pingjia).setOnClickListener(this);
+        contentView.findViewById(R.id.ll_tuihuan).setOnClickListener(this);
+
+//        cb_all.setOnClickListener(this);
+//        cb_pay.setOnClickListener(this);
+//        cb_shouhuo.setOnClickListener(this);
+//        cb_pingjia.setOnClickListener(this);
+//        cb_tuihuan.setOnClickListener(this);
 
         tv_cancel.setOnClickListener(this);
         rl_dialog.setOnClickListener(this);
@@ -124,7 +129,7 @@ public class OrderDialog extends Dialog implements View.OnClickListener {
             dismiss();
         } else if (v.getId() == R.id.rl_dialog) {
 //            dismiss();
-        } else if (v.getId() == R.id.cb_all) {
+        } else if (v.getId() == R.id.ll_all) {
             cb_all.setSelected(true);
             cb_pay.setSelected(false);
             cb_shouhuo.setSelected(false);
@@ -149,7 +154,7 @@ public class OrderDialog extends Dialog implements View.OnClickListener {
 
             scrollview.scrollTo(0, 0);
 
-        } else if (v.getId() == R.id.cb_pay) {
+        } else if (v.getId() == R.id.ll_pay) {
             cb_all.setSelected(false);
             cb_pay.setSelected(true);
             cb_shouhuo.setSelected(false);
@@ -173,7 +178,7 @@ public class OrderDialog extends Dialog implements View.OnClickListener {
             myAdapter.addAll(recordsBeanList);
             scrollview.scrollTo(0, 0);
 
-        } else if (v.getId() == R.id.cb_shouhuo) {
+        } else if (v.getId() == R.id.ll_shouhuo) {
             cb_all.setSelected(false);
             cb_pay.setSelected(false);
             cb_shouhuo.setSelected(true);
@@ -196,7 +201,7 @@ public class OrderDialog extends Dialog implements View.OnClickListener {
             recordsBeanList = (List<MoneyManagementData.RecordsBean>) moneyManagementData.get(2).getRecords();
             myAdapter.addAll(recordsBeanList);
             scrollview.scrollTo(0, 0);
-        } else if (v.getId() == R.id.cb_pingjia) {
+        } else if (v.getId() == R.id.ll_pingjia) {
             cb_all.setSelected(false);
             cb_pay.setSelected(false);
             cb_shouhuo.setSelected(false);
@@ -219,7 +224,7 @@ public class OrderDialog extends Dialog implements View.OnClickListener {
             recordsBeanList = (List<MoneyManagementData.RecordsBean>) moneyManagementData.get(2).getRecords();
             myAdapter.addAll(recordsBeanList);
             scrollview.scrollTo(0, 0);
-        } else if (v.getId() == R.id.cb_tuihuan) {
+        } else if (v.getId() == R.id.ll_tuihuan) {
             cb_all.setSelected(false);
             cb_pay.setSelected(false);
             cb_shouhuo.setSelected(false);
@@ -256,12 +261,6 @@ public class OrderDialog extends Dialog implements View.OnClickListener {
             if (position == recordsBeanList.size() - 1) {
                 helper.setInVisible(R.id.view_line);
             }
-//            helper.setText(R.id.tv_rx1, item.getTypeStr());
-//            helper.setText(R.id.tv_rx2, item.getRank());
-//            helper.setText(R.id.tv_rx3, item.getInterestRate());
-//            helper.setText(R.id.tv_rx4, item.getInterestRateDate());
-//            helper.setText(R.id.tv_rx5, item.getManageType());
-//            helper.setText(R.id.tv_rx6, item.getManageTypeLimit());
         }
     };
 

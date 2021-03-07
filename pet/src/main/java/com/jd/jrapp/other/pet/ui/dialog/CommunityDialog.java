@@ -113,39 +113,6 @@ public class CommunityDialog extends Dialog implements View.OnClickListener {
             dismiss();
         } else if (v.getId() == R.id.rl_dialog) {
 //            dismiss();
-        } else if (v.getId() == R.id.cb_all) {
-
-            myAdapter.clear();
-            recordsBeanList = (List<MoneyManagementData.RecordsBean>) moneyManagementData.get(0).getRecords();
-            myAdapter.addAll(recordsBeanList);
-
-            scrollview.scrollTo(0, 0);
-
-        } else if (v.getId() == R.id.cb_pay) {
-
-            myAdapter.clear();
-            recordsBeanList = (List<MoneyManagementData.RecordsBean>) moneyManagementData.get(1).getRecords();
-            myAdapter.addAll(recordsBeanList);
-            scrollview.scrollTo(0, 0);
-
-        } else if (v.getId() == R.id.cb_shouhuo) {
-
-            myAdapter.clear();
-            recordsBeanList = (List<MoneyManagementData.RecordsBean>) moneyManagementData.get(2).getRecords();
-            myAdapter.addAll(recordsBeanList);
-            scrollview.scrollTo(0, 0);
-        } else if (v.getId() == R.id.cb_pingjia) {
-
-            myAdapter.clear();
-            recordsBeanList = (List<MoneyManagementData.RecordsBean>) moneyManagementData.get(2).getRecords();
-            myAdapter.addAll(recordsBeanList);
-            scrollview.scrollTo(0, 0);
-        } else if (v.getId() == R.id.cb_tuihuan) {
-
-            myAdapter.clear();
-            recordsBeanList = (List<MoneyManagementData.RecordsBean>) moneyManagementData.get(2).getRecords();
-            myAdapter.addAll(recordsBeanList);
-            scrollview.scrollTo(0, 0);
         }
     }
 
@@ -161,12 +128,6 @@ public class CommunityDialog extends Dialog implements View.OnClickListener {
             if (position == recordsBeanList.size() - 1) {
                 helper.setInVisible(R.id.view_line);
             }
-//            helper.setText(R.id.tv_rx1, item.getTypeStr());
-//            helper.setText(R.id.tv_rx2, item.getRank());
-//            helper.setText(R.id.tv_rx3, item.getInterestRate());
-//            helper.setText(R.id.tv_rx4, item.getInterestRateDate());
-//            helper.setText(R.id.tv_rx5, item.getManageType());
-//            helper.setText(R.id.tv_rx6, item.getManageTypeLimit());
         }
     };
 
