@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_dialog"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent_dialog">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/color_ffffff">
+
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:padding="8dp"
+                    android:src="@drawable/arrow_left"></ImageView>
+
+
+                <ImageView
+                    android:id="@+id/iv_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:padding="8dp"
+                    android:src="@drawable/icon_search_unable"></ImageView>
+
+
+                <TextView
+                    android:id="@+id/ll_subview_ulike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="猜你喜欢"
+                    android:textColor="#262626"
+                    android:textSize="14sp"
+                    android:textStyle="bold"></TextView>
+
+
+                <include
+                    android:id="@+id/ll_subview_search"
+                    layout="@layout/layout_search_buy"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"></include>
+            </RelativeLayout>
+
+
+        </FrameLayout>
+
+        <!--        http://pan.baidu.com/s/1jG67mzc-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_eeeeee"></View>
+
+        <com.jd.jrapp.other.pet.ui.view.RefreshScrollView
+            android:id="@+id/refresh_scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:layout_alignParentBottom="true"
+            android:descendantFocusability="blocksDescendants"
+            android:overScrollMode="never"
+            android:scrollbars="none"></com.jd.jrapp.other.pet.ui.view.RefreshScrollView>
+
+    </LinearLayout>
+    <!-- 111111111   -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/color_ffffff"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="@color/color_333333"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_eeeeee"></View>
+
+    </LinearLayout>
+
+
+    <!--    <include-->
+    <!--        android:id="@+id/ll_subview_ulike"-->
+    <!--        android:visibility="gone"-->
+    <!--        layout="@layout/layout_search_ulike"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"></include>-->
+
+
+    <include
+        android:id="@+id/ll_search_title"
+        layout="@layout/layout_search_titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></include>
+    <!-- 111111111   -->
+
+</RelativeLayout>

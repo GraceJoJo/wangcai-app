@@ -57,6 +57,9 @@ class PetFloatWindow private constructor() {
     var mTouguDialog: TouguDialog? = null
     var mSignDialog: SignDialog? = null
     var mLicaiDialog: LicaiDialog? = null
+    var mOrderDialog: OrderDialog? = null
+    var mCommunityDialog: CommunityDialog? = null
+    var mSearchDialog: SearchDialog? = null
     var mTouchSlop: Int = 8
     var mCustomDialog: CustomDialog? = null
     var mPtDialog: PtDialog? = null
@@ -119,12 +122,14 @@ class PetFloatWindow private constructor() {
             Log.e("PetFloatWindow", "onClick: " + v)
             animSwitch()
             if (v == mTvShouyi) {
-                showLicaiDialog()
+                showOrderDialog()
             } else if (v == mTvTougu) {
-                AppManager.getInstance().getNLSToken()
-                showTouguDialog();
+//                AppManager.getInstance().getNLSToken()
+//                showTouguDialog();
+                showCommunityDialog()
             } else if (v == mTvDonghua) {
-                showPayDialog()
+//                showPayDialog()
+                showSearchDialog()
             } else if (v == mTvSign) {
                 showSignDialog();
             } else if (v == mClickView) {
@@ -137,7 +142,7 @@ class PetFloatWindow private constructor() {
                     showCustomDialog()
                 }
             } else if (v == mTvPet) {
-                showPetDialog()
+                showLicaiDialog()
 //                showPtDialog()
             }
         }
@@ -219,6 +224,40 @@ class PetFloatWindow private constructor() {
                 mLicaiDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
             }
             mLicaiDialog?.show()
+        }
+    }
+
+    private fun showOrderDialog() {
+        mOrderDialog = OrderDialog(mContext, zjsy)
+        if (mOrderDialog != null) {
+            if (Build.VERSION.SDK_INT >= 25) {
+                mOrderDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+            } else {
+                mOrderDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            }
+            mOrderDialog?.show()
+        }
+    }
+    private fun showCommunityDialog() {
+        mCommunityDialog = CommunityDialog(mContext, zjsy)
+        if (mCommunityDialog != null) {
+            if (Build.VERSION.SDK_INT >= 25) {
+                mCommunityDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+            } else {
+                mCommunityDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            }
+            mCommunityDialog?.show()
+        }
+    }
+    private fun showSearchDialog() {
+        mSearchDialog = SearchDialog(mContext, zjsy)
+        if (mSearchDialog != null) {
+            if (Build.VERSION.SDK_INT >= 25) {
+                mSearchDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+            } else {
+                mSearchDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            }
+            mSearchDialog?.show()
         }
     }
 

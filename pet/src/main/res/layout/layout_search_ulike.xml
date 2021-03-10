@@ -7,21 +7,34 @@
     <!-- 111111111   -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="80dp"
-            android:layout_height="450dp"
+
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:background="@color/color_ffffff"
-            android:orientation="vertical">
+            android:layout_height="42dp">
 
-            <com.jd.jrapp.other.pet.ui.view.LeftListView
-                android:id="@+id/lf_listview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"></com.jd.jrapp.other.pet.ui.view.LeftListView>
-        </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="猜你喜欢"
+                android:textColor="#262626"
+                android:textStyle="bold"
+                android:textSize="14sp"></TextView>
+            <ImageView
+                android:id="@+id/iv_search"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:padding="8dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_search"
+                android:layout_height="wrap_content">
+            </ImageView>
+        </RelativeLayout>
 
         <ScrollView
             android:id="@+id/scrollview"
@@ -57,12 +70,22 @@
                             android:layout_height="match_parent"
                             android:paddingBottom="0dp">
 
+                            <ImageView
+                                android:id="@+id/iv_list"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingBottom="50dp"
+                                android:scaleType="fitXY"
+                                android:src="@drawable/tab_search_all"></ImageView>
+
                             <android.support.v7.widget.RecyclerView
                                 android:id="@+id/recyclerView"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:nestedScrollingEnabled="false"
-                                android:paddingBottom="60dp" />
+                                android:paddingBottom="60dp"
+                                android:visibility="gone" />
+
                         </RelativeLayout>
 
                     </LinearLayout>
@@ -73,30 +96,12 @@
             </LinearLayout>
         </ScrollView>
 
-    </LinearLayout>
-    <!-- 111111111   -->
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tv_cancel"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@color/color_ffffff"
-            android:gravity="center"
-            android:text="取消"
-            android:textColor="@color/color_333333"
-            android:textSize="16sp" />
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/color_eeeeee"></View>
 
     </LinearLayout>
+    <!-- 111111111   -->
 
 </RelativeLayout>
