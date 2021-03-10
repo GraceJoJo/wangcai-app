@@ -61,7 +61,7 @@ public class CommunityDialog extends Dialog implements View.OnClickListener {
         isOpen = SharedPrefsMgr.getInstance(mContext).getBoolean(ISOPEN, false);
         width = (int) DisplayUtil.getScreenWidth(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contentView = inflater.inflate(R.layout.layout_community_dialog, null);
+        View contentView = inflater.inflate(R.layout.layout_community_dialog_new, null);
 
         lfListview = contentView.findViewById(R.id.lf_listview);
 
