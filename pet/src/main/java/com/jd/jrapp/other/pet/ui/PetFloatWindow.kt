@@ -142,8 +142,9 @@ class PetFloatWindow private constructor() {
                     showCustomDialog()
                 }
             } else if (v == mTvPet) {
-                showLicaiDialog()
+//                showLicaiDialog()
 //                showPtDialog()
+                showPetDialog();
             }
         }
     }

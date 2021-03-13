@@ -49,7 +49,7 @@ android.applicationVariants.all { variant ->
     // delete previous files first
 
     variant.mergeAssets.doLast {
-        def sourceDir = "/Users/chenghuan15/Downloads/privateProjects/TestCocosModels/build/android"
+        def sourceDir = "/Users/zhoujuan/JD-Competition/black-horse/TestCocosModels/build/android"
         println("outputDir:"+outputDir)
         if (file(sourceDir).exists()){
             copy {
