@@ -21,6 +21,7 @@ import com.jd.jrapp.other.pet.R;
 import com.jd.jrapp.other.pet.ui.BaseRecycler.BaseAdapterHelper;
 import com.jd.jrapp.other.pet.ui.BaseRecycler.RecycleAdapter;
 import com.jd.jrapp.other.pet.ui.dialog.bean.MoneyManagementData;
+import com.jd.jrapp.other.pet.ui.view.DragView;
 import com.jd.jrapp.other.pet.utils.AppManager;
 import com.jd.jrapp.other.pet.utils.DisplayUtil;
 import com.jd.jrapp.other.pet.utils.SharedPrefsMgr;
@@ -33,12 +34,14 @@ import java.util.List;
  * Author: zhoujuan26
  * Date: 2021/1/3
  * Time: 11:12 PM
+ * 订单
  */
 public class OrderDialog extends Dialog implements View.OnClickListener {
 
     private Context mContext;
     private static final String ISOPEN = "isOpen";
     private int width;
+    private int height;
     private TextView cb_all, cb_pay, cb_shouhuo, cb_pingjia, cb_tuihuan;
     private View view_all, view_pay, view_shouhuo, view_pingjia, view_tuihuan;
     private ScrollView scrollview;
@@ -46,6 +49,7 @@ public class OrderDialog extends Dialog implements View.OnClickListener {
     private List<MoneyManagementData> moneyManagementData;
     private boolean isOpen = false;
     private int zjsy = 50;
+    private DragView dragView;
 
     public OrderDialog(Context context, int zjsy) {
         super(context, R.style.loadDialog);
@@ -58,8 +62,13 @@ public class OrderDialog extends Dialog implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         isOpen = SharedPrefsMgr.getInstance(mContext).getBoolean(ISOPEN, false);
         width = (int) DisplayUtil.getScreenWidth(mContext);
+        height = (int) DisplayUtil.getScreenHeight(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contentView = inflater.inflate(R.layout.layout_order_dialog, null);
+
+//        View contentView = inflater.inflate(R.layout.layout_common_drag_dia, null);
+//        dragView = contentView.findViewById(R.id.dragView);
+//        dragView.addDragView(R.layout.layout_order_dialog, 0, height - DisplayUtil.dip2px(mContext, 450), width, height, false, true);
+        final View contentView = inflater.inflate(R.layout.layout_order_dialog, null);
 
         ImageView iv_list = contentView.findViewById(R.id.iv_list);
         DisplayUtil.fitImage((Activity) mContext,iv_list,DisplayUtil.px2dip(mContext,750),DisplayUtil.px2dip(mContext,3648));

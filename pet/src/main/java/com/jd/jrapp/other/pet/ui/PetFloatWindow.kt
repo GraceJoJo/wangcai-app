@@ -47,10 +47,10 @@ class PetFloatWindow private constructor() {
     private lateinit var layoutParam: WindowManager.LayoutParams
     var mMainView: View? = null
     var mClickView: TextView? = null
-    var mTvShouyi: TextView? = null
-    var mTvTougu: TextView? = null
+    var mTvSougo: TextView? = null
+    var mTvShequ: TextView? = null
     var mTvDonghua: TextView? = null
-    var mTvSign: TextView? = null
+    var mTvOrder: TextView? = null
     var mTvPet: TextView? = null
     var mShouYiDialog: ShouYiDialog? = null
     var mShouPayDialog: JDQrDialog? = null
@@ -92,13 +92,13 @@ class PetFloatWindow private constructor() {
     }
 
     fun startTimer() {
-        if(!handler.hasMessages(100)){
+        if (!handler.hasMessages(100)) {
             handler.postDelayed({ handler.sendEmptyMessage(100) }, (5 * 1000).toLong())
         }
     }
 
     fun stopTimer() {
-        if(handler!=null){
+        if (handler != null) {
             handler.removeCallbacksAndMessages(null)
         }
     }
@@ -121,17 +121,18 @@ class PetFloatWindow private constructor() {
         override fun onClick(v: View?) {
             Log.e("PetFloatWindow", "onClick: " + v)
             animSwitch()
-            if (v == mTvShouyi) {
-                showOrderDialog()
-            } else if (v == mTvTougu) {
+            if (v == mTvSougo) {
+                showSearchDialog()
+            } else if (v == mTvShequ) {
 //                AppManager.getInstance().getNLSToken()
 //                showTouguDialog();
                 showCommunityDialog()
-            } else if (v == mTvDonghua) {
+            } else if (v == mTvOrder) {
 //                showPayDialog()
-                showSearchDialog()
-            } else if (v == mTvSign) {
-                showSignDialog();
+                showOrderDialog()
+            } else if (v == mTvDonghua) {
+//                showSignDialog();
+                showPayDialog()
             } else if (v == mClickView) {
 //                animSwitch()
                 //将mHints数组内的所有元素左移一个位置
@@ -142,9 +143,9 @@ class PetFloatWindow private constructor() {
                     showCustomDialog()
                 }
             } else if (v == mTvPet) {
-//                showLicaiDialog()
+                showLicaiDialog()
 //                showPtDialog()
-                showPetDialog();
+//                showPetDialog();
             }
         }
     }
@@ -239,6 +240,7 @@ class PetFloatWindow private constructor() {
             mOrderDialog?.show()
         }
     }
+
     private fun showCommunityDialog() {
         mCommunityDialog = CommunityDialog(mContext, zjsy)
         if (mCommunityDialog != null) {
@@ -250,6 +252,7 @@ class PetFloatWindow private constructor() {
             mCommunityDialog?.show()
         }
     }
+
     private fun showSearchDialog() {
         mSearchDialog = SearchDialog(mContext, zjsy)
         if (mSearchDialog != null) {
@@ -382,30 +385,30 @@ class PetFloatWindow private constructor() {
             mLastY = event.rawY
             return@setOnTouchListener mTouchEvent
         }
-        mTvShouyi = mMainView?.findViewById(R.id.tv_shouyi)
-        mTvTougu = mMainView?.findViewById(R.id.tv_tougu)
+        mTvSougo = mMainView?.findViewById(R.id.tv_sougou)
+        mTvShequ = mMainView?.findViewById(R.id.tv_shequ)
         mTvDonghua = mMainView?.findViewById(R.id.tv_pay)
-        mTvSign = mMainView?.findViewById(R.id.tv_sign)
+        mTvOrder = mMainView?.findViewById(R.id.tv_order)
         mTvPet = mMainView?.findViewById(R.id.tv_pet)
-        mTvShouyi?.setBackgroundResource(R.drawable.bg_oval)
-        mTvTougu?.setBackgroundResource(R.drawable.bg_oval)
+        mTvSougo?.setBackgroundResource(R.drawable.bg_oval)
+        mTvShequ?.setBackgroundResource(R.drawable.bg_oval)
         mTvDonghua?.setBackgroundResource(R.drawable.bg_oval)
-        mTvSign?.setBackgroundResource(R.drawable.bg_oval)
+        mTvOrder?.setBackgroundResource(R.drawable.bg_oval)
         mTvPet?.setBackgroundResource(R.drawable.bg_oval)
-        mTvShouyi?.setTextSize(12f)
-        mTvTougu?.setTextSize(12f)
-        mTvSign?.setTextSize(12f)
+        mTvSougo?.setTextSize(12f)
+        mTvShequ?.setTextSize(12f)
+        mTvOrder?.setTextSize(12f)
         mTvDonghua?.setTextSize(12f)
         mTvPet?.setTextSize(12f)
-        mTvTougu?.setBackgroundResource(R.drawable.bg_oval)
+        mTvShequ?.setBackgroundResource(R.drawable.bg_oval)
         mTvDonghua?.setBackgroundResource(R.drawable.bg_oval)
-        mTvSign?.setBackgroundResource(R.drawable.bg_oval)
+        mTvOrder?.setBackgroundResource(R.drawable.bg_oval)
         mTvPet?.setBackgroundResource(R.drawable.bg_oval)
-        mTvShouyi?.setOnClickListener(mOnclickListener)
-        mTvTougu?.setOnClickListener(mOnclickListener)
+        mTvSougo?.setOnClickListener(mOnclickListener)
+        mTvShequ?.setOnClickListener(mOnclickListener)
         mTvDonghua?.setOnClickListener(mOnclickListener)
         mClickView?.setOnClickListener(mOnclickListener)
-        mTvSign?.setOnClickListener(mOnclickListener)
+        mTvOrder?.setOnClickListener(mOnclickListener)
         mTvPet?.setOnClickListener(mOnclickListener)
         windowManager.addView(mMainView, layoutParam)
     }
@@ -418,15 +421,15 @@ class PetFloatWindow private constructor() {
         }
         animSwitching = true
         mIsOpen = !mIsOpen
-        val start = (mTvShouyi?.layoutParams as? ConstraintLayout.LayoutParams)?.circleRadius ?: 0
+        val start = (mTvSougo?.layoutParams as? ConstraintLayout.LayoutParams)?.circleRadius ?: 0
         val end = getPxValue(if (mIsOpen) RADIUS else 0)
         val anim = ValueAnimator.ofInt(start, end)
         anim.addUpdateListener {
             val value = it.animatedValue as Int
-            setViewCircleRadiusAndAlpha(mTvShouyi, value)
-            setViewCircleRadiusAndAlpha(mTvTougu, value)
+            setViewCircleRadiusAndAlpha(mTvSougo, value)
+            setViewCircleRadiusAndAlpha(mTvShequ, value)
             setViewCircleRadiusAndAlpha(mTvDonghua, value)
-            setViewCircleRadiusAndAlpha(mTvSign, value)
+            setViewCircleRadiusAndAlpha(mTvOrder, value)
             setViewCircleRadiusAndAlpha(mTvPet, value)
         }
         anim.addListener(object : Animator.AnimatorListener {

@@ -3,9 +3,11 @@ package com.jd.jrapp.other.pet.ui.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 import com.jd.jrapp.other.pet.R;
@@ -81,7 +83,7 @@ public class LeftListView extends ListView {
         setAdapter(mAdapter);
     }
 
-    interface OnRightListViewItemClickListener {
+    public interface OnRightListViewItemClickListener {
         void onItemClick(boolean isCheck, String title, int position);
     }
 

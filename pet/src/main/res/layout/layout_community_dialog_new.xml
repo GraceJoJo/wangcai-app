@@ -35,41 +35,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/shouyi_shape"
-                android:orientation="vertical"
-                android:paddingTop="0dp">
+                android:background="@color/white"
+                android:orientation="vertical">
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/iv_list"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="0dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/white"
-                        android:orientation="vertical"
-                        android:paddingHorizontal="0dp">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:paddingBottom="0dp">
-
-                            <android.support.v7.widget.RecyclerView
-                                android:id="@+id/recyclerView"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:nestedScrollingEnabled="false"
-                                android:paddingBottom="60dp" />
-                        </RelativeLayout>
-
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="50dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/bg_sougou_hot_sale"></ImageView>
             </LinearLayout>
         </ScrollView>
 

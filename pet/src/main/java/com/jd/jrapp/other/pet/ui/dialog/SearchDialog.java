@@ -36,6 +36,7 @@ import java.util.List;
  * Author: zhoujuan26
  * Date: 2021/1/3
  * Time: 11:12 PM
+ * 搜购
  */
 
 public class SearchDialog extends Dialog implements View.OnClickListener {

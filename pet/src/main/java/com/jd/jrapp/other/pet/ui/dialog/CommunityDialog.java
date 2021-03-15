@@ -1,17 +1,22 @@
 package com.jd.jrapp.other.pet.ui.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.jd.jrapp.other.pet.R;
@@ -33,6 +38,7 @@ import java.util.List;
  * Author: zhoujuan26
  * Date: 2021/1/3
  * Time: 9:05 PM
+ * 社区
  */
 
 public class CommunityDialog extends Dialog implements View.OnClickListener {
@@ -42,9 +48,7 @@ public class CommunityDialog extends Dialog implements View.OnClickListener {
     private int width;
     private ScrollView scrollview;
     private LeftListView lfListview;
-    private List<MoneyManagementData.RecordsBean> recordsBeanList;
-    private List<MoneyManagementData> moneyManagementData;
-    private String[] categoryString = new String[]{"热卖爆款", "蔬菜豆制品", "新鲜水果", "冷冻冰藏", "米面粮油", "水产海鲜", "肉禽蛋", "休闲零食", "酒水乳饮", "日用百货"};
+    private String[] categoryString = new String[]{"热卖推荐", "安心蔬菜", "新鲜水果", "冷冻冰藏", "米面粮油", "水产海鲜", "肉禽蛋类", "鲜花烘焙", "酒水乳饮", "日用百货"};
     private List<CategoryData> categoryList = new ArrayList<>();
     private boolean isOpen = false;
     private int zjsy = 50;
@@ -61,9 +65,10 @@ public class CommunityDialog extends Dialog implements View.OnClickListener {
         isOpen = SharedPrefsMgr.getInstance(mContext).getBoolean(ISOPEN, false);
         width = (int) DisplayUtil.getScreenWidth(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contentView = inflater.inflate(R.layout.layout_community_dialog_new, null);
+        final View contentView = inflater.inflate(R.layout.layout_community_dialog_new, null);
 
         lfListview = contentView.findViewById(R.id.lf_listview);
+        final ImageView ivList = contentView.findViewById(R.id.iv_list);
 
 
         for (int i = 0; i < categoryString.length; i++) {
@@ -73,17 +78,42 @@ public class CommunityDialog extends Dialog implements View.OnClickListener {
         }
 
         lfListview.setData(categoryList);
-
+        DisplayUtil.fitImage((Activity) mContext, ivList, DisplayUtil.px2dip(mContext, 560), DisplayUtil.px2dip(mContext, 1300));
+        lfListview.setOnRightListViewItemClickListener(new LeftListView.OnRightListViewItemClickListener() {
+            @Override
+            public void onItemClick(boolean isCheck, String title, int position) {
+                Log.i("TAG", "---->" + title + "----position-->" + position);
+                switch (position) {
+                    case 0:
+                        ivList.setImageResource(R.drawable.bg_sougou_hot_sale);
+                        break;
+                    case 1:
+                        ivList.setImageResource(R.drawable.bg_sougou_vegetable);
+                        break;
+                    case 2:
+                        ivList.setImageResource(R.drawable.bg_sougou_fruit);
+                        break;
+                    case 3:
+                        ivList.setImageResource(R.drawable.bg_sougou_cold_storage);
+                        break;
+                    case 4:
+                        ivList.setImageResource(R.drawable.bg_sougou_rice);
+                        break;
+                    case 5:
+                        ivList.setImageResource(R.drawable.bg_sougou_seafood);
+                        break;
+                    case 6:
+                        ivList.setImageResource(R.drawable.bg_sougou_meat_egg);
+                        break;
+                    case 7:
+                        ivList.setImageResource(R.drawable.bg_sougou_baking);
+                        break;
+                }
+            }
+        });
         scrollview = contentView.findViewById(R.id.scrollview);
         TextView tv_cancel = contentView.findViewById(R.id.tv_cancel);
         RelativeLayout rl_dialog = contentView.findViewById(R.id.rl_dialog);
-        RecyclerView recyclerView = contentView.findViewById(R.id.recyclerView);
-        LinearLayoutManager manager = new LinearLayoutManager(mContext);
-        manager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(manager);
-        moneyManagementData = getJsonData("order.json");
-        recordsBeanList = (List<MoneyManagementData.RecordsBean>) moneyManagementData.get(0).getRecords();
-
 
         tv_cancel.setOnClickListener(this);
         rl_dialog.setOnClickListener(this);
@@ -91,8 +121,6 @@ public class CommunityDialog extends Dialog implements View.OnClickListener {
         setCanceledOnTouchOutside(true);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         setContentView(contentView);
-        recyclerView.setAdapter(myAdapter);
-        myAdapter.addAll(recordsBeanList);
 
         contentView.postDelayed(new Runnable() {
             @Override
@@ -115,22 +143,6 @@ public class CommunityDialog extends Dialog implements View.OnClickListener {
 //            dismiss();
         }
     }
-
-    private void updateData() {
-        for (int i = 0; i < Math.random(); i++) {
-            recordsBeanList.add(new MoneyManagementData.RecordsBean());
-        }
-    }
-
-    RecycleAdapter<MoneyManagementData.RecordsBean> myAdapter = new RecycleAdapter<MoneyManagementData.RecordsBean>(mContext, R.layout.item_community_one, recordsBeanList) {
-        @Override
-        protected void convert(BaseAdapterHelper helper, MoneyManagementData.RecordsBean item, int position) {
-            if (position == recordsBeanList.size() - 1) {
-                helper.setInVisible(R.id.view_line);
-            }
-        }
-    };
-
 
     public List<MoneyManagementData> getJsonData(String fileName) {
         InputStream in = null;
