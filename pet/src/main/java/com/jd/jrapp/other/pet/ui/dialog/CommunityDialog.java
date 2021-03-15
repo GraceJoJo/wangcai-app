@@ -24,6 +24,7 @@ import com.jd.jrapp.other.pet.ui.BaseRecycler.BaseAdapterHelper;
 import com.jd.jrapp.other.pet.ui.BaseRecycler.RecycleAdapter;
 import com.jd.jrapp.other.pet.ui.dialog.bean.CategoryData;
 import com.jd.jrapp.other.pet.ui.dialog.bean.MoneyManagementData;
+import com.jd.jrapp.other.pet.ui.view.DragView;
 import com.jd.jrapp.other.pet.ui.view.LeftListView;
 import com.jd.jrapp.other.pet.utils.AppManager;
 import com.jd.jrapp.other.pet.utils.DisplayUtil;
@@ -52,6 +53,8 @@ public class CommunityDialog extends Dialog implements View.OnClickListener {
     private List<CategoryData> categoryList = new ArrayList<>();
     private boolean isOpen = false;
     private int zjsy = 50;
+    private DragView dragView;
+    private int height;
 
     public CommunityDialog(Context context, int zjsy) {
         super(context, R.style.loadDialog);
@@ -64,8 +67,17 @@ public class CommunityDialog extends Dialog implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         isOpen = SharedPrefsMgr.getInstance(mContext).getBoolean(ISOPEN, false);
         width = (int) DisplayUtil.getScreenWidth(mContext);
+        height = (int) DisplayUtil.getScreenHeight(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View contentView = inflater.inflate(R.layout.layout_community_dialog_new, null);
+
+
+
+        View contentView = inflater.inflate(R.layout.layout_common_drag_dia, null);
+        dragView = contentView.findViewById(R.id.dragView);
+        //add的子view的高度需match_parent
+        dragView.addDragView(R.layout.layout_community_dialog_new, 0, height - DisplayUtil.dip2px(mContext, 450), width, height, false, false);
+
+//        final View contentView = inflater.inflate(R.layout.layout_community_dialog_new, null);
 
         lfListview = contentView.findViewById(R.id.lf_listview);
         final ImageView ivList = contentView.findViewById(R.id.iv_list);

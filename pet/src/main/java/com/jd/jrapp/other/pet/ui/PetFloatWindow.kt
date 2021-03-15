@@ -123,6 +123,7 @@ class PetFloatWindow private constructor() {
             animSwitch()
             if (v == mTvSougo) {
                 showSearchDialog()
+//                showTouguDialog()
             } else if (v == mTvShequ) {
 //                AppManager.getInstance().getNLSToken()
 //                showTouguDialog();
@@ -143,9 +144,9 @@ class PetFloatWindow private constructor() {
                     showCustomDialog()
                 }
             } else if (v == mTvPet) {
-                showLicaiDialog()
+//                showLicaiDialog()
 //                showPtDialog()
-//                showPetDialog();
+                showPetDialog();
             }
         }
     }

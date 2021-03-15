@@ -65,11 +65,14 @@ public class OrderDialog extends Dialog implements View.OnClickListener {
         height = (int) DisplayUtil.getScreenHeight(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-//        View contentView = inflater.inflate(R.layout.layout_common_drag_dia, null);
-//        dragView = contentView.findViewById(R.id.dragView);
-//        dragView.addDragView(R.layout.layout_order_dialog, 0, height - DisplayUtil.dip2px(mContext, 450), width, height, false, true);
-        final View contentView = inflater.inflate(R.layout.layout_order_dialog, null);
+        View contentView = inflater.inflate(R.layout.layout_common_drag_dia, null);
+        dragView = contentView.findViewById(R.id.dragView);
+        //add的子view的高度需match_parent
+        dragView.addDragView(R.layout.layout_order_dialog, 0, height - DisplayUtil.dip2px(mContext, 450), width, height, false, true);
+//        dragView.addDragView(R.layout.layout_drag_testview, 0, height - DisplayUtil.dip2px(mContext, 450), width, height, false, true);
 
+        //final View contentView = inflater.inflate(R.layout.layout_order_dialog, null);
+//
         ImageView iv_list = contentView.findViewById(R.id.iv_list);
         DisplayUtil.fitImage((Activity) mContext,iv_list,DisplayUtil.px2dip(mContext,750),DisplayUtil.px2dip(mContext,3648));
 
@@ -91,12 +94,6 @@ public class OrderDialog extends Dialog implements View.OnClickListener {
         scrollview = contentView.findViewById(R.id.scrollview);
         TextView tv_cancel = contentView.findViewById(R.id.tv_cancel);
         RelativeLayout rl_dialog = contentView.findViewById(R.id.rl_dialog);
-        RecyclerView recyclerView = contentView.findViewById(R.id.recyclerView);
-        LinearLayoutManager manager = new LinearLayoutManager(mContext);
-        manager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(manager);
-        moneyManagementData = getJsonData("order.json");
-        recordsBeanList = (List<MoneyManagementData.RecordsBean>) moneyManagementData.get(0).getRecords();
 
         contentView.findViewById(R.id.ll_all).setOnClickListener(this);
         contentView.findViewById(R.id.ll_pay).setOnClickListener(this);
@@ -117,21 +114,18 @@ public class OrderDialog extends Dialog implements View.OnClickListener {
         setCanceledOnTouchOutside(true);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         setContentView(contentView);
-        recyclerView.setAdapter(myAdapter);
-        myAdapter.addAll(recordsBeanList);
-        contentView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                scrollview.scrollTo(0, 0);
-            }
-        }, 300);
+//        contentView.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                scrollview.scrollTo(0, 0);
+//            }
+//        }, 300);
         // 设置window属性
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.width = width;
         lp.gravity = Gravity.BOTTOM;
         getWindow().setAttributes(lp);
     }
-
 
     public void onClick(View v) {
         if (v.getId() == R.id.tv_cancel) {
@@ -157,10 +151,6 @@ public class OrderDialog extends Dialog implements View.OnClickListener {
             view_pingjia.setVisibility(View.GONE);
             view_tuihuan.setVisibility(View.GONE);
 
-            myAdapter.clear();
-            recordsBeanList = (List<MoneyManagementData.RecordsBean>) moneyManagementData.get(0).getRecords();
-            myAdapter.addAll(recordsBeanList);
-
             scrollview.scrollTo(0, 0);
 
         } else if (v.getId() == R.id.ll_pay) {
@@ -182,9 +172,6 @@ public class OrderDialog extends Dialog implements View.OnClickListener {
             view_pingjia.setVisibility(View.GONE);
             view_tuihuan.setVisibility(View.GONE);
 
-            myAdapter.clear();
-            recordsBeanList = (List<MoneyManagementData.RecordsBean>) moneyManagementData.get(1).getRecords();
-            myAdapter.addAll(recordsBeanList);
             scrollview.scrollTo(0, 0);
 
         } else if (v.getId() == R.id.ll_shouhuo) {
@@ -206,9 +193,6 @@ public class OrderDialog extends Dialog implements View.OnClickListener {
             view_pingjia.setVisibility(View.GONE);
             view_tuihuan.setVisibility(View.GONE);
 
-            myAdapter.clear();
-            recordsBeanList = (List<MoneyManagementData.RecordsBean>) moneyManagementData.get(2).getRecords();
-            myAdapter.addAll(recordsBeanList);
             scrollview.scrollTo(0, 0);
         } else if (v.getId() == R.id.ll_pingjia) {
             cb_all.setSelected(false);
@@ -229,9 +213,6 @@ public class OrderDialog extends Dialog implements View.OnClickListener {
             view_pingjia.setVisibility(View.VISIBLE);
             view_tuihuan.setVisibility(View.GONE);
 
-            myAdapter.clear();
-            recordsBeanList = (List<MoneyManagementData.RecordsBean>) moneyManagementData.get(2).getRecords();
-            myAdapter.addAll(recordsBeanList);
             scrollview.scrollTo(0, 0);
         } else if (v.getId() == R.id.ll_tuihuan) {
             cb_all.setSelected(false);
@@ -251,55 +232,9 @@ public class OrderDialog extends Dialog implements View.OnClickListener {
             view_shouhuo.setVisibility(View.GONE);
             view_pingjia.setVisibility(View.GONE);
             view_tuihuan.setVisibility(View.VISIBLE);
-
-            myAdapter.clear();
-            recordsBeanList = (List<MoneyManagementData.RecordsBean>) moneyManagementData.get(2).getRecords();
-            myAdapter.addAll(recordsBeanList);
             scrollview.scrollTo(0, 0);
         }
     }
 
-    private void  updateData(){
-        for (int i = 0; i < Math.random(); i++) {
-            recordsBeanList.add(new MoneyManagementData.RecordsBean());
-        }
-    }
-    RecycleAdapter<MoneyManagementData.RecordsBean> myAdapter = new RecycleAdapter<MoneyManagementData.RecordsBean>(mContext, R.layout.item_order_one, recordsBeanList) {
-        @Override
-        protected void convert(BaseAdapterHelper helper, MoneyManagementData.RecordsBean item, int position) {
-            if (position == recordsBeanList.size() - 1) {
-                helper.setInVisible(R.id.view_line);
-            }
-        }
-    };
-
-
-    public List<MoneyManagementData> getJsonData(String fileName) {
-        InputStream in = null;
-        try {
-            in = getContext().getResources().getAssets().open(fileName);
-            // 获取文件的字节数
-            int lenght = in.available();
-            // 创建byte数组
-            byte[] buffer = new byte[lenght];
-            // 将文件中的数据读到byte数组中
-            in.read(buffer);
-            String countryJson = new String(buffer, "utf-8");
-            List<MoneyManagementData> moneyManagementData = (List<MoneyManagementData>) AppManager.fromJson(countryJson, new TypeToken<List<MoneyManagementData>>() {
-            }.getType());
-            return moneyManagementData;
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return null;
-    }
 
 }

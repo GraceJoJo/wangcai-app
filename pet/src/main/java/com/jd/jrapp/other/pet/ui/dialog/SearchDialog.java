@@ -23,6 +23,7 @@ import com.jd.jrapp.other.pet.R;
 import com.jd.jrapp.other.pet.ui.BaseRecycler.BaseAdapterHelper;
 import com.jd.jrapp.other.pet.ui.BaseRecycler.RecycleAdapter;
 import com.jd.jrapp.other.pet.ui.dialog.bean.MoneyManagementData;
+import com.jd.jrapp.other.pet.ui.view.DragView;
 import com.jd.jrapp.other.pet.ui.view.RefreshScrollView;
 import com.jd.jrapp.other.pet.utils.AppManager;
 import com.jd.jrapp.other.pet.utils.DisplayUtil;
@@ -53,6 +54,8 @@ public class SearchDialog extends Dialog implements View.OnClickListener {
     private View llSearchTitle;
     private boolean isRefresh;
     private RefreshScrollView refreshScrollView;
+    private int height;
+    private DragView dragView;
 
     public SearchDialog(Context context, int zjsy) {
         super(context, R.style.loadDialog);
@@ -65,7 +68,15 @@ public class SearchDialog extends Dialog implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         isOpen = SharedPrefsMgr.getInstance(mContext).getBoolean(ISOPEN, false);
         width = (int) DisplayUtil.getScreenWidth(mContext);
+        height = (int) DisplayUtil.getScreenHeight(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        //搜索框位置无法控制
+//        final View contentView = inflater.inflate(R.layout.layout_common_drag_dia, null);
+//        dragView = contentView.findViewById(R.id.dragView);
+//        //add的子view的高度需match_parent
+//        dragView.addDragView(R.layout.layout_search_dialog, 0, height - DisplayUtil.dip2px(mContext, 450), width, height, false, true);
+
         final View contentView = inflater.inflate(R.layout.layout_search_dialog, null);
 
         refreshScrollView = contentView.findViewById(R.id.refresh_scrollview);
@@ -181,6 +192,7 @@ public class SearchDialog extends Dialog implements View.OnClickListener {
         // 设置window属性
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.width = width;
+        lp.height = DisplayUtil.dip2px(mContext, 400);
         lp.gravity = Gravity.BOTTOM;
         getWindow().setAttributes(lp);
     }
