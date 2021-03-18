@@ -5,20 +5,22 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.jd.jrapp.other.pet.ui.PetFloatWindow;
 import com.jd.jrapp.other.pet.utils.AppManager;
+import com.jd.jrapp.other.pet.utils.SensorManagerHelper;
 
 
 public class MainActivity extends AppCompatActivity {
     // 要申请的权限
     private String[] permissions = {Manifest.permission.RECORD_AUDIO};
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
 //                        Log.e("--------", str);
 //                    }
 //                }).start();
+               new  SensorManagerHelper(MainActivity.this).setOnShakeListener(new SensorManagerHelper.OnShakeListener() {
+                   @Override
+                   public void onShake() {
+                       PetFloatWindow.Companion.getInstance().showRedEnvelopDialog();
+                   }
+               });
             }
         } else {
             PetFloatWindow.Companion.getInstance().checkAndShow(this);

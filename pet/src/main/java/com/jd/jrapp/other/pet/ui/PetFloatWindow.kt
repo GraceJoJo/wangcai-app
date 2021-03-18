@@ -63,6 +63,7 @@ class PetFloatWindow private constructor() {
     var mTouchSlop: Int = 8
     var mCustomDialog: CustomDialog? = null
     var mPtDialog: PtDialog? = null
+    var mRedDialog: RedEnvelopDialog? = null
 
 
     private var mContext: Context? = null
@@ -122,8 +123,9 @@ class PetFloatWindow private constructor() {
             Log.e("PetFloatWindow", "onClick: " + v)
             animSwitch()
             if (v == mTvSougo) {
-                showSearchDialog()
-//                showTouguDialog()
+//                showSearchDialog()
+                AppManager.getInstance().getNLSToken()
+                showTouguDialog()
             } else if (v == mTvShequ) {
 //                AppManager.getInstance().getNLSToken()
 //                showTouguDialog();
@@ -150,10 +152,32 @@ class PetFloatWindow private constructor() {
             }
         }
     }
-
+    fun showRedEnvelopDialog() {
+//        if (mRedDialog == null) {
+            mRedDialog = RedEnvelopDialog(mContext,zjsy)
+//        }
+        if (mRedDialog != null) {
+            if (Build.VERSION.SDK_INT >= 25) {
+                mRedDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+            } else {
+                mRedDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            }
+            mRedDialog?.show()
+        }
+    }
 
     private fun showPetDialog() {
-        mCocosInterface?.showPetDialog()
+        if (mPtDialog == null) {
+            mPtDialog = PtDialog(mContext)
+        }
+        if (mPtDialog != null) {
+            if (Build.VERSION.SDK_INT >= 25) {
+                mPtDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+            } else {
+                mPtDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            }
+            mPtDialog?.show()
+        }
     }
 
     private fun showShouYiDialog() {

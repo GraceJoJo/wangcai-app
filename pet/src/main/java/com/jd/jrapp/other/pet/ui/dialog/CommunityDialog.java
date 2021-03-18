@@ -3,7 +3,9 @@ package com.jd.jrapp.other.pet.ui.dialog;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.media.Image;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,7 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -61,7 +65,7 @@ public class CommunityDialog extends Dialog implements View.OnClickListener {
         this.mContext = context;
         this.zjsy = zjsy;
     }
-
+    boolean isChecked = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +73,6 @@ public class CommunityDialog extends Dialog implements View.OnClickListener {
         width = (int) DisplayUtil.getScreenWidth(mContext);
         height = (int) DisplayUtil.getScreenHeight(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
 
 
         View contentView = inflater.inflate(R.layout.layout_common_drag_dia, null);
@@ -82,6 +85,31 @@ public class CommunityDialog extends Dialog implements View.OnClickListener {
         lfListview = contentView.findViewById(R.id.lf_listview);
         final ImageView ivList = contentView.findViewById(R.id.iv_list);
 
+        final ImageView ivDanmu = contentView.findViewById(R.id.iv_danmu);
+        ivDanmu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isChecked){
+                    ivDanmu.setImageResource(R.drawable.ic_danmu_on);
+                }else {
+                    ivDanmu.setImageResource(R.drawable.ic_danmu_off);
+                }
+                isChecked = !isChecked;
+            }
+        });
+
+//        rbDanmu.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                Log.i("TAG","isChecked="+isChecked);
+//            }
+//        });
+//        rbDanmu.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
         for (int i = 0; i < categoryString.length; i++) {
             CategoryData categoryData = new CategoryData();
