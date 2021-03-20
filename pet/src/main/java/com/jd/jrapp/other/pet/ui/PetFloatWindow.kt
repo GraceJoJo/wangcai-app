@@ -64,7 +64,7 @@ class PetFloatWindow private constructor() {
     var mCustomDialog: CustomDialog? = null
     var mPtDialog: PtDialog? = null
     var mRedDialog: RedEnvelopDialog? = null
-
+    var isJdDog = true
 
     private var mContext: Context? = null
 
@@ -121,6 +121,7 @@ class PetFloatWindow private constructor() {
 
         override fun onClick(v: View?) {
             Log.e("PetFloatWindow", "onClick: " + v)
+            mTvOrder?.visibility = View.VISIBLE
             animSwitch()
             if (v == mTvSougo) {
                 showSearchDialog()
@@ -153,9 +154,10 @@ class PetFloatWindow private constructor() {
             }
         }
     }
+
     fun showRedEnvelopDialog() {
 //        if (mRedDialog == null) {
-            mRedDialog = RedEnvelopDialog(mContext,zjsy)
+        mRedDialog = RedEnvelopDialog(mContext, zjsy)
 //        }
         if (mRedDialog != null) {
             if (Build.VERSION.SDK_INT >= 25) {
@@ -205,17 +207,24 @@ class PetFloatWindow private constructor() {
                 if (type == 0) {
                     mClickView?.alpha = 1f
                     mClickView?.setText("+" + zjsy)
-                    mClickView?.setBackgroundResource(R.drawable.bg_oval)
+                    mClickView?.setBackgroundResource(R.drawable.ic_jd_dog)
                     setData(true)
                     startTimer()
                 } else if (type == 1) {
                     mClickView?.alpha = 1f
                     mClickView?.setText("")
-                    mClickView?.setBackgroundResource(R.drawable.icon_pw);
+
+
+                    if (isJdDog) {
+                        mClickView?.setBackgroundResource(R.drawable.icon_pw);
+                    } else {
+                        mClickView?.setBackgroundResource(R.drawable.ic_jd_dog);
+                    }
+                    isJdDog = !isJdDog;
                     stopTimer()
                 } else if (type == 2) {
                     mClickView?.setText("")
-                    mClickView?.setBackgroundResource(R.drawable.bg_oval)
+                    mClickView?.setBackgroundResource(R.drawable.ic_jd_dog)
                     mClickView?.alpha = 0.2f
                     stopTimer()
                 }
@@ -374,7 +383,8 @@ class PetFloatWindow private constructor() {
         val bg = GradientDrawable()
         bg.cornerRadius = getPxValue(25).toFloat()
         mClickView = mMainView?.findViewById(R.id.view_btn)
-        mClickView?.setBackgroundResource(R.drawable.bg_oval)
+        mClickView?.setBackgroundResource(R.drawable.ic_jd_dog)
+
         mClickView?.setOnTouchListener { v, event ->
             val curX = event.rawX
             val curY = event.rawY
@@ -426,6 +436,7 @@ class PetFloatWindow private constructor() {
         mClickView?.setOnClickListener(mOnclickListener)
         mTvOrder?.setOnClickListener(mOnclickListener)
         mTvPet?.setOnClickListener(mOnclickListener)
+        mTvOrder?.visibility = View.GONE
         windowManager.addView(mMainView, layoutParam)
     }
 

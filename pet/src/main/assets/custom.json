@@ -60,39 +60,34 @@
         "icon": 4,
         "iconStr": "保险",
         "type": 1
-      }
-    ]
-  },
-  {
-    "title": "自定义账户",
-    "records": [
+      },
       {
         "icon": 0,
-        "iconStr": "招商银行",
-        "type": 2
+        "iconStr": "好友",
+        "type": 1
 
       },
       {
         "icon": 1,
-        "iconStr": "中信银行",
-        "type": 2
+        "iconStr": "白条",
+        "type": 1
 
       },
       {
         "icon": 2,
-        "iconStr": "民生银行",
-        "type": 2
+        "iconStr": "金条",
+        "type": 1
       },
       {
         "icon": 3,
-        "iconStr": "北京银行",
-        "type": 2
+        "iconStr": "基金",
+        "type": 1
       },
       {
         "icon": 4,
-        "iconStr": "添加",
-        "type": 2
+        "iconStr": "保险",
+        "type": 1
       }
     ]
-  }
+  },
 ]

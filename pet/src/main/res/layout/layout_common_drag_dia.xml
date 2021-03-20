@@ -8,9 +8,9 @@
     <com.jd.jrapp.other.pet.ui.view.AutoPollRecyclerView
         android:id="@+id/autoPollRecyclerView"
         android:layout_width="match_parent"
-        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
         android:layout_alignParentTop="true"
-        android:layout_height="130dp" />
+        android:layout_height="120dp" />
 
     <!--必须加background-->
     <com.jd.jrapp.other.pet.ui.view.DragView

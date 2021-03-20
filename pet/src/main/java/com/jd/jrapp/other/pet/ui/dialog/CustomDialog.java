@@ -8,6 +8,7 @@ import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,8 +41,9 @@ public class CustomDialog extends Dialog implements View.OnClickListener {
     private int width;
     private List<CustomData> customData;
     private ItemClickCallback itemClickCallback;
-    private int[] icons1 = {R.drawable.icon_syms, R.drawable.icon_acms, R.drawable.icon_ysms};
-    private int[] icons2 = {R.drawable.icon_hy, R.drawable.icon_bt, R.drawable.icon_jt, R.drawable.icon_jj, R.drawable.icon_bx};
+    private int[] icons1 = {R.drawable.ic_shouyi, R.drawable.ic_aichong, R.drawable.ic_yinshen};
+//    private int[] icons2 = {R.drawable.icon_hy, R.drawable.icon_bt, R.drawable.icon_jt, R.drawable.icon_jj, R.drawable.icon_bx};
+    private int[] icons2 = {R.drawable.ic_chapshi, R.drawable.ic_3c, R.drawable.ic_fushi, R.drawable.ic_nongchang, R.drawable.ic_daojia,R.drawable.ic_shenghuo,R.drawable.ic_dou,R.drawable.ic_quan,R.drawable.ic_tie,R.drawable.ic_tianjia};
     private int[] icons3 = {R.drawable.icon_zsyh, R.drawable.icon_zxyh, R.drawable.icon_msyh, R.drawable.icon_bjyh, R.drawable.icon_add};
 
     public CustomDialog(Context context, ItemClickCallback itemClickCallback) {
@@ -91,6 +93,11 @@ public class CustomDialog extends Dialog implements View.OnClickListener {
         @Override
         protected void convert(BaseAdapterHelper helper, final CustomData customItemData, int position) {
             helper.setText(R.id.tv_title, customItemData.getTitle());
+            if (!TextUtils.isEmpty(customItemData.getTitle())){
+                helper.setVisible(R.id.tv_title,true);
+            }else {
+                helper.setVisible(R.id.tv_title,false);
+            }
             RecyclerView recyclerView = helper.getView(R.id.recyclerView_item);
             GridLayoutManager manager = new GridLayoutManager(mContext, 5);
             recyclerView.setLayoutManager(manager);
@@ -112,10 +119,12 @@ public class CustomDialog extends Dialog implements View.OnClickListener {
                         });
                     } else if (item.getType() == 1) {
                         helper.setBackgroundRes(R.id.iv_ms, icons2[position]);
-                    } else if (item.getType() == 2) {
-                        helper.setBackgroundRes(R.id.iv_ms, icons3[position]);
                     }
-                    helper.setText(R.id.tv_ms, item.getIconStr());
+                    else if (item.getType() == 2) {
+                        helper.setBackgroundRes(R.id.iv_ms, icons3[position]);
+
+                    }
+//                    helper.setText(R.id.tv_ms, item.getIconStr());
 
                 }
             };

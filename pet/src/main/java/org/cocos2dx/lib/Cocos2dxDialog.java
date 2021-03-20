@@ -116,9 +116,11 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
     private static Map<String, String> actionKeywords = new ArrayMap(8);
     static {
         actionKeywords.put("哭", JavaCocosConstant.ACTION_CRY);
+        actionKeywords.put("哭一个", JavaCocosConstant.ACTION_CRY);
         actionKeywords.put("打你", JavaCocosConstant.ACTION_CRY);
         actionKeywords.put("揍你", JavaCocosConstant.ACTION_CRY);
         actionKeywords.put("笑", JavaCocosConstant.ACTION_HAPPY);
+        actionKeywords.put("笑一个", JavaCocosConstant.ACTION_HAPPY);
         actionKeywords.put("有趣", JavaCocosConstant.ACTION_HAPPY);
         actionKeywords.put("好看", JavaCocosConstant.ACTION_HAPPY);
         actionKeywords.put("漂亮", JavaCocosConstant.ACTION_HAPPY);
@@ -133,17 +135,20 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
         actionKeywords.put("蹦", JavaCocosConstant.ACTION_JUMP);
         actionKeywords.put("后空翻", JavaCocosConstant.ACTION_JUMP);
         actionKeywords.put("功夫", JavaCocosConstant.ACTION_JUMP);
+        actionKeywords.put("表演个节目", JavaCocosConstant.ACTION_JUMP);
+        actionKeywords.put("翻个跟斗", JavaCocosConstant.ACTION_JUMP);
     }
 
     private static Map<String, String> licaiKeywords = new ArrayMap<>(8);
     static {
-        licaiKeywords.put("理财", "主人，根据您的情况，推荐您将资金的50%配置小金库，50%配置小金存。点击一键下单>");
-        licaiKeywords.put("投资", "主人，根据您的情况，推荐您将资金的50%配置小金库，50%配置小金存。点击一键下单>");
-        licaiKeywords.put("基金", "主人，推荐您将资金的40%配置广发沪深300指数基金，30%配置前海开源沪港深优势精选混合基金，30%的资金配置小金库。点击一键下单>");
-        licaiKeywords.put("保险", "主人，根据您的情况，推荐您将资金的70%配置小金保，30%配置小金存。点击一键下单>");
+//        licaiKeywords.put("理财", "主人，根据您的情况，推荐您将资金的50%配置小金库，50%配置小金存。点击一键下单>");
+//        licaiKeywords.put("投资", "主人，根据您的情况，推荐您将资金的50%配置小金库，50%配置小金存。点击一键下单>");
+//        licaiKeywords.put("基金", "主人，推荐您将资金的40%配置广发沪深300指数基金，30%配置前海开源沪港深优势精选混合基金，30%的资金配置小金库。点击一键下单>");
+//        licaiKeywords.put("保险", "主人，根据您的情况，推荐您将资金的70%配置小金保，30%配置小金存。点击一键下单>");
         licaiKeywords.put("名字", "我叫小京");
         licaiKeywords.put("你是谁", "我叫小京");
         licaiKeywords.put("你叫什么", "我叫小京");
+        licaiKeywords.put("今天天气", "今天大兴区：浮沉转晴，西北风：4-5级，空气指数：良");
     }
 
     private JavaCocosBridge.CallJavaListener mStartRecordListener = new JavaCocosBridge.CallJavaListener() {

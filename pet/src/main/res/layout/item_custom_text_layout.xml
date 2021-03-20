@@ -9,7 +9,7 @@
         style="@style/text_shouyi_bold"
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="10dp"
-        android:text="浮窗显示形式" />
+        android:text="" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView_item"
