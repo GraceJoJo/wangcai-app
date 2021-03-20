@@ -15,8 +15,8 @@
             android:layout_height="wrap_content"
             android:background="@color/color_ffffff"
             android:orientation="horizontal"
-            android:paddingBottom="17dp"
-            android:paddingTop="17dp">
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp">
 
             <LinearLayout
                 android:id="@+id/ll_all"

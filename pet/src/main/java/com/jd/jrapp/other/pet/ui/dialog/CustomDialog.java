@@ -76,7 +76,8 @@ public class CustomDialog extends Dialog implements View.OnClickListener {
         // 设置window属性
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.width = width;
-        lp.gravity = Gravity.CENTER;
+        lp.height = DisplayUtil.dip2px(mContext,650);
+        lp.gravity = Gravity.BOTTOM;
         getWindow().setAttributes(lp);
 
     }
@@ -122,10 +123,8 @@ public class CustomDialog extends Dialog implements View.OnClickListener {
                     }
                     else if (item.getType() == 2) {
                         helper.setBackgroundRes(R.id.iv_ms, icons3[position]);
-
                     }
 //                    helper.setText(R.id.tv_ms, item.getIconStr());
-
                 }
             };
             recyclerView.setAdapter(myItemAdapter);

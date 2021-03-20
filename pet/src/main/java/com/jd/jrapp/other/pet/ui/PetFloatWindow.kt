@@ -156,6 +156,9 @@ class PetFloatWindow private constructor() {
     }
 
     fun showRedEnvelopDialog() {
+        if (mRedDialog != null && mRedDialog?.isShowing!!) {
+            return;
+        }
 //        if (mRedDialog == null) {
         mRedDialog = RedEnvelopDialog(mContext, zjsy)
 //        }
@@ -207,7 +210,7 @@ class PetFloatWindow private constructor() {
                 if (type == 0) {
                     mClickView?.alpha = 1f
                     mClickView?.setText("+" + zjsy)
-                    mClickView?.setBackgroundResource(R.drawable.ic_jd_dog)
+                    mClickView?.setBackgroundResource(R.drawable.bg_oval)
                     setData(true)
                     startTimer()
                 } else if (type == 1) {
@@ -215,11 +218,11 @@ class PetFloatWindow private constructor() {
                     mClickView?.setText("")
 
 
-                    if (isJdDog) {
-                        mClickView?.setBackgroundResource(R.drawable.icon_pw);
-                    } else {
-                        mClickView?.setBackgroundResource(R.drawable.ic_jd_dog);
-                    }
+//                    if (isJdDog) {
+//                        mClickView?.setBackgroundResource(R.drawable.icon_pw);
+//                    } else {
+                    mClickView?.setBackgroundResource(R.drawable.ic_jd_dog);
+//                    }
                     isJdDog = !isJdDog;
                     stopTimer()
                 } else if (type == 2) {
