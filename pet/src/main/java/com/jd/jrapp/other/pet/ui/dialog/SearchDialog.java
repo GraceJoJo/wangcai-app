@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -23,7 +25,6 @@ import com.jd.jrapp.other.pet.R;
 import com.jd.jrapp.other.pet.ui.BaseRecycler.BaseAdapterHelper;
 import com.jd.jrapp.other.pet.ui.BaseRecycler.RecycleAdapter;
 import com.jd.jrapp.other.pet.ui.dialog.bean.MoneyManagementData;
-import com.jd.jrapp.other.pet.ui.view.DragView;
 import com.jd.jrapp.other.pet.ui.view.RefreshScrollView;
 import com.jd.jrapp.other.pet.utils.AppManager;
 import com.jd.jrapp.other.pet.utils.DisplayUtil;
@@ -32,6 +33,8 @@ import com.jd.jrapp.other.pet.utils.SharedPrefsMgr;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 /**
  * Author: zhoujuan26
@@ -54,9 +57,7 @@ public class SearchDialog extends Dialog implements View.OnClickListener {
     private View llSearchTitle;
     private boolean isRefresh;
     private RefreshScrollView refreshScrollView;
-    private int height;
-    private DragView dragView;
-
+    boolean isSearch = false;
     public SearchDialog(Context context, int zjsy) {
         super(context, R.style.loadDialog);
         this.mContext = context;
@@ -68,15 +69,7 @@ public class SearchDialog extends Dialog implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         isOpen = SharedPrefsMgr.getInstance(mContext).getBoolean(ISOPEN, false);
         width = (int) DisplayUtil.getScreenWidth(mContext);
-        height = (int) DisplayUtil.getScreenHeight(mContext);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        //搜索框位置无法控制
-//        final View contentView = inflater.inflate(R.layout.layout_common_drag_dia, null);
-//        dragView = contentView.findViewById(R.id.dragView);
-//        //add的子view的高度需match_parent
-//        dragView.addDragView(R.layout.layout_search_dialog, 0, height - DisplayUtil.dip2px(mContext, 450), width, height, false, true);
-
         final View contentView = inflater.inflate(R.layout.layout_search_dialog, null);
 
         refreshScrollView = contentView.findViewById(R.id.refresh_scrollview);
@@ -126,12 +119,24 @@ public class SearchDialog extends Dialog implements View.OnClickListener {
         contentView.findViewById(R.id.tv_do_search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 先隐藏键盘
+                hideSoft();
                 contentView.findViewById(R.id.iv_back).setVisibility(View.VISIBLE);
                 contentView.findViewById(R.id.ll_subview_ulike).setVisibility(View.GONE);
                 contentView.findViewById(R.id.ll_subview_search).setVisibility(View.VISIBLE);
                 ivSearch.setClickable(false);
                 ivSearch.setImageResource(R.drawable.icon_search_unable);
-                iv_list.setImageResource(R.drawable.tab_search_all);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!isSearch){
+                            iv_list.setImageResource(R.drawable.tab_search_all);
+                        }else {
+                            iv_list.setImageResource(R.drawable.tab_search_sales);
+                        }
+                        isSearch = !isSearch;
+                    }
+                },500);
             }
         });
 
@@ -141,6 +146,8 @@ public class SearchDialog extends Dialog implements View.OnClickListener {
             public void onClick(View v) {
                 llSearchTitle.setVisibility(View.VISIBLE);
                 refreshScrollView.setEnableRefresh(false);
+//                hideSoftKeyboard((Activity) mContext);
+
             }
         });
         //返回时回到猜你喜欢
@@ -192,11 +199,36 @@ public class SearchDialog extends Dialog implements View.OnClickListener {
         // 设置window属性
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.width = width;
-        lp.height = DisplayUtil.dip2px(mContext, 400);
         lp.gravity = Gravity.BOTTOM;
         getWindow().setAttributes(lp);
     }
 
+    private void hideSoft() {
+        InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    /**
+     * 隐藏软键盘(只适用于Activity，不适用于Fragment)
+     */
+    public void hideSoftKeyboard(Activity activity) {
+        View view = activity.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
+    /**
+     * 隐藏软键盘(可用于Activity，Fragment)
+     */
+    public void hideSoftKeyboard(Context context, List<View> viewList) {
+        if (viewList == null) return;
+        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
+        for (View v : viewList) {
+            inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
 
     public void onClick(View v) {
         if (v.getId() == R.id.tv_cancel) {

@@ -123,9 +123,9 @@ class PetFloatWindow private constructor() {
             Log.e("PetFloatWindow", "onClick: " + v)
             animSwitch()
             if (v == mTvSougo) {
-//                showSearchDialog()
-                AppManager.getInstance().getNLSToken()
-                showTouguDialog()
+                showSearchDialog()
+//                AppManager.getInstance().getNLSToken()
+//                showTouguDialog()
             } else if (v == mTvShequ) {
 //                AppManager.getInstance().getNLSToken()
 //                showTouguDialog();
@@ -167,17 +167,7 @@ class PetFloatWindow private constructor() {
     }
 
     private fun showPetDialog() {
-        if (mPtDialog == null) {
-            mPtDialog = PtDialog(mContext)
-        }
-        if (mPtDialog != null) {
-            if (Build.VERSION.SDK_INT >= 25) {
-                mPtDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
-            } else {
-                mPtDialog?.getWindow()?.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-            }
-            mPtDialog?.show()
-        }
+        mCocosInterface?.showPetDialog()
     }
 
     private fun showShouYiDialog() {
