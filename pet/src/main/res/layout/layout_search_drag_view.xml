@@ -5,12 +5,14 @@
     android:layout_height="match_parent"
     android:background="@color/transparent_dialog">
 
-    <com.jd.jrapp.other.pet.ui.view.AutoPollRecyclerView
-        android:id="@+id/autoPollRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_marginTop="20dp"
-        android:layout_alignParentTop="true"
-        android:layout_height="130dp" />
+
+    <include
+        android:id="@+id/ll_search_title"
+        layout="@layout/layout_search_titlebar"
+        android:layout_width="360dp"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"></include>
 
     <!--必须加background-->
     <com.jd.jrapp.other.pet.ui.view.DragView

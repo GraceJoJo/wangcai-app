@@ -383,6 +383,7 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
     // 第七步，识别结束，得到最终完整结果
     @Override
     public void onRecognizedCompleted(final String msg, int code) {
+        Log.d(TAG,"msg---->"+msg);
         recordTask.stop();
         if (isCancel) {
             return;
@@ -404,6 +405,7 @@ public class TouguDialog extends Dialog implements SpeechRecognizerCallback, Vie
                     if (jsonObject.containsKey("payload")) {
                         result = jsonObject.getJSONObject("payload").getString("result");
 //                        result="hello";
+                        Log.d(TAG,"识别结果：---->"+result);
                         if (!TextUtils.isEmpty(result)) {
                             int indexPosition = (currentPosition + 3) % commitsBeans.size();
                             commitsBeans.add(indexPosition, new CommitInfo.CommitsBean(true, result));

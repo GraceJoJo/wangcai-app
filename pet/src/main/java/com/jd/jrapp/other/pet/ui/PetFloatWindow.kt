@@ -129,6 +129,7 @@ class PetFloatWindow private constructor() {
             } else if (v == mTvShequ) {
 //                AppManager.getInstance().getNLSToken()
 //                showTouguDialog();
+                AppManager.getInstance().getNLSToken()
                 showCommunityDialog()
             } else if (v == mTvOrder) {
 //                showPayDialog()

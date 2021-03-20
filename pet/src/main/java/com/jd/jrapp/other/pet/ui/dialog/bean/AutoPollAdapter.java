@@ -39,8 +39,9 @@ public class AutoPollAdapter extends RecyclerView.Adapter<AutoPollAdapter.BaseVi
         if (datasBean.isIsCurrentCommit()) {
             holder.tv_comments.setTextColor(mContext.getResources().getColor(R.color.color_ff0000));
         } else {
-            holder.tv_comments.setTextColor(mContext.getResources().getColor(R.color.color_0a0a0d));
+            holder.tv_comments.setTextColor(mContext.getResources().getColor(R.color.color_ffffff));
         }
+//        holder.tv_comments.setText(datasBean.getContent()+"---》"+position);
         holder.tv_comments.setText(datasBean.getContent());
     }
 

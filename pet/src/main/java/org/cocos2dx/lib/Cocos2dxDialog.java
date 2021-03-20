@@ -132,6 +132,7 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
         actionKeywords.put("跳", JavaCocosConstant.ACTION_JUMP);
         actionKeywords.put("蹦", JavaCocosConstant.ACTION_JUMP);
         actionKeywords.put("后空翻", JavaCocosConstant.ACTION_JUMP);
+        actionKeywords.put("功夫", JavaCocosConstant.ACTION_JUMP);
     }
 
     private static Map<String, String> licaiKeywords = new ArrayMap<>(8);
@@ -140,9 +141,9 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
         licaiKeywords.put("投资", "主人，根据您的情况，推荐您将资金的50%配置小金库，50%配置小金存。点击一键下单>");
         licaiKeywords.put("基金", "主人，推荐您将资金的40%配置广发沪深300指数基金，30%配置前海开源沪港深优势精选混合基金，30%的资金配置小金库。点击一键下单>");
         licaiKeywords.put("保险", "主人，根据您的情况，推荐您将资金的70%配置小金保，30%配置小金存。点击一键下单>");
-        licaiKeywords.put("名字", "我叫金仔");
-        licaiKeywords.put("你是谁", "我是金仔");
-        licaiKeywords.put("你叫什么", "我叫金仔");
+        licaiKeywords.put("名字", "我叫小京");
+        licaiKeywords.put("你是谁", "我叫小京");
+        licaiKeywords.put("你叫什么", "我叫小京");
     }
 
     private JavaCocosBridge.CallJavaListener mStartRecordListener = new JavaCocosBridge.CallJavaListener() {
@@ -181,7 +182,7 @@ public class Cocos2dxDialog extends Dialog  implements Cocos2dxHelperDialog.Coco
                         com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(fullResult);
                         if (jsonObject != null && jsonObject.containsKey("payload")) {
                             result = jsonObject.getJSONObject("payload").getString("result");
-                            Log.e(TAG, "result:" + result);
+                            Log.v(TAG, "result---->" + result);
                             boolean actiomMatched = false;
                             for (String key :actionKeywords.keySet()){
                                 if (result.contains(key)) {
